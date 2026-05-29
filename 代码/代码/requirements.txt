@@ -1,0 +1,35 @@
+# 基础依赖
+fastapi==0.104.1
+uvicorn==0.24.0
+pydantic==2.5.2
+pydantic-settings==2.1.0
+SQLAlchemy>=2.0.0
+
+# 数据库依赖
+mysql-connector-python==8.2.0
+protobuf==4.21.12
+
+# 工具依赖
+requests==2.31.0
+python-dotenv==1.0.0
+python-docx==0.8.11
+PyPDF2==3.0.1
+PyMuPDF>=1.24.0
+pytesseract>=0.3.13
+Pillow>=10.0.0
+python-multipart>=0.0.9
+
+# 向量库依赖
+redis==5.0.1
+sentence-transformers>=2.7.0
+rank-bm25>=0.2.2
+jieba>=0.42.1
+
+# Milvus 向量数据库客户端
+pymilvus>=2.6.0
+
+# 其他依赖
+numpy==1.24.4
+langchain==0.0.344
+passlib[bcrypt]>=1.7.4
+python-jose[cryptography]>=3.3.0
