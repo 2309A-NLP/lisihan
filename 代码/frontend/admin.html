@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员控制台 - 多角色聊天机器人</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --page: #f5f7fb;
+            --surface: #ffffff;
+            --surface-soft: #f8fafc;
+            --surface-warm: #fff8ed;
+            --line: #e2e8f0;
+            --line-strong: #cbd5e1;
+            --text: #172033;
+            --muted: #64748b;
+            --faint: #94a3b8;
+            --blue: #3867d6;
+            --blue-soft: #e8f0ff;
+            --green: #168a65;
+            --green-soft: #e8f7f0;
+            --amber: #b7791f;
+            --amber-soft: #fff3d8;
+            --rose: #c2415d;
+            --rose-soft: #fff0f3;
+            --teal: #0f8b8d;
+            --shadow: 0 14px 36px rgba(15, 23, 42, 0.08);
+            --shadow-sm: 0 6px 18px rgba(15, 23, 42, 0.06);
+            --radius: 8px;
+        }
+        html, body { min-height: 100%; }
+        body {
+            min-height: 100vh;
+            color: var(--text);
+            background:
+                linear-gradient(180deg, rgba(245, 247, 251, 0.96), rgba(245, 247, 251, 1)),
+                var(--page);
+            font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+        }
+        button, input, textarea { font: inherit; }
+        button { cursor: pointer; }
+        button:disabled { cursor: not-allowed; opacity: 0.58; }
+        input, textarea {
+            width: 100%;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            outline: none;
+            color: var(--text);
+            background: #ffffff;
+            transition: border-color 0.16s, box-shadow 0.16s, background 0.16s;
+        }
+        input { height: 40px; padding: 0 12px; }
+        textarea { min-height: 96px; max-height: 180px; padding: 10px 12px; resize: vertical; line-height: 1.6; }
+        input:focus, textarea:focus {
+            border-color: rgba(56, 103, 214, 0.62);
+            box-shadow: 0 0 0 3px rgba(56, 103, 214, 0.12);
+        }
+        .hidden { display: none !important; }
+        .admin-shell {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 248px minmax(0, 1fr);
+        }
+        .sidebar {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            padding: 22px 16px;
+            border-right: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(14px);
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 8px 20px;
+            border-bottom: 1px solid var(--line);
+        }
+        .brand-mark {
+            width: 42px;
+            height: 42px;
+            display: grid;
+            place-items: center;
+            border-radius: var(--radius);
+            color: #ffffff;
+            background: linear-gradient(135deg, var(--blue), var(--teal));
+            font-weight: 900;
+        }
+        .brand strong { display: block; font-size: 16px; }
+        .brand span { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; }
+        .nav {
+            display: grid;
+            gap: 6px;
+            padding: 18px 0;
+        }
+        .nav button {
+            width: 100%;
+            min-height: 42px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 12px;
+            border: 0;
+            border-radius: var(--radius);
+            color: #334155;
+            background: transparent;
+            text-align: left;
+            font-weight: 750;
+        }
+        .nav button:hover { background: var(--surface-soft); }
+        .nav button.active {
+            color: var(--blue);
+            background: var(--blue-soft);
+        }
+        .nav-ico {
+            width: 22px;
+            color: inherit;
+            font-weight: 900;
+            text-align: center;
+        }
+        .side-footer {
+            position: absolute;
+            left: 16px;
+            right: 16px;
+            bottom: 18px;
+            display: grid;
+            gap: 8px;
+        }
+        .user-pill {
+            min-width: 0;
+            padding: 12px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: var(--surface-soft);
+        }
+        .user-pill strong {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 14px;
+        }
+        .user-pill span { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; }
+        .main {
+            min-width: 0;
+            padding: 22px;
+        }
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+        .title-block h1 {
+            font-size: 28px;
+            line-height: 1.18;
+            font-weight: 850;
+        }
+        .title-block p {
+            margin-top: 7px;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+        .btn {
+            min-height: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0 13px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            color: #334155;
+            background: #ffffff;
+            font-weight: 800;
+            text-decoration: none;
+            transition: transform 0.16s, box-shadow 0.16s, border-color 0.16s, background 0.16s;
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
+            border-color: var(--line-strong);
+        }
+        .btn.primary {
+            border-color: var(--blue);
+            color: #ffffff;
+            background: var(--blue);
+        }
+        .btn.danger {
+            border-color: #fecdd3;
+            color: var(--rose);
+            background: var(--rose-soft);
+        }
+        .btn.ghost { background: transparent; }
+        .btn.small { min-height: 32px; padding: 0 10px; font-size: 12px; }
+        .status-line {
+            min-height: 38px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 12px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            color: var(--muted);
+            background: #ffffff;
+            font-size: 13px;
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--faint);
+        }
+        .dot.ok { background: var(--green); }
+        .dot.warn { background: var(--amber); }
+        .dot.bad { background: var(--rose); }
+        .panel {
+            display: none;
+        }
+        .panel.active {
+            display: block;
+        }
+        .grid {
+            display: grid;
+            gap: 14px;
+        }
+        .stats-grid {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            margin-bottom: 14px;
+        }
+        .stat-card {
+            min-height: 112px;
+            padding: 16px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: var(--surface);
+            box-shadow: var(--shadow-sm);
+        }
+        .stat-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 750;
+        }
+        .stat-icon {
+            width: 30px;
+            height: 30px;
+            display: grid;
+            place-items: center;
+            border-radius: var(--radius);
+            color: var(--blue);
+            background: var(--blue-soft);
+            font-weight: 900;
+        }
+        .stat-value {
+            margin-top: 12px;
+            font-size: 30px;
+            line-height: 1;
+            font-weight: 900;
+        }
+        .stat-note {
+            margin-top: 10px;
+            color: var(--faint);
+            font-size: 12px;
+        }
+        .content-grid {
+            grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
+            align-items: start;
+        }
+        .section {
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: var(--surface);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+        .section-head {
+            min-height: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--line);
+            background: #ffffff;
+        }
+        .section-head h2 {
+            font-size: 16px;
+            line-height: 1.3;
+        }
+        .section-head p {
+            margin-top: 4px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+        .section-body {
+            padding: 16px;
+        }
+        .toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .search {
+            width: min(360px, 100%);
+        }
+        .table-wrap {
+            overflow: auto;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+        }
+        table {
+            width: 100%;
+            min-width: 760px;
+            border-collapse: collapse;
+            background: #ffffff;
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid var(--line);
+            text-align: left;
+            vertical-align: middle;
+            font-size: 13px;
+        }
+        th {
+            color: #475569;
+            background: var(--surface-soft);
+            font-weight: 850;
+            white-space: nowrap;
+        }
+        tr:last-child td { border-bottom: 0; }
+        td {
+            color: #273449;
+        }
+        .muted { color: var(--muted); }
+        .mono {
+            font-family: "Cascadia Mono", Consolas, monospace;
+            font-size: 12px;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            min-height: 24px;
+            padding: 0 8px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 850;
+            white-space: nowrap;
+        }
+        .badge.ok { color: var(--green); background: var(--green-soft); }
+        .badge.warn { color: var(--amber); background: var(--amber-soft); }
+        .badge.rose { color: var(--rose); background: var(--rose-soft); }
+        .badge.blue { color: var(--blue); background: var(--blue-soft); }
+        .row-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .metric-list {
+            display: grid;
+            gap: 10px;
+        }
+        .metric-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: var(--surface-soft);
+        }
+        .metric-row span {
+            color: var(--muted);
+            font-size: 13px;
+        }
+        .metric-row strong {
+            font-size: 18px;
+        }
+        .bars {
+            display: grid;
+            gap: 10px;
+        }
+        .bar-row {
+            display: grid;
+            gap: 6px;
+        }
+        .bar-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            color: #475569;
+            font-size: 12px;
+            font-weight: 750;
+        }
+        .bar-track {
+            height: 8px;
+            border-radius: 999px;
+            background: #e5e7eb;
+            overflow: hidden;
+        }
+        .bar-fill {
+            height: 100%;
+            min-width: 3px;
+            border-radius: inherit;
+            background: var(--teal);
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+        .field.full { grid-column: 1 / -1; }
+        label {
+            display: block;
+            margin-bottom: 7px;
+            color: #334155;
+            font-size: 12px;
+            font-weight: 850;
+        }
+        .empty {
+            padding: 22px;
+            border: 1px dashed var(--line-strong);
+            border-radius: var(--radius);
+            color: var(--muted);
+            background: var(--surface-soft);
+            text-align: center;
+            font-size: 13px;
+        }
+        .message-list {
+            display: grid;
+            gap: 10px;
+            max-height: 520px;
+            overflow: auto;
+        }
+        .message-item {
+            padding: 12px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: #ffffff;
+        }
+        .message-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 8px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+        .message-content {
+            color: #263247;
+            line-height: 1.65;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-size: 13px;
+        }
+        .login-gate {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 24px;
+        }
+        .login-box {
+            width: min(440px, 100%);
+            padding: 22px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: #ffffff;
+            box-shadow: var(--shadow);
+        }
+        .login-box h1 {
+            font-size: 24px;
+            line-height: 1.2;
+        }
+        .login-box p {
+            margin-top: 8px;
+            color: var(--muted);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+        .login-form {
+            display: grid;
+            gap: 14px;
+            margin-top: 20px;
+        }
+        .toast {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 20;
+            max-width: min(420px, calc(100vw - 40px));
+            padding: 13px 14px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            color: #334155;
+            background: #ffffff;
+            box-shadow: var(--shadow);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .toast.ok { border-color: #bbf7d0; color: var(--green); }
+        .toast.bad { border-color: #fecdd3; color: var(--rose); }
+        dialog {
+            width: min(780px, calc(100vw - 32px));
+            max-height: calc(100vh - 48px);
+            margin: auto;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: #ffffff;
+            box-shadow: var(--shadow);
+        }
+        dialog::backdrop { background: rgba(15, 23, 42, 0.42); }
+        .dialog-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 16px;
+            border-bottom: 1px solid var(--line);
+        }
+        .dialog-head h2 { font-size: 16px; }
+        .dialog-body { padding: 16px; }
+        .mobile-menu { display: none; }
+        @media (max-width: 1100px) {
+            .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .content-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 820px) {
+            .admin-shell { grid-template-columns: 1fr; }
+            .sidebar {
+                position: static;
+                height: auto;
+                padding: 14px;
+            }
+            .brand { padding-bottom: 12px; }
+            .nav {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                padding-bottom: 0;
+            }
+            .side-footer { position: static; margin-top: 12px; }
+            .main { padding: 16px; }
+            .topbar { align-items: stretch; flex-direction: column; }
+            .top-actions { justify-content: flex-start; }
+        }
+        @media (max-width: 560px) {
+            .stats-grid, .form-grid, .nav { grid-template-columns: 1fr; }
+            .title-block h1 { font-size: 23px; }
+            .stat-value { font-size: 26px; }
+            .section-head { align-items: flex-start; flex-direction: column; }
+            .btn { width: 100%; }
+            .row-actions .btn { width: auto; }
+        }
+    </style>
+</head>
+<body>
+    <div id="loginGate" class="login-gate hidden">
+        <section class="login-box">
+            <div class="brand" style="padding:0;border:0;">
+                <div class="brand-mark">AI</div>
+                <div>
+                    <strong>管理员控制台</strong>
+                    <span>多角色聊天机器人</span>
+                </div>
+            </div>
+            <p>需要管理员账号登录后访问控制台数据。</p>
+            <form id="loginForm" class="login-form">
+                <div>
+                    <label for="loginUsername">用户名</label>
+                    <input id="loginUsername" autocomplete="username" value="admin" required>
+                </div>
+                <div>
+                    <label for="loginPassword">密码</label>
+                    <input id="loginPassword" type="password" autocomplete="current-password" required>
+                </div>
+                <button class="btn primary" type="submit">登录控制台</button>
+                <a class="btn ghost" href="/">返回聊天页面</a>
+            </form>
+        </section>
+    </div>
+
+    <div id="adminApp" class="admin-shell hidden">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-mark">AI</div>
+                <div>
+                    <strong>管理员控制台</strong>
+                    <span>多角色聊天机器人</span>
+                </div>
+            </div>
+            <nav class="nav" aria-label="后台导航">
+                <button class="active" data-panel="dashboard"><span class="nav-ico">◆</span>总览</button>
+                <button data-panel="users"><span class="nav-ico">人</span>用户</button>
+                <button data-panel="conversations"><span class="nav-ico">话</span>对话</button>
+                <button data-panel="knowledge"><span class="nav-ico">库</span>知识库</button>
+                <button data-panel="roles"><span class="nav-ico">角</span>角色</button>
+            </nav>
+            <div class="side-footer">
+                <div class="user-pill">
+                    <strong id="currentUsername">未登录</strong>
+                    <span id="currentUserId">管理员会话</span>
+                </div>
+                <button id="logoutBtn" class="btn ghost" type="button">退出登录</button>
+            </div>
+        </aside>
+
+        <main class="main">
+            <header class="topbar">
+                <div class="title-block">
+                    <h1 id="pageTitle">系统总览</h1>
+                    <p id="pageSubtitle">用户、对话与知识库运行状态。</p>
+                </div>
+                <div class="top-actions">
+                    <div id="apiStatus" class="status-line"><span class="dot"></span><span>等待连接</span></div>
+                    <button id="refreshBtn" class="btn primary" type="button">刷新数据</button>
+                    <a class="btn" href="/">聊天页面</a>
+                </div>
+            </header>
+
+            <section id="dashboard" class="panel active">
+                <div class="grid stats-grid">
+                    <article class="stat-card">
+                        <div class="stat-label"><span>总用户</span><span class="stat-icon">人</span></div>
+                        <div id="statUsers" class="stat-value">--</div>
+                        <div id="statActiveUsers" class="stat-note">活跃用户 --</div>
+                    </article>
+                    <article class="stat-card">
+                        <div class="stat-label"><span>总对话</span><span class="stat-icon">话</span></div>
+                        <div id="statConversations" class="stat-value">--</div>
+                        <div id="statTodayConversations" class="stat-note">今日新增 --</div>
+                    </article>
+                    <article class="stat-card">
+                        <div class="stat-label"><span>总消息</span><span class="stat-icon">信</span></div>
+                        <div id="statMessages" class="stat-value">--</div>
+                        <div id="statTodayMessages" class="stat-note">今日新增 --</div>
+                    </article>
+                    <article class="stat-card">
+                        <div class="stat-label"><span>知识片段</span><span class="stat-icon">库</span></div>
+                        <div id="statKnowledge" class="stat-value">--</div>
+                        <div id="statAdmins" class="stat-note">管理员 --</div>
+                    </article>
+                </div>
+
+                <div class="grid content-grid">
+                    <section class="section">
+                        <div class="section-head">
+                            <div>
+                                <h2>最近对话</h2>
+                                <p>按最后更新时间排序</p>
+                            </div>
+                            <button class="btn small" data-panel-jump="conversations" type="button">查看全部</button>
+                        </div>
+                        <div class="section-body">
+                            <div class="table-wrap">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>用户</th>
+                                            <th>标题</th>
+                                            <th>角色</th>
+                                            <th>更新时间</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recentConversationRows"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="section">
+                        <div class="section-head">
+                            <div>
+                                <h2>知识库分布</h2>
+                                <p>按来源文件统计</p>
+                            </div>
+                        </div>
+                        <div class="section-body">
+                            <div id="knowledgeBars" class="bars"></div>
+                        </div>
+                    </section>
+                </div>
+            </section>
+
+            <section id="users" class="panel">
+                <section class="section">
+                    <div class="section-head">
+                        <div>
+                            <h2>用户管理</h2>
+                            <p>账号状态与管理员权限</p>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="toolbar">
+                            <input id="userSearch" class="search" placeholder="搜索用户名或邮箱">
+                            <div class="row-actions">
+                                <button id="prevUsers" class="btn small" type="button">上一页</button>
+                                <button id="nextUsers" class="btn small" type="button">下一页</button>
+                            </div>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>用户名</th>
+                                        <th>邮箱</th>
+                                        <th>状态</th>
+                                        <th>权限</th>
+                                        <th>登录次数</th>
+                                        <th>最近登录</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="userRows"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <section id="conversations" class="panel">
+                <section class="section">
+                    <div class="section-head">
+                        <div>
+                            <h2>对话审计</h2>
+                            <p>查看消息与清理无效会话</p>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="toolbar">
+                            <input id="conversationSearch" class="search" placeholder="搜索用户、标题或对话 ID">
+                            <div class="row-actions">
+                                <button id="prevConversations" class="btn small" type="button">上一页</button>
+                                <button id="nextConversations" class="btn small" type="button">下一页</button>
+                            </div>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>用户</th>
+                                        <th>标题</th>
+                                        <th>角色</th>
+                                        <th>创建时间</th>
+                                        <th>更新时间</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="conversationRows"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <section id="knowledge" class="panel">
+                <div class="grid content-grid">
+                    <section class="section">
+                        <div class="section-head">
+                            <div>
+                                <h2>知识库状态</h2>
+                                <p>片段、文件与角色覆盖情况</p>
+                            </div>
+                            <button id="refreshKnowledgeBtn" class="btn primary" type="button">刷新知识库</button>
+                        </div>
+                        <div class="section-body">
+                            <div class="metric-list">
+                                <div class="metric-row"><span>知识片段</span><strong id="knowledgeSegments">--</strong></div>
+                                <div class="metric-row"><span>来源文件</span><strong id="knowledgeFiles">--</strong></div>
+                                <div class="metric-row"><span>覆盖角色</span><strong id="knowledgeRoles">--</strong></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="section">
+                        <div class="section-head">
+                            <div>
+                                <h2>角色覆盖</h2>
+                                <p>按角色 ID 统计片段数</p>
+                            </div>
+                        </div>
+                        <div class="section-body">
+                            <div id="roleBars" class="bars"></div>
+                        </div>
+                    </section>
+                </div>
+            </section>
+
+            <section id="roles" class="panel">
+                <div class="grid content-grid">
+                    <section class="section">
+                        <div class="section-head">
+                            <div>
+                                <h2>角色列表</h2>
+                                <p>当前可用的 AI 角色</p>
+                            </div>
+                            <button id="reloadRolesBtn" class="btn" type="button">重新加载</button>
+                        </div>
+                        <div class="section-body">
+                            <div class="table-wrap">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>名称</th>
+                                            <th>描述</th>
+                                            <th>知识库 ID</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="roleRows"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="section">
+                        <div class="section-head">
+                            <div>
+                                <h2>创建角色</h2>
+                                <p>新增角色与提示词模板</p>
+                            </div>
+                        </div>
+                        <div class="section-body">
+                            <form id="roleForm" class="form-grid">
+                                <div class="field full">
+                                    <label for="roleName">角色名称</label>
+                                    <input id="roleName" required placeholder="例如：产品经理">
+                                </div>
+                                <div>
+                                    <label for="roleDomain">专业领域</label>
+                                    <input id="roleDomain" placeholder="例如：产品、医疗、法律">
+                                </div>
+                                <div>
+                                    <label for="rolePersonality">性格特征</label>
+                                    <input id="rolePersonality" placeholder="例如：严谨、耐心">
+                                </div>
+                                <div class="field full">
+                                    <label for="roleDescription">角色描述</label>
+                                    <textarea id="roleDescription" placeholder="角色在列表中的说明"></textarea>
+                                </div>
+                                <div class="field full">
+                                    <label for="roleTemplate">提示词模板</label>
+                                    <textarea id="roleTemplate" placeholder="你是一位..."></textarea>
+                                </div>
+                                <div>
+                                    <label for="roleKnowledgeId">知识库 ID</label>
+                                    <input id="roleKnowledgeId" inputmode="numeric" placeholder="可留空">
+                                </div>
+                                <div style="display:flex;align-items:end;">
+                                    <button class="btn primary" type="submit">创建角色</button>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <dialog id="messageDialog">
+        <div class="dialog-head">
+            <div>
+                <h2 id="dialogTitle">对话消息</h2>
+                <p id="dialogMeta" class="muted" style="margin-top:4px;font-size:12px;"></p>
+            </div>
+            <button id="closeDialogBtn" class="btn small" type="button">关闭</button>
+        </div>
+        <div class="dialog-body">
+            <div id="messageList" class="message-list"></div>
+        </div>
+    </dialog>
+
+    <div id="toast" class="toast hidden"></div>
+
+    <script>
+        const API_BASE = "/api";
+        const state = {
+            user: null,
+            users: [],
+            conversations: [],
+            roles: [],
+            stats: null,
+            knowledge: null,
+            userPage: 0,
+            conversationPage: 0,
+            limit: 20
+        };
+
+        const panelMeta = {
+            dashboard: ["系统总览", "用户、对话与知识库运行状态。"],
+            users: ["用户管理", "账号状态与管理员权限。"],
+            conversations: ["对话审计", "查看消息与清理无效会话。"],
+            knowledge: ["知识库管理", "知识库片段、文件来源与角色覆盖。"],
+            roles: ["角色管理", "维护 AI 角色与提示词模板。"]
+        };
+
+        const el = (id) => document.getElementById(id);
+
+        function getStoredUser() {
+            try {
+                return JSON.parse(localStorage.getItem("chatbot_user") || "null");
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function saveUser(user) {
+            state.user = user;
+            localStorage.setItem("chatbot_user", JSON.stringify(user));
+            el("currentUsername").textContent = user.username || "管理员";
+            el("currentUserId").textContent = `用户 ID ${user.id || user.user_id || "--"}`;
+        }
+
+        function showToast(message, type = "") {
+            const toast = el("toast");
+            toast.textContent = message;
+            toast.className = `toast ${type}`.trim();
+            clearTimeout(showToast.timer);
+            showToast.timer = setTimeout(() => toast.classList.add("hidden"), 3200);
+        }
+
+        function setStatus(text, level = "") {
+            const status = el("apiStatus");
+            status.innerHTML = `<span class="dot ${level}"></span><span>${escapeHtml(text)}</span>`;
+        }
+
+        function escapeHtml(value) {
+            return String(value ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function formatDate(value) {
+            if (!value) return "--";
+            const date = new Date(value);
+            if (Number.isNaN(date.getTime())) return value;
+            return date.toLocaleString("zh-CN", { hour12: false });
+        }
+
+        async function request(path, options = {}) {
+            const headers = { ...(options.headers || {}) };
+            if (!(options.body instanceof FormData)) headers["Content-Type"] = headers["Content-Type"] || "application/json";
+            if (state.user?.token) headers.Authorization = `Bearer ${state.user.token}`;
+
+            const response = await fetch(`${API_BASE}${path}`, { ...options, headers });
+            const text = await response.text();
+            let payload = null;
+            try { payload = text ? JSON.parse(text) : null; } catch (error) { payload = text; }
+
+            if (!response.ok) {
+                const detail = payload?.detail || payload?.message || response.statusText || "请求失败";
+                if (response.status === 401 || response.status === 403) {
+                    setStatus("权限校验失败", "bad");
+                    showLogin();
+                }
+                throw new Error(detail);
+            }
+            return payload;
+        }
+
+        function showLogin() {
+            el("adminApp").classList.add("hidden");
+            el("loginGate").classList.remove("hidden");
+        }
+
+        function showAdmin() {
+            el("loginGate").classList.add("hidden");
+            el("adminApp").classList.remove("hidden");
+        }
+
+        function switchPanel(name) {
+            document.querySelectorAll(".panel").forEach((panel) => panel.classList.toggle("active", panel.id === name));
+            document.querySelectorAll(".nav button").forEach((button) => button.classList.toggle("active", button.dataset.panel === name));
+            el("pageTitle").textContent = panelMeta[name][0];
+            el("pageSubtitle").textContent = panelMeta[name][1];
+        }
+
+        async function loadAll() {
+            setStatus("正在同步", "warn");
+            try {
+                await Promise.all([
+                    loadStats(),
+                    loadUsers(),
+                    loadConversations(),
+                    loadKnowledge(),
+                    loadRoles()
+                ]);
+                setStatus("已连接", "ok");
+                showToast("数据已刷新", "ok");
+            } catch (error) {
+                setStatus("连接异常", "bad");
+                showToast(error.message, "bad");
+            }
+        }
+
+        async function loadStats() {
+            state.stats = await request("/admin/statistics");
+            renderStats();
+        }
+
+        async function loadUsers() {
+            const skip = state.userPage * state.limit;
+            state.users = await request(`/admin/users?skip=${skip}&limit=${state.limit}`);
+            renderUsers();
+        }
+
+        async function loadConversations() {
+            const skip = state.conversationPage * state.limit;
+            const result = await request(`/admin/conversations?skip=${skip}&limit=${state.limit}`);
+            state.conversations = result.items || [];
+            renderConversations();
+            renderRecentConversations();
+        }
+
+        async function loadKnowledge() {
+            state.knowledge = await request("/admin/knowledge/statistics");
+            renderKnowledge();
+        }
+
+        async function loadRoles() {
+            state.roles = await request("/role/list");
+            renderRoles();
+        }
+
+        function renderStats() {
+            const stats = state.stats || {};
+            el("statUsers").textContent = stats.total_users ?? "--";
+            el("statActiveUsers").textContent = `活跃用户 ${stats.active_users ?? "--"}`;
+            el("statConversations").textContent = stats.total_conversations ?? "--";
+            el("statTodayConversations").textContent = `今日新增 ${stats.today_conversations ?? "--"}`;
+            el("statMessages").textContent = stats.total_messages ?? "--";
+            el("statTodayMessages").textContent = `今日新增 ${stats.today_messages ?? "--"}`;
+            el("statKnowledge").textContent = stats.total_knowledge_segments ?? "--";
+            el("statAdmins").textContent = `管理员 ${stats.admin_users ?? "--"}`;
+        }
+
+        function renderUsers() {
+            const query = el("userSearch").value.trim().toLowerCase();
+            const rows = state.users.filter((user) => {
+                if (!query) return true;
+                return [user.username, user.email, user.id].some((item) => String(item ?? "").toLowerCase().includes(query));
+            });
+            el("userRows").innerHTML = rows.length ? rows.map((user) => `
+                <tr>
+                    <td class="mono">${user.id}</td>
+                    <td><strong>${escapeHtml(user.username)}</strong></td>
+                    <td>${escapeHtml(user.email)}</td>
+                    <td>${user.is_active ? '<span class="badge ok">启用</span>' : '<span class="badge rose">禁用</span>'}</td>
+                    <td>${user.is_admin ? '<span class="badge blue">管理员</span>' : '<span class="badge warn">普通用户</span>'}</td>
+                    <td>${user.login_count ?? 0}</td>
+                    <td>${formatDate(user.last_login)}</td>
+                    <td>
+                        <div class="row-actions">
+                            <button class="btn small" data-user-status="${user.id}" data-active="${!user.is_active}" type="button">${user.is_active ? "禁用" : "启用"}</button>
+                            <button class="btn small" data-user-admin="${user.id}" data-admin="${!user.is_admin}" type="button">${user.is_admin ? "取消管理员" : "设为管理员"}</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join("") : `<tr><td colspan="8"><div class="empty">没有匹配的用户</div></td></tr>`;
+        }
+
+        function renderConversations() {
+            const query = el("conversationSearch").value.trim().toLowerCase();
+            const rows = state.conversations.filter((item) => {
+                if (!query) return true;
+                return [item.id, item.username, item.title, item.role_id].some((value) => String(value ?? "").toLowerCase().includes(query));
+            });
+            el("conversationRows").innerHTML = rows.length ? rows.map((item) => `
+                <tr>
+                    <td class="mono">${item.id}</td>
+                    <td>${escapeHtml(item.username)}</td>
+                    <td><strong>${escapeHtml(item.title || "未命名对话")}</strong></td>
+                    <td class="mono">${item.role_id ?? "--"}</td>
+                    <td>${formatDate(item.created_at)}</td>
+                    <td>${formatDate(item.updated_at)}</td>
+                    <td>
+                        <div class="row-actions">
+                            <button class="btn small" data-view-conversation="${item.id}" type="button">查看</button>
+                            <button class="btn small danger" data-delete-conversation="${item.id}" type="button">删除</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join("") : `<tr><td colspan="7"><div class="empty">没有匹配的对话</div></td></tr>`;
+        }
+
+        function renderRecentConversations() {
+            const rows = state.conversations.slice(0, 8);
+            el("recentConversationRows").innerHTML = rows.length ? rows.map((item) => `
+                <tr>
+                    <td class="mono">${item.id}</td>
+                    <td>${escapeHtml(item.username)}</td>
+                    <td><strong>${escapeHtml(item.title || "未命名对话")}</strong></td>
+                    <td class="mono">${item.role_id ?? "--"}</td>
+                    <td>${formatDate(item.updated_at)}</td>
+                </tr>
+            `).join("") : `<tr><td colspan="5"><div class="empty">暂无对话数据</div></td></tr>`;
+        }
+
+        function renderKnowledge() {
+            const knowledge = state.knowledge || {};
+            const sourceCounts = knowledge.source_counts || {};
+            const roleCounts = knowledge.role_counts || {};
+            el("knowledgeSegments").textContent = knowledge.total_segments ?? "--";
+            el("knowledgeFiles").textContent = knowledge.total_files ?? "--";
+            el("knowledgeRoles").textContent = Object.keys(roleCounts).length || "--";
+            renderBars("knowledgeBars", sourceCounts, "暂无来源文件统计");
+            renderBars("roleBars", roleCounts, "暂无角色覆盖统计", "角色 ");
+        }
+
+        function renderBars(targetId, data, emptyText, prefix = "") {
+            const entries = Object.entries(data || {})
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 10);
+            const max = Math.max(1, ...entries.map((entry) => Number(entry[1]) || 0));
+            el(targetId).innerHTML = entries.length ? entries.map(([name, count]) => {
+                const percent = Math.max(3, Math.round((Number(count) || 0) / max * 100));
+                return `
+                    <div class="bar-row">
+                        <div class="bar-meta"><span title="${escapeHtml(prefix + name)}">${escapeHtml(prefix + name)}</span><strong>${count}</strong></div>
+                        <div class="bar-track"><div class="bar-fill" style="width:${percent}%"></div></div>
+                    </div>
+                `;
+            }).join("") : `<div class="empty">${emptyText}</div>`;
+        }
+
+        function renderRoles() {
+            el("roleRows").innerHTML = state.roles.length ? state.roles.map((role) => `
+                <tr>
+                    <td class="mono">${role.id}</td>
+                    <td><strong>${escapeHtml(role.name)}</strong></td>
+                    <td>${escapeHtml(role.description || "--")}</td>
+                    <td class="mono">${role.knowledge_base_id ?? "--"}</td>
+                </tr>
+            `).join("") : `<tr><td colspan="4"><div class="empty">暂无角色</div></td></tr>`;
+        }
+
+        async function updateUserStatus(userId, isActive) {
+            await request(`/admin/users/${userId}/status`, {
+                method: "PUT",
+                body: JSON.stringify({ is_active: isActive })
+            });
+            showToast("用户状态已更新", "ok");
+            await Promise.all([loadUsers(), loadStats()]);
+        }
+
+        async function updateUserAdmin(userId, isAdmin) {
+            await request(`/admin/users/${userId}/admin`, {
+                method: "PUT",
+                body: JSON.stringify({ is_admin: isAdmin })
+            });
+            showToast("用户权限已更新", "ok");
+            await Promise.all([loadUsers(), loadStats()]);
+        }
+
+        async function viewConversation(conversationId) {
+            try {
+                const result = await request(`/admin/conversations/${conversationId}/messages`);
+                const conversation = result.conversation || {};
+                el("dialogTitle").textContent = conversation.title || `对话 ${conversationId}`;
+                el("dialogMeta").textContent = `${conversation.username || "未知用户"} · 角色 ${conversation.role_id ?? "--"} · ${formatDate(conversation.updated_at)}`;
+                el("messageList").innerHTML = (result.messages || []).length ? result.messages.map((msg) => `
+                    <article class="message-item">
+                        <div class="message-top">
+                            <strong>${escapeHtml(msg.sender)}</strong>
+                            <span>${formatDate(msg.created_at)}</span>
+                        </div>
+                        <div class="message-content">${escapeHtml(msg.content)}</div>
+                    </article>
+                `).join("") : `<div class="empty">暂无消息</div>`;
+                el("messageDialog").showModal();
+            } catch (error) {
+                showToast(error.message, "bad");
+            }
+        }
+
+        async function deleteConversation(conversationId) {
+            if (!confirm(`确定删除对话 ${conversationId}？`)) return;
+            try {
+                await request(`/admin/conversations/${conversationId}`, { method: "DELETE" });
+                showToast("对话已删除", "ok");
+                await Promise.all([loadConversations(), loadStats()]);
+            } catch (error) {
+                showToast(error.message, "bad");
+            }
+        }
+
+        function bindEvents() {
+            document.querySelectorAll(".nav button").forEach((button) => {
+                button.addEventListener("click", () => switchPanel(button.dataset.panel));
+            });
+            document.querySelectorAll("[data-panel-jump]").forEach((button) => {
+                button.addEventListener("click", () => switchPanel(button.dataset.panelJump));
+            });
+            el("refreshBtn").addEventListener("click", loadAll);
+            el("reloadRolesBtn").addEventListener("click", () => loadRoles().then(() => showToast("角色已加载", "ok")).catch((error) => showToast(error.message, "bad")));
+            el("refreshKnowledgeBtn").addEventListener("click", async () => {
+                try {
+                    setStatus("刷新知识库", "warn");
+                    await request("/admin/knowledge/refresh", { method: "POST" });
+                    await Promise.all([loadKnowledge(), loadStats()]);
+                    setStatus("已连接", "ok");
+                    showToast("知识库刷新完成", "ok");
+                } catch (error) {
+                    setStatus("连接异常", "bad");
+                    showToast(error.message, "bad");
+                }
+            });
+            el("logoutBtn").addEventListener("click", () => {
+                localStorage.removeItem("chatbot_user");
+                state.user = null;
+                showLogin();
+            });
+            el("userSearch").addEventListener("input", renderUsers);
+            el("conversationSearch").addEventListener("input", renderConversations);
+            el("prevUsers").addEventListener("click", async () => {
+                if (state.userPage === 0) return;
+                state.userPage -= 1;
+                await loadUsers();
+            });
+            el("nextUsers").addEventListener("click", async () => {
+                state.userPage += 1;
+                await loadUsers();
+            });
+            el("prevConversations").addEventListener("click", async () => {
+                if (state.conversationPage === 0) return;
+                state.conversationPage -= 1;
+                await loadConversations();
+            });
+            el("nextConversations").addEventListener("click", async () => {
+                state.conversationPage += 1;
+                await loadConversations();
+            });
+            document.body.addEventListener("click", async (event) => {
+                const statusButton = event.target.closest("[data-user-status]");
+                const adminButton = event.target.closest("[data-user-admin]");
+                const viewButton = event.target.closest("[data-view-conversation]");
+                const deleteButton = event.target.closest("[data-delete-conversation]");
+                try {
+                    if (statusButton) await updateUserStatus(statusButton.dataset.userStatus, statusButton.dataset.active === "true");
+                    if (adminButton) await updateUserAdmin(adminButton.dataset.userAdmin, adminButton.dataset.admin === "true");
+                    if (viewButton) await viewConversation(viewButton.dataset.viewConversation);
+                    if (deleteButton) await deleteConversation(deleteButton.dataset.deleteConversation);
+                } catch (error) {
+                    showToast(error.message, "bad");
+                }
+            });
+            el("closeDialogBtn").addEventListener("click", () => el("messageDialog").close());
+            el("loginForm").addEventListener("submit", async (event) => {
+                event.preventDefault();
+                try {
+                    const username = el("loginUsername").value.trim();
+                    const password = el("loginPassword").value;
+                    const result = await request("/user/login", {
+                        method: "POST",
+                        body: JSON.stringify({ username, password })
+                    });
+                    saveUser({ id: result.user_id, username: result.username, token: result.access_token });
+                    showAdmin();
+                    await loadAll();
+                } catch (error) {
+                    showToast(error.message, "bad");
+                }
+            });
+            el("roleForm").addEventListener("submit", async (event) => {
+                event.preventDefault();
+                const knowledgeId = el("roleKnowledgeId").value.trim();
+                const payload = {
+                    name: el("roleName").value.trim(),
+                    description: el("roleDescription").value.trim(),
+                    domain: el("roleDomain").value.trim() || null,
+                    personality: el("rolePersonality").value.trim() || null,
+                    template_content: el("roleTemplate").value.trim() || null,
+                    knowledge_base_id: knowledgeId ? Number(knowledgeId) : null
+                };
+                try {
+                    await request("/role/create", { method: "POST", body: JSON.stringify(payload) });
+                    event.target.reset();
+                    await loadRoles();
+                    showToast("角色创建成功", "ok");
+                } catch (error) {
+                    showToast(error.message, "bad");
+                }
+            });
+        }
+
+        async function boot() {
+            bindEvents();
+            const storedUser = getStoredUser();
+            if (!storedUser?.token) {
+                showLogin();
+                return;
+            }
+            saveUser(storedUser);
+            showAdmin();
+            await loadAll();
+        }
+
+        boot();
+    </script>
+</body>
+</html>

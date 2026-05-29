@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>下载中心 - 多角色聊天机器人</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg: #f5f7fb;
+            --surface: #ffffff;
+            --surface-soft: #f8fafc;
+            --line: #e2e8f0;
+            --text: #162033;
+            --muted: #64748b;
+            --faint: #94a3b8;
+            --blue: #3867d6;
+            --blue-soft: #e8f0ff;
+            --green: #168a65;
+            --green-soft: #e8f7f0;
+            --amber: #b7791f;
+            --amber-soft: #fff3d8;
+            --rose: #c2415d;
+            --rose-soft: #fff0f3;
+            --teal: #0f8b8d;
+            --shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+            --shadow-sm: 0 8px 22px rgba(15, 23, 42, 0.06);
+            --radius: 8px;
+        }
+        html, body { min-height: 100%; }
+        body {
+            min-height: 100vh;
+            color: var(--text);
+            background:
+                linear-gradient(135deg, rgba(255,255,255,0.94), rgba(235,244,255,0.84) 48%, rgba(232,247,240,0.78)),
+                var(--bg);
+            font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+        }
+        button, input, select { font: inherit; }
+        button { cursor: pointer; }
+        button:disabled { cursor: not-allowed; opacity: 0.6; }
+        input, select {
+            width: 100%;
+            height: 42px;
+            padding: 0 12px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            color: var(--text);
+            background: #ffffff;
+            outline: none;
+            transition: border-color 0.16s, box-shadow 0.16s;
+        }
+        input:focus, select:focus {
+            border-color: rgba(56, 103, 214, 0.62);
+            box-shadow: 0 0 0 3px rgba(56, 103, 214, 0.12);
+        }
+        .shell {
+            width: min(1180px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 24px 0 34px;
+        }
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+        .mark {
+            width: 44px;
+            height: 44px;
+            display: grid;
+            place-items: center;
+            border-radius: var(--radius);
+            color: #ffffff;
+            background: linear-gradient(135deg, var(--blue), var(--teal));
+            font-weight: 900;
+        }
+        .brand strong { display: block; font-size: 17px; }
+        .brand span { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; }
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+        .btn {
+            min-height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0 14px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            color: #334155;
+            background: #ffffff;
+            font-weight: 850;
+            text-decoration: none;
+            transition: transform 0.16s, box-shadow 0.16s, border-color 0.16s;
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
+            border-color: #cbd5e1;
+        }
+        .btn.primary {
+            color: #ffffff;
+            border-color: var(--blue);
+            background: var(--blue);
+        }
+        .btn.small {
+            min-height: 32px;
+            padding: 0 10px;
+            font-size: 12px;
+        }
+        .hero {
+            min-height: 210px;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 340px;
+            gap: 18px;
+            align-items: stretch;
+            margin-bottom: 18px;
+        }
+        .hero-main, .status-card, .panel {
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: rgba(255, 255, 255, 0.88);
+            box-shadow: var(--shadow-sm);
+            backdrop-filter: blur(14px);
+        }
+        .hero-main {
+            padding: clamp(22px, 4vw, 34px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        h1 {
+            max-width: 720px;
+            font-size: clamp(30px, 5vw, 48px);
+            line-height: 1.08;
+            letter-spacing: 0;
+        }
+        .hero-main p {
+            max-width: 700px;
+            margin-top: 14px;
+            color: var(--muted);
+            line-height: 1.75;
+            font-size: 15px;
+        }
+        .status-card {
+            padding: 18px;
+            display: grid;
+            align-content: center;
+            gap: 12px;
+        }
+        .status-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: var(--surface-soft);
+        }
+        .status-row span { color: var(--muted); font-size: 13px; }
+        .status-row strong { font-size: 15px; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+            align-items: start;
+        }
+        .panel {
+            overflow: hidden;
+        }
+        .panel-head {
+            min-height: 62px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 16px;
+            border-bottom: 1px solid var(--line);
+            background: #ffffff;
+        }
+        .panel-head h2 { font-size: 17px; }
+        .panel-head p {
+            margin-top: 4px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+        .icon {
+            width: 36px;
+            height: 36px;
+            display: grid;
+            place-items: center;
+            border-radius: var(--radius);
+            color: var(--blue);
+            background: var(--blue-soft);
+            font-weight: 900;
+        }
+        .panel-body {
+            padding: 16px;
+        }
+        .form {
+            display: grid;
+            gap: 14px;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+        label {
+            display: block;
+            margin-bottom: 7px;
+            color: #334155;
+            font-size: 12px;
+            font-weight: 850;
+        }
+        .hint {
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.6;
+        }
+        .history {
+            display: grid;
+            gap: 10px;
+        }
+        .history-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: #ffffff;
+        }
+        .history-item strong {
+            display: block;
+            font-size: 13px;
+        }
+        .history-item span {
+            display: block;
+            margin-top: 3px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+        .empty {
+            padding: 18px;
+            border: 1px dashed #cbd5e1;
+            border-radius: var(--radius);
+            color: var(--muted);
+            background: var(--surface-soft);
+            text-align: center;
+            font-size: 13px;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            min-height: 24px;
+            padding: 0 8px;
+            border-radius: 999px;
+            color: var(--green);
+            background: var(--green-soft);
+            font-size: 12px;
+            font-weight: 850;
+        }
+        .toast {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 20;
+            max-width: min(420px, calc(100vw - 40px));
+            padding: 13px 14px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            color: #334155;
+            background: #ffffff;
+            box-shadow: var(--shadow);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .toast.ok { color: var(--green); border-color: #bbf7d0; }
+        .toast.bad { color: var(--rose); border-color: #fecdd3; }
+        .hidden { display: none !important; }
+        @media (max-width: 900px) {
+            .hero, .grid { grid-template-columns: 1fr; }
+            .topbar { align-items: stretch; flex-direction: column; }
+            .top-actions { justify-content: flex-start; }
+        }
+        @media (max-width: 560px) {
+            .shell { width: min(100% - 24px, 1180px); padding-top: 14px; }
+            .form-row { grid-template-columns: 1fr; }
+            .btn { width: 100%; }
+            .history-item { align-items: stretch; flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <main class="shell">
+        <header class="topbar">
+            <div class="brand">
+                <div class="mark">↓</div>
+                <div>
+                    <strong>下载中心</strong>
+                    <span>多角色聊天机器人</span>
+                </div>
+            </div>
+            <div class="top-actions">
+                <a class="btn" href="/">聊天页面</a>
+                <a class="btn" href="/admin">管理员控制台</a>
+                <button id="clearHistoryBtn" class="btn" type="button">清空记录</button>
+            </div>
+        </header>
+
+        <section class="hero">
+            <div class="hero-main">
+                <h1>导出对话记录和知识库资料</h1>
+                <p>输入对话 ID 或知识库/角色 ID，选择格式后即可下载。对话支持 JSON、CSV、TXT，知识库支持 JSON、TXT。</p>
+            </div>
+            <aside class="status-card">
+                <div class="status-row">
+                    <span>当前账号</span>
+                    <strong id="userLabel">未登录</strong>
+                </div>
+                <div class="status-row">
+                    <span>接口状态</span>
+                    <strong id="apiLabel">待检测</strong>
+                </div>
+                <div class="status-row">
+                    <span>下载记录</span>
+                    <strong id="historyCount">0</strong>
+                </div>
+            </aside>
+        </section>
+
+        <section class="grid">
+            <article class="panel">
+                <div class="panel-head">
+                    <div>
+                        <h2>对话导出</h2>
+                        <p>导出某个对话的完整消息记录</p>
+                    </div>
+                    <div class="icon">话</div>
+                </div>
+                <div class="panel-body">
+                    <form id="conversationForm" class="form">
+                        <div>
+                            <label for="conversationId">对话 ID</label>
+                            <input id="conversationId" inputmode="numeric" placeholder="例如：51" required>
+                            <div class="hint">可以在聊天页或管理员控制台的对话列表中找到 ID。</div>
+                        </div>
+                        <div class="form-row">
+                            <div>
+                                <label for="conversationFormat">文件格式</label>
+                                <select id="conversationFormat">
+                                    <option value="json">JSON</option>
+                                    <option value="csv">CSV</option>
+                                    <option value="txt">TXT</option>
+                                </select>
+                            </div>
+                            <div style="display:flex;align-items:end;">
+                                <button class="btn primary" type="submit">下载对话</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </article>
+
+            <article class="panel">
+                <div class="panel-head">
+                    <div>
+                        <h2>知识库导出</h2>
+                        <p>按知识库/角色 ID 导出知识片段</p>
+                    </div>
+                    <div class="icon">库</div>
+                </div>
+                <div class="panel-body">
+                    <form id="knowledgeForm" class="form">
+                        <div>
+                            <label for="knowledgeId">知识库/角色 ID</label>
+                            <input id="knowledgeId" inputmode="numeric" placeholder="例如：1" required>
+                            <div class="hint">当前后端按知识片段绑定的角色 ID 过滤导出。</div>
+                        </div>
+                        <div class="form-row">
+                            <div>
+                                <label for="knowledgeFormat">文件格式</label>
+                                <select id="knowledgeFormat">
+                                    <option value="json">JSON</option>
+                                    <option value="txt">TXT</option>
+                                </select>
+                            </div>
+                            <div style="display:flex;align-items:end;">
+                                <button class="btn primary" type="submit">下载知识库</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </article>
+
+            <article class="panel" style="grid-column:1 / -1;">
+                <div class="panel-head">
+                    <div>
+                        <h2>最近下载</h2>
+                        <p>仅保存在当前浏览器中</p>
+                    </div>
+                    <span class="badge">本地记录</span>
+                </div>
+                <div class="panel-body">
+                    <div id="historyList" class="history"></div>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <div id="toast" class="toast hidden"></div>
+
+    <script>
+        const historyKey = "chatbot_download_history";
+        const el = (id) => document.getElementById(id);
+
+        function getUser() {
+            try {
+                return JSON.parse(localStorage.getItem("chatbot_user") || "null");
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function getHistory() {
+            try {
+                return JSON.parse(localStorage.getItem(historyKey) || "[]");
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function saveHistory(items) {
+            localStorage.setItem(historyKey, JSON.stringify(items.slice(0, 12)));
+            renderHistory();
+        }
+
+        function showToast(message, type = "") {
+            const toast = el("toast");
+            toast.textContent = message;
+            toast.className = `toast ${type}`.trim();
+            clearTimeout(showToast.timer);
+            showToast.timer = setTimeout(() => toast.classList.add("hidden"), 3200);
+        }
+
+        function renderHistory() {
+            const items = getHistory();
+            el("historyCount").textContent = items.length;
+            el("historyList").innerHTML = items.length ? items.map((item) => `
+                <div class="history-item">
+                    <div>
+                        <strong>${item.name}</strong>
+                        <span>${item.time} · ${item.url}</span>
+                    </div>
+                    <a class="btn small" href="${item.url}">重新下载</a>
+                </div>
+            `).join("") : `<div class="empty">暂无下载记录</div>`;
+        }
+
+        function addHistory(name, url) {
+            saveHistory([{ name, url, time: new Date().toLocaleString("zh-CN", { hour12: false }) }, ...getHistory()]);
+        }
+
+        async function checkApi() {
+            try {
+                const response = await fetch("/health");
+                el("apiLabel").textContent = response.ok ? "正常" : "异常";
+            } catch (error) {
+                el("apiLabel").textContent = "不可用";
+            }
+        }
+
+        function openDownload(url, name) {
+            addHistory(name, url);
+            window.location.href = url;
+            showToast("已开始下载", "ok");
+        }
+
+        function bindEvents() {
+            el("conversationForm").addEventListener("submit", (event) => {
+                event.preventDefault();
+                const id = el("conversationId").value.trim();
+                const format = el("conversationFormat").value;
+                if (!/^\d+$/.test(id)) {
+                    showToast("请输入有效的对话 ID", "bad");
+                    return;
+                }
+                openDownload(`/api/download/conversation/${id}?format=${format}`, `对话 ${id} · ${format.toUpperCase()}`);
+            });
+
+            el("knowledgeForm").addEventListener("submit", (event) => {
+                event.preventDefault();
+                const id = el("knowledgeId").value.trim();
+                const format = el("knowledgeFormat").value;
+                if (!/^\d+$/.test(id)) {
+                    showToast("请输入有效的知识库/角色 ID", "bad");
+                    return;
+                }
+                openDownload(`/api/download/knowledge/${id}?format=${format}`, `知识库 ${id} · ${format.toUpperCase()}`);
+            });
+
+            el("clearHistoryBtn").addEventListener("click", () => {
+                saveHistory([]);
+                showToast("下载记录已清空", "ok");
+            });
+        }
+
+        function boot() {
+            const user = getUser();
+            el("userLabel").textContent = user?.username || "未登录";
+            bindEvents();
+            renderHistory();
+            checkApi();
+        }
+
+        boot();
+    </script>
+</body>
+</html>

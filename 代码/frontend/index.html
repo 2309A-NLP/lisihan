@@ -1,0 +1,1621 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多角色聊天机器人</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg: #f6f7fb;
+            --surface: #ffffff;
+            --surface-2: #f8fafc;
+            --line: #e5e7eb;
+            --line-strong: #d7dde8;
+            --text: #172033;
+            --muted: #697386;
+            --faint: #98a2b3;
+            --blue: #4f8cff;
+            --blue-soft: #eaf2ff;
+            --sky-text: #0787b8;
+            --mint: #35c4a1;
+            --pink: #ff7ca8;
+            --amber: #f4b740;
+            --danger: #e55353;
+            --ok: #159464;
+            --shadow: 0 18px 50px rgba(30, 41, 59, 0.08);
+            --shadow-sm: 0 8px 22px rgba(30, 41, 59, 0.06);
+            --radius: 18px;
+            --radius-sm: 12px;
+        }
+        html, body { min-height: 100%; }
+        body {
+            font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+            color: var(--text);
+            background:
+                linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(239,246,255,0.94) 46%, rgba(236,253,245,0.92) 100%),
+                radial-gradient(circle at 16% 20%, rgba(79,140,255,0.20), transparent 30%),
+                radial-gradient(circle at 84% 74%, rgba(53,196,161,0.18), transparent 32%),
+                var(--bg);
+        }
+        body.app-open { overflow: hidden; }
+        button, input, textarea { font: inherit; }
+        button { cursor: pointer; }
+        button:disabled { cursor: not-allowed; opacity: 0.58; }
+        .hidden { display: none !important; }
+
+        .auth-page {
+            min-height: 100vh;
+            display: block;
+            padding: 0;
+        }
+        .auth-shell {
+            width: 100%;
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(540px, 1fr);
+            overflow: hidden;
+            background: transparent;
+        }
+        .auth-visual {
+            position: relative;
+            min-height: 100vh;
+            padding: clamp(36px, 6vw, 82px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            background: transparent;
+            border-right: 0;
+            color: var(--sky-text);
+            text-align: center;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            min-width: 0;
+        }
+        .brand-mark, .role-icon, .msg-avatar {
+            display: grid;
+            place-items: center;
+            color: #ffffff;
+            flex: 0 0 auto;
+            background: linear-gradient(135deg, var(--blue), var(--mint));
+        }
+        .brand-mark { width: 52px; height: 52px; border-radius: 8px; font-weight: 900; }
+        .brand strong, .app-brand strong { display: block; font-size: 19px; letter-spacing: 0.01em; }
+        .brand span, .app-brand span { display: block; color: var(--muted); font-size: 13px; margin-top: 4px; }
+        .auth-visual .brand strong,
+        .auth-visual .brand span,
+        .auth-copy h1,
+        .auth-copy p,
+        .mini-row {
+            color: var(--sky-text);
+        }
+        .auth-copy h1 {
+            margin-top: 70px;
+            max-width: 760px;
+            font-size: clamp(52px, 7vw, 96px);
+            line-height: 1.05;
+            letter-spacing: 0;
+            font-family: "STXingkai", "华文行楷", "KaiTi", "楷体", cursive;
+            font-weight: 500;
+        }
+        .auth-copy p {
+            max-width: 650px;
+            margin-top: 28px;
+            color: var(--muted);
+            line-height: 1.85;
+            font-size: clamp(16px, 1.4vw, 20px);
+        }
+        .mini-board {
+            width: min(760px, 100%);
+            margin-top: clamp(42px, 6vh, 82px);
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+        .mini-row {
+            display: grid;
+            gap: 14px;
+            align-content: space-between;
+            min-height: 150px;
+            padding: 20px;
+            border: 1px solid rgba(215, 221, 232, 0.62);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.58);
+            box-shadow: 0 16px 40px rgba(30, 41, 59, 0.05);
+            color: #344054;
+            backdrop-filter: blur(14px);
+        }
+        .mini-icon {
+            width: 42px;
+            height: 42px;
+            display: grid;
+            place-items: center;
+            border-radius: 8px;
+            font-weight: 900;
+            color: var(--blue);
+            background: var(--blue-soft);
+        }
+        .auth-panel {
+            min-height: 100vh;
+            padding: clamp(42px, 8vw, 112px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(90deg, rgba(255,255,255,0.10), rgba(255,255,255,0.56));
+            backdrop-filter: blur(10px);
+        }
+        .auth-tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            padding: 6px;
+            width: min(300px, 100%);
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: var(--surface-2);
+            margin-bottom: 44px;
+        }
+        .auth-tab {
+            height: 46px;
+            border: 0;
+            border-radius: 999px;
+            color: var(--muted);
+            background: transparent;
+            font-weight: 800;
+        }
+        .auth-tab.active {
+            color: var(--text);
+            background: #ffffff;
+            box-shadow: var(--shadow-sm);
+        }
+        .form-title {
+            color: var(--sky-text);
+            font-family: "STXingkai", "华文行楷", "KaiTi", "楷体", cursive;
+            font-size: clamp(38px, 4.5vw, 58px);
+            font-weight: 500;
+            letter-spacing: 0;
+            text-align: center;
+        }
+        .form-subtitle { max-width: 520px; margin-top: 14px; margin-bottom: 38px; color: var(--muted); line-height: 1.75; font-size: 17px; text-align: center; }
+        .form-grid { width: min(540px, 100%); display: grid; gap: 21px; }
+        .field label, .plain-field label {
+            display: block;
+            margin-bottom: 8px;
+            color: #344054;
+            font-size: 13px;
+            font-weight: 800;
+        }
+        .input-box, .plain-field { min-width: 0; }
+        .input-box { position: relative; }
+        .input-symbol {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--faint);
+            font-size: 14px;
+            font-weight: 900;
+        }
+        .input-box input, .plain-field input, .plain-field textarea, textarea {
+            width: 100%;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: #fbfcff;
+            color: var(--text);
+            outline: none;
+            transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
+        }
+        .input-box input {
+            height: 60px;
+            padding: 0 16px 0 46px;
+            font-size: 16px;
+        }
+        .plain-field input { height: 44px; padding: 0 13px; }
+        .plain-field textarea, textarea {
+            min-height: 96px;
+            max-height: 230px;
+            padding: 12px 13px;
+            line-height: 1.65;
+            resize: none;
+        }
+        .input-box input:focus, .plain-field input:focus, .plain-field textarea:focus, textarea:focus {
+            border-color: rgba(79, 140, 255, 0.68);
+            box-shadow: 0 0 0 4px rgba(79, 140, 255, 0.14);
+            background: #ffffff;
+        }
+        .auth-message, .status-text {
+            min-height: 20px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+        .auth-message {
+            display: none;
+            margin-bottom: 14px;
+            padding: 11px 13px;
+            border-radius: 8px;
+        }
+        .auth-message.show { display: block; }
+        .auth-message.error, .status-text.error { color: #b42318; }
+        .auth-message.error { background: #fff1f0; border: 1px solid #ffd6d1; }
+        .auth-message.ok, .status-text.ok { color: var(--ok); }
+        .auth-message.ok { background: #ecfdf3; border: 1px solid #c7f0d9; }
+        .primary-btn, .secondary-btn, .icon-btn, .ghost-btn {
+            border: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            white-space: nowrap;
+            transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s, background 0.18s, color 0.18s;
+        }
+        .primary-btn {
+            min-height: 60px;
+            padding: 0 22px;
+            font-size: 16px;
+            border-radius: 8px;
+            color: #ffffff;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--blue), var(--mint));
+            box-shadow: 0 12px 24px rgba(79, 140, 255, 0.22);
+        }
+        .primary-btn:hover { transform: translateY(-1px); box-shadow: 0 16px 28px rgba(79, 140, 255, 0.26); }
+        .secondary-btn, .ghost-btn {
+            min-height: 40px;
+            padding: 0 13px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            color: #344054;
+            background: #ffffff;
+            font-weight: 850;
+        }
+        .secondary-btn:hover, .ghost-btn:hover, .icon-btn:hover {
+            border-color: #bcd2ff;
+            color: #2563eb;
+            background: #f7fbff;
+        }
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            color: var(--muted);
+            background: #ffffff;
+            font-weight: 900;
+        }
+
+        .app {
+            height: 100vh;
+            display: grid;
+            grid-template-columns: 316px minmax(0, 1fr);
+            overflow: hidden;
+        }
+        .role-sidebar {
+            min-height: 0;
+            display: grid;
+            grid-template-rows: auto minmax(0, 1fr);
+            border-right: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(18px);
+        }
+        .sidebar-head {
+            padding: 22px;
+            border-bottom: 1px solid var(--line);
+        }
+        .app-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+        .app-brand .brand-mark { width: 40px; height: 40px; border-radius: 8px; }
+        .user-row {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 40px;
+            gap: 10px;
+            align-items: center;
+        }
+        .user-pill {
+            min-width: 0;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 0 12px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--surface-2);
+        }
+        .user-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: var(--mint);
+            box-shadow: 0 0 0 4px rgba(53, 196, 161, 0.15);
+        }
+        .user-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #344054; font-size: 13px; font-weight: 800; }
+        .sidebar-actions { display: grid; gap: 10px; margin-top: 14px; }
+        .roles {
+            min-height: 0;
+            overflow: auto;
+            padding: 16px;
+            display: grid;
+            gap: 9px;
+            align-content: start;
+        }
+        .section-label {
+            margin: 6px 7px;
+            color: var(--faint);
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 0.04em;
+        }
+        .role-item {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 44px minmax(0, 1fr);
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            background: transparent;
+            text-align: left;
+            transition: background 0.18s, border-color 0.18s, transform 0.18s;
+        }
+        .role-item:hover { background: rgba(255, 255, 255, 0.82); border-color: var(--line); }
+        .role-item.active {
+            background: #ffffff;
+            border-color: #bfd2ff;
+            box-shadow: var(--shadow-sm);
+        }
+        .role-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 900;
+        }
+        .role-meta { min-width: 0; }
+        .role-meta strong { display: block; overflow: hidden; color: var(--text); font-size: 14px; text-overflow: ellipsis; white-space: nowrap; }
+        .role-meta span { display: block; overflow: hidden; margin-top: 4px; color: var(--muted); font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+
+        .workspace {
+            min-width: 0;
+            min-height: 0;
+            display: grid;
+            grid-template-rows: auto minmax(0, 1fr);
+        }
+        .topbar {
+            height: 88px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            padding: 18px 30px;
+            border-bottom: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.70);
+            backdrop-filter: blur(18px);
+        }
+        .active-role {
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .active-role h2, .active-role p {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .active-role h2 { font-size: 22px; letter-spacing: 0; }
+        .active-role p { margin-top: 3px; color: var(--muted); font-size: 13px; }
+        .top-actions { display: flex; align-items: center; gap: 10px; }
+        .content {
+            min-height: 0;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 326px;
+            gap: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .chat-panel, .history-panel {
+            min-height: 0;
+            overflow: hidden;
+            border: 0;
+            border-radius: 0;
+            background: rgba(255, 255, 255, 0.90);
+            box-shadow: none;
+        }
+        .chat-panel {
+            display: grid;
+            grid-template-rows: auto minmax(0, 1fr) auto;
+        }
+        .chat-session-bar {
+            min-height: 78px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 18px 26px;
+            border-bottom: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.76);
+        }
+        .session-title {
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+        .session-mark {
+            width: 35px;
+            height: 35px;
+            display: grid;
+            place-items: center;
+            border-radius: 8px;
+            color: var(--blue);
+            background: var(--blue-soft);
+            font-weight: 900;
+        }
+        .session-title span {
+            display: block;
+            color: var(--faint);
+            font-size: 12px;
+            font-weight: 900;
+        }
+        .session-title strong {
+            display: block;
+            max-width: 48vw;
+            overflow: hidden;
+            margin-top: 2px;
+            color: var(--text);
+            font-size: 15px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .session-state {
+            flex: 0 0 auto;
+            padding: 7px 11px;
+            border: 1px solid #bdebd8;
+            border-radius: 999px;
+            color: var(--ok);
+            background: #effcf6;
+            font-size: 12px;
+            font-weight: 900;
+        }
+        .session-state.busy { border-color: #c8dcff; color: #2563eb; background: #eef5ff; }
+        .session-state.error { border-color: #ffd0cc; color: #b42318; background: #fff1f0; }
+        .messages {
+            min-height: 0;
+            overflow: auto;
+            padding: 32px clamp(24px, 4vw, 56px);
+            background:
+                linear-gradient(rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.72)),
+                repeating-linear-gradient(0deg, transparent 0, transparent 31px, rgba(229, 231, 235, 0.32) 32px),
+                repeating-linear-gradient(90deg, transparent 0, transparent 31px, rgba(229, 231, 235, 0.32) 32px);
+        }
+        .empty-state {
+            height: 100%;
+            display: grid;
+            place-items: center;
+            color: var(--muted);
+            text-align: center;
+        }
+        .empty-card {
+            width: min(420px, 100%);
+            padding: 30px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.86);
+            box-shadow: var(--shadow-sm);
+        }
+        .empty-card .empty-icon {
+            width: 52px;
+            height: 52px;
+            display: grid;
+            place-items: center;
+            margin: 0 auto 13px;
+            border-radius: 8px;
+            color: #ffffff;
+            background: linear-gradient(135deg, var(--blue), var(--pink));
+            font-weight: 900;
+        }
+        .message {
+            display: flex;
+            align-items: flex-start;
+            gap: 11px;
+            margin-bottom: 18px;
+        }
+        .message.user { flex-direction: row-reverse; }
+        .msg-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 900;
+        }
+        .msg-content { max-width: min(720px, 74%); }
+        .bubble {
+            padding: 12px 14px;
+            border-radius: 8px;
+            line-height: 1.75;
+            white-space: pre-wrap;
+            word-break: break-word;
+            box-shadow: 0 8px 20px rgba(30, 41, 59, 0.06);
+        }
+        .message.user .bubble {
+            color: #14213d;
+            background: #e8f1ff;
+            border-top-right-radius: 6px;
+        }
+        .message.role .bubble {
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-top-left-radius: 6px;
+        }
+        .message.system { justify-content: center; }
+        .message.system .msg-avatar { display: none; }
+        .message.system .msg-content { max-width: min(620px, 90%); }
+        .message.system .bubble {
+            color: var(--muted);
+            background: rgba(248, 250, 252, 0.92);
+            border: 1px solid var(--line);
+            box-shadow: none;
+        }
+        .time { margin-top: 6px; color: var(--faint); font-size: 11px; }
+        .message.user .time { text-align: right; }
+        .composer {
+            padding: 20px 26px 24px;
+            border-top: 1px solid var(--line);
+            background: #ffffff;
+        }
+        .composer-head {
+            min-height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 9px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+        .composer-head strong { color: #344054; }
+        .composer-box {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 46px;
+            align-items: end;
+            gap: 10px;
+        }
+        #messageInput {
+            min-height: 54px;
+            max-height: 150px;
+            border-radius: 8px;
+            background: var(--surface-2);
+        }
+        .send-btn {
+            width: 54px;
+            height: 54px;
+            border: 0;
+            border-radius: 8px;
+            color: #ffffff;
+            background: linear-gradient(135deg, var(--blue), var(--mint));
+            font-size: 18px;
+            font-weight: 900;
+            box-shadow: 0 12px 22px rgba(79, 140, 255, 0.22);
+        }
+        .history-panel {
+            display: grid;
+            grid-template-rows: auto minmax(0, 1fr);
+        }
+        .history-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 24px 22px;
+            border-bottom: 1px solid var(--line);
+        }
+        .history-head h3 { font-size: 18px; letter-spacing: 0; }
+        .history-list {
+            min-height: 0;
+            overflow: auto;
+            display: grid;
+            gap: 9px;
+            align-content: start;
+            padding: 14px;
+        }
+        .history-item {
+            border: 1px solid transparent;
+            border-radius: 8px;
+            padding: 12px;
+            background: transparent;
+            text-align: left;
+            transition: background 0.18s, border-color 0.18s, box-shadow 0.18s;
+        }
+        .history-item:hover { background: var(--surface-2); border-color: var(--line); }
+        .history-item.active {
+            background: #eef5ff;
+            border-color: #bfd2ff;
+        }
+        .history-title {
+            overflow: hidden;
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 900;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .history-question {
+            display: -webkit-box;
+            overflow: hidden;
+            margin-top: 7px;
+            color: #475467;
+            font-size: 13px;
+            line-height: 1.5;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        .history-meta { margin-top: 7px; color: var(--faint); font-size: 12px; }
+
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 20;
+            display: grid;
+            place-items: center;
+            padding: 22px;
+            background: rgba(15, 23, 42, 0.40);
+            backdrop-filter: blur(8px);
+        }
+        .modal {
+            width: min(760px, 100%);
+            max-height: calc(100vh - 44px);
+            display: grid;
+            grid-template-rows: auto minmax(0, 1fr);
+            overflow: hidden;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: #ffffff;
+            box-shadow: 0 28px 90px rgba(15, 23, 42, 0.28);
+        }
+        .modal-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--line);
+        }
+        .modal-head h3 { font-size: 18px; }
+        .modal-head p { margin-top: 4px; color: var(--muted); font-size: 13px; }
+        .modal-body {
+            overflow: auto;
+            display: grid;
+            gap: 16px;
+            padding: 20px;
+        }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .file-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-height: 48px;
+            padding: 10px 12px;
+            border: 1px dashed var(--line-strong);
+            border-radius: 8px;
+            background: var(--surface-2);
+            color: var(--muted);
+        }
+        .file-input input { width: 100%; min-width: 0; }
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        ::-webkit-scrollbar { width: 9px; height: 9px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d8dee9; border-radius: 999px; border: 2px solid transparent; background-clip: content-box; }
+        ::-webkit-scrollbar-thumb:hover { background: #c5cfdd; border: 2px solid transparent; background-clip: content-box; }
+
+        @media (max-width: 1120px) {
+            .app { grid-template-columns: 252px minmax(0, 1fr); }
+            .content { grid-template-columns: 1fr; grid-template-rows: minmax(0, 1fr) 250px; }
+            .history-panel { min-height: 0; }
+        }
+        @media (max-width: 800px) {
+            body.app-open { overflow: auto; }
+            .auth-page { padding: 0; }
+            .auth-shell { min-height: 100vh; grid-template-columns: 1fr; }
+            .auth-visual { display: none; }
+            .auth-panel { padding: 34px 24px; }
+            .app {
+                height: auto;
+                min-height: 100vh;
+                grid-template-columns: 1fr;
+                grid-template-rows: auto minmax(0, 1fr);
+                overflow: visible;
+            }
+            .role-sidebar {
+                position: sticky;
+                top: 0;
+                z-index: 5;
+                grid-template-rows: auto auto;
+                border-right: 0;
+                border-bottom: 1px solid var(--line);
+            }
+            .sidebar-head { padding: 14px; }
+            .roles {
+                grid-auto-flow: column;
+                grid-auto-columns: minmax(178px, 1fr);
+                overflow-x: auto;
+                padding: 10px 14px 14px;
+            }
+            .section-label { display: none; }
+            .workspace { min-height: 0; }
+            .topbar { height: auto; align-items: flex-start; padding: 14px; }
+            .top-actions { flex-wrap: wrap; justify-content: flex-end; }
+            .content {
+                height: calc(100vh - 260px);
+                min-height: 620px;
+                padding: 10px;
+                gap: 10px;
+                grid-template-rows: minmax(0, 1fr) 230px;
+            }
+            .chat-panel, .history-panel { border-radius: 8px; }
+            .messages { padding: 16px 12px; }
+            .msg-content { max-width: 82%; }
+            .session-title strong { max-width: 54vw; }
+        }
+        @media (max-width: 560px) {
+            .auth-tabs { width: 100%; }
+            .topbar { display: grid; }
+            .top-actions { justify-content: stretch; }
+            .top-actions .secondary-btn, .top-actions .primary-btn { flex: 1 1 auto; }
+            .chat-session-bar { align-items: flex-start; }
+            .session-state { display: none; }
+            .form-row { grid-template-columns: 1fr; }
+            .msg-content { max-width: 88%; }
+            .bubble { padding: 11px 12px; }
+            .modal-backdrop { padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <section class="auth-page" id="authPage">
+        <div class="auth-shell">
+            <div class="auth-visual">
+                <div class="brand">
+                    <div class="brand-mark">AI</div>
+                    <div>
+                        <strong>RoleChat</strong>
+                        <span>多角色智能对话工作台</span>
+                    </div>
+                </div>
+
+            <div class="auth-copy">
+                    <h1>让每个角色，都像专属搭子一样好用。</h1>
+                    <p>登录后继续你的历史会话，切换医生、律师、教师、理财师等角色，也可以创建自己的专属角色和资料库。</p>
+                    <div class="mini-board">
+                        <div class="mini-row"><span class="mini-icon">医</span><span>今天的报告该怎么看？</span></div>
+                        <div class="mini-row"><span class="mini-icon">法</span><span>这份合同哪里需要注意？</span></div>
+                        <div class="mini-row"><span class="mini-icon">英</span><span>帮我把表达说得更自然。</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="auth-panel">
+                <div class="auth-tabs" role="tablist" aria-label="登录注册切换">
+                    <button class="auth-tab active" id="loginTab" type="button" onclick="setAuthMode('login')">登录</button>
+                    <button class="auth-tab" id="registerTab" type="button" onclick="setAuthMode('register')">注册</button>
+                </div>
+                <h2 class="form-title" id="authTitle">欢迎回来</h2>
+                <p class="form-subtitle" id="authSubtitle">输入账号密码，回到你的角色对话工作台。</p>
+                <div class="auth-message" id="authMessage"></div>
+                <form class="form-grid" onsubmit="submitAuth(event)">
+                    <div class="field">
+                        <label for="username">用户名</label>
+                        <div class="input-box"><span class="input-symbol">U</span><input id="username" autocomplete="username" required placeholder="请输入用户名"></div>
+                    </div>
+                    <div class="field hidden" id="emailField">
+                        <label for="email">邮箱</label>
+                        <div class="input-box"><span class="input-symbol">@</span><input id="email" type="email" autocomplete="email" placeholder="name@example.com"></div>
+                    </div>
+                    <div class="field">
+                        <label for="password">密码</label>
+                        <div class="input-box"><span class="input-symbol">*</span><input id="password" type="password" autocomplete="current-password" required placeholder="请输入密码"></div>
+                    </div>
+                    <button class="primary-btn" id="authSubmit" type="submit">登录</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <main class="app hidden" id="app">
+        <aside class="role-sidebar">
+            <div class="sidebar-head">
+                <div class="app-brand">
+                    <div class="brand-mark">AI</div>
+                    <div><strong>RoleChat</strong><span>选择角色开始对话</span></div>
+                </div>
+                <div class="user-row">
+                    <div class="user-pill">
+                        <span class="user-dot"></span>
+                        <div class="user-name" id="userName">未登录</div>
+                    </div>
+                    <button class="icon-btn" type="button" title="退出登录" onclick="logout()">↗</button>
+                </div>
+                <div class="sidebar-actions">
+                    <button class="secondary-btn" type="button" onclick="openRoleModal()"><span>＋</span>自定义角色</button>
+                </div>
+            </div>
+            <div class="roles" id="rolesList"></div>
+        </aside>
+
+        <section class="workspace">
+            <header class="topbar">
+                <div class="active-role">
+                    <div class="role-icon" id="activeRoleIcon"></div>
+                    <div>
+                        <h2 id="activeRoleName">医生</h2>
+                        <p id="activeRoleDesc">医疗健康顾问</p>
+                    </div>
+                </div>
+                <div class="top-actions">
+                    <button class="secondary-btn" type="button" onclick="openKnowledgeModal()"><span>库</span>资料库</button>
+                    <button class="primary-btn" type="button" onclick="createNewConversation()"><span>＋</span>新建对话</button>
+                </div>
+            </header>
+
+            <div class="content">
+                <section class="chat-panel">
+                    <div class="chat-session-bar">
+                        <div class="session-title">
+                            <span class="session-mark">聊</span>
+                            <div>
+                                <span id="sessionLabel">当前会话</span>
+                                <strong id="sessionTitle">选择或新建会话</strong>
+                            </div>
+                        </div>
+                        <div class="session-state" id="sessionState">可继续追问</div>
+                    </div>
+                    <div class="messages" id="messages"></div>
+                    <div class="composer">
+                        <div class="composer-head">
+                            <strong id="composerHint">继续向当前会话提问</strong>
+                            <span id="messageCount"></span>
+                        </div>
+                        <div class="composer-box">
+                            <textarea id="messageInput" placeholder="输入你的问题..."></textarea>
+                            <button class="send-btn" id="sendBtn" type="button" title="发送" onclick="sendMessage()">↑</button>
+                        </div>
+                    </div>
+                </section>
+
+                <aside class="history-panel">
+                    <div class="history-head">
+                        <h3>历史会话</h3>
+                        <button class="icon-btn" type="button" title="刷新" onclick="loadConversations()">↻</button>
+                    </div>
+                    <div class="history-list" id="historyList"></div>
+                </aside>
+            </div>
+        </section>
+    </main>
+
+    <div class="modal-backdrop hidden" id="roleModal">
+        <form class="modal" onsubmit="submitRoleForm(event)">
+            <div class="modal-head">
+                <div>
+                    <h3>自定义角色</h3>
+                    <p>设置人设，并为它添加专属资料库。</p>
+                </div>
+                <button class="icon-btn" type="button" title="关闭" onclick="closeRoleModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="plain-field">
+                        <label for="customRoleName">角色名称</label>
+                        <input id="customRoleName" maxlength="50" required placeholder="例如：产品经理助手">
+                    </div>
+                    <div class="plain-field">
+                        <label for="customRoleDomain">领域</label>
+                        <input id="customRoleDomain" maxlength="80" placeholder="例如：产品规划、用户研究">
+                    </div>
+                </div>
+                <div class="plain-field">
+                    <label for="customRoleDesc">角色描述</label>
+                    <input id="customRoleDesc" maxlength="160" placeholder="显示在角色列表里的一句话">
+                </div>
+                <div class="plain-field">
+                    <label for="customRolePersonality">人设/性格</label>
+                    <textarea id="customRolePersonality" placeholder="写下角色的说话风格、边界、偏好和工作方式。"></textarea>
+                </div>
+                <div class="plain-field">
+                    <label for="customRolePrompt">提示词</label>
+                    <textarea id="customRolePrompt" placeholder="留空时会根据名称、领域和人设自动生成。"></textarea>
+                </div>
+                <div class="plain-field">
+                    <label for="customKnowledgeText">专属资料文本</label>
+                    <textarea id="customKnowledgeText" placeholder="可粘贴角色需要长期参考的资料、规则、背景、FAQ。"></textarea>
+                </div>
+                <div class="plain-field">
+                    <label for="customKnowledgeFile">资料文件</label>
+                    <div class="file-input">
+                        <span>上传</span>
+                        <input id="customKnowledgeFile" type="file" accept=".txt,.docx,.pdf">
+                    </div>
+                </div>
+                <div class="status-text" id="roleFormStatus"></div>
+                <div class="form-actions">
+                    <button class="secondary-btn" type="button" onclick="closeRoleModal()">取消</button>
+                    <button class="primary-btn" id="roleFormSubmit" type="submit">创建角色</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal-backdrop hidden" id="knowledgeModal">
+        <form class="modal" onsubmit="submitKnowledgeForm(event)">
+            <div class="modal-head">
+                <div>
+                    <h3>添加资料库</h3>
+                    <p id="knowledgeModalSubtitle">给当前角色补充可检索的专属资料。</p>
+                </div>
+                <button class="icon-btn" type="button" title="关闭" onclick="closeKnowledgeModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="plain-field">
+                    <label for="knowledgeText">资料文本</label>
+                    <textarea id="knowledgeText" placeholder="粘贴资料、背景设定、产品文档、回答规则或 FAQ。"></textarea>
+                </div>
+                <div class="plain-field">
+                    <label for="knowledgeFile">资料文件</label>
+                    <div class="file-input">
+                        <span>上传</span>
+                        <input id="knowledgeFile" type="file" accept=".txt,.docx,.pdf">
+                    </div>
+                </div>
+                <div class="status-text" id="knowledgeFormStatus"></div>
+                <div class="form-actions">
+                    <button class="secondary-btn" type="button" onclick="closeKnowledgeModal()">取消</button>
+                    <button class="primary-btn" id="knowledgeFormSubmit" type="submit">保存资料</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const API_BASE_URL = `${window.location.origin}/api`;
+        let roles = {
+            1: { name: '医生', desc: '医疗健康顾问', symbol: '医', color: 'linear-gradient(135deg,#4f8cff,#6aa9ff)' },
+            2: { name: '律师', desc: '法律顾问', symbol: '法', color: 'linear-gradient(135deg,#7c6cff,#b08cff)' },
+            3: { name: '心理医生', desc: '心理咨询师', symbol: '心', color: 'linear-gradient(135deg,#35c4a1,#74d8bd)' },
+            4: { name: '教师', desc: '教育学习顾问', symbol: '教', color: 'linear-gradient(135deg,#f4b740,#ffd36a)' },
+            5: { name: '科学家', desc: '科学知识顾问', symbol: '科', color: 'linear-gradient(135deg,#5d7cff,#8fa5ff)' },
+            6: { name: '股票分析师', desc: '市场分析顾问', symbol: '股', color: 'linear-gradient(135deg,#ff6b6b,#ff9a9a)' },
+            7: { name: '英语学习助手', desc: '英语学习陪练', symbol: '英', color: 'linear-gradient(135deg,#ff7ca8,#ffadc8)' },
+            8: { name: '虚拟朋友', desc: '日常陪伴交流', symbol: '友', color: 'linear-gradient(135deg,#ff9b54,#ffc078)' },
+            9: { name: '金融理财师', desc: '财富规划顾问', symbol: '财', color: 'linear-gradient(135deg,#20b8c5,#69d8dd)' }
+        };
+        const roleVisuals = { ...roles };
+        const fallbackRoleVisual = { symbol: 'AI', color: 'linear-gradient(135deg,#667085,#98a2b3)' };
+
+        let authMode = 'login';
+        let currentUser = null;
+        let currentRoleId = 1;
+        let currentConversationId = null;
+        let conversations = [];
+        let activeConversationMessageCount = 0;
+        let isSendingMessage = false;
+
+        function setAuthMode(mode) {
+            authMode = mode;
+            document.getElementById('loginTab').classList.toggle('active', mode === 'login');
+            document.getElementById('registerTab').classList.toggle('active', mode === 'register');
+            document.getElementById('emailField').classList.toggle('hidden', mode === 'login');
+            document.getElementById('email').required = mode === 'register';
+            document.getElementById('authTitle').textContent = mode === 'login' ? '欢迎回来' : '创建账号';
+            document.getElementById('authSubtitle').textContent = mode === 'login' ? '输入账号密码，回到你的角色对话工作台。' : '注册后即可保存你的角色、资料库和历史会话。';
+            document.getElementById('authSubmit').textContent = mode === 'login' ? '登录' : '注册并登录';
+            showAuthMessage('', '');
+        }
+
+        function showAuthMessage(type, text) {
+            const el = document.getElementById('authMessage');
+            el.className = 'auth-message';
+            el.textContent = text || '';
+            if (type && text) el.classList.add('show', type);
+        }
+
+        async function submitAuth(event) {
+            event.preventDefault();
+            const submit = document.getElementById('authSubmit');
+            submit.disabled = true;
+            showAuthMessage('', '');
+
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const email = document.getElementById('email').value.trim();
+
+            try {
+                if (authMode === 'register') {
+                    await api('/user/register', {
+                        method: 'POST',
+                        body: { username, password, email }
+                    });
+                    showAuthMessage('ok', '注册成功，正在登录...');
+                }
+                const result = await api('/user/login', {
+                    method: 'POST',
+                    body: { username, password }
+                });
+                currentUser = { id: result.user_id, username: result.username, token: result.access_token };
+                localStorage.setItem('chatbot_user', JSON.stringify(currentUser));
+                await showApp();
+            } catch (error) {
+                showAuthMessage('error', error.message || '操作失败');
+            } finally {
+                submit.disabled = false;
+            }
+        }
+
+        async function api(path, options = {}) {
+            const init = {
+                method: options.method || 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            };
+            if (currentUser?.token) init.headers.Authorization = `Bearer ${currentUser.token}`;
+            if (options.body) init.body = JSON.stringify(options.body);
+            const response = await fetch(`${API_BASE_URL}${path}`, init);
+            const text = await response.text();
+            let data = {};
+            try { data = text ? JSON.parse(text) : {}; } catch { data = { detail: text }; }
+            if (!response.ok) {
+                const detail = data.detail || '请求失败';
+                throw new Error(typeof detail === 'string' ? detail : JSON.stringify(detail));
+            }
+            return data;
+        }
+
+        async function apiForm(path, formData) {
+            const init = { method: 'POST', headers: {} };
+            if (currentUser?.token) init.headers.Authorization = `Bearer ${currentUser.token}`;
+            init.body = formData;
+            const response = await fetch(`${API_BASE_URL}${path}`, init);
+            const text = await response.text();
+            let data = {};
+            try { data = text ? JSON.parse(text) : {}; } catch { data = { detail: text }; }
+            if (!response.ok) {
+                const detail = data.detail || '请求失败';
+                throw new Error(typeof detail === 'string' ? detail : JSON.stringify(detail));
+            }
+            return data;
+        }
+
+        async function showApp() {
+            document.getElementById('authPage').classList.add('hidden');
+            document.getElementById('app').classList.remove('hidden');
+            document.body.classList.add('app-open');
+            document.getElementById('userName').textContent = currentUser.username;
+            await loadRoles();
+            renderRoles();
+            await selectRole(currentRoleId);
+        }
+
+        async function loadRoles() {
+            try {
+                const items = await api('/role/list');
+                const nextRoles = {};
+                for (const item of items) {
+                    const visual = roleVisuals[item.id] || fallbackRoleVisual;
+                    nextRoles[item.id] = {
+                        name: item.name,
+                        desc: item.description || '自定义角色',
+                        symbol: visual.symbol,
+                        color: visual.color,
+                        knowledgeBaseId: item.knowledge_base_id || item.id,
+                    };
+                }
+                if (Object.keys(nextRoles).length) {
+                    roles = nextRoles;
+                    if (!roles[currentRoleId]) currentRoleId = Number(Object.keys(roles)[0]);
+                }
+            } catch (error) {
+                console.warn('加载角色列表失败，使用本地默认角色', error);
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('chatbot_user');
+            currentUser = null;
+            currentConversationId = null;
+            document.body.classList.remove('app-open');
+            document.getElementById('app').classList.add('hidden');
+            document.getElementById('authPage').classList.remove('hidden');
+        }
+
+        function renderRoles() {
+            const list = document.getElementById('rolesList');
+            list.innerHTML = `<div class="section-label">角色列表</div>` + Object.entries(roles).map(([id, role]) => `
+                <button class="role-item ${Number(id) === currentRoleId ? 'active' : ''}" type="button" onclick="selectRole(${id})">
+                    <div class="role-icon" style="background:${role.color}">${escapeHTML(role.symbol || 'AI')}</div>
+                    <div class="role-meta"><strong>${escapeHTML(role.name)}</strong><span>${escapeHTML(role.desc)}</span></div>
+                </button>
+            `).join('');
+        }
+
+        function openRoleModal() {
+            document.getElementById('roleModal').classList.remove('hidden');
+            document.getElementById('roleFormStatus').textContent = '';
+            document.getElementById('roleFormStatus').className = 'status-text';
+            document.getElementById('customRoleName').focus();
+        }
+
+        function closeRoleModal() {
+            document.getElementById('roleModal').classList.add('hidden');
+        }
+
+        function openKnowledgeModal() {
+            const role = roles[currentRoleId];
+            if (!role) return;
+            document.getElementById('knowledgeModalSubtitle').textContent = `给「${role.name}」补充可检索的专属资料。`;
+            document.getElementById('knowledgeText').value = '';
+            document.getElementById('knowledgeFile').value = '';
+            document.getElementById('knowledgeFormStatus').textContent = '';
+            document.getElementById('knowledgeFormStatus').className = 'status-text';
+            document.getElementById('knowledgeModal').classList.remove('hidden');
+            document.getElementById('knowledgeText').focus();
+        }
+
+        function closeKnowledgeModal() {
+            document.getElementById('knowledgeModal').classList.add('hidden');
+        }
+
+        function setStatus(id, type, text) {
+            const el = document.getElementById(id);
+            el.className = `status-text ${type || ''}`.trim();
+            el.textContent = text || '';
+        }
+
+        function buildRolePrompt(name, domain, personality) {
+            const domainLine = domain ? `你的专业领域是：${domain}。` : '请围绕用户指定的专业领域工作。';
+            const personalityLine = personality ? `你的表达风格和人设要求是：${personality}` : '请保持清晰、专业、友好，主动追问关键背景。';
+            return `你是${name}。\n${domainLine}\n${personalityLine}\n回答时优先结合你的专属资料库；资料不足时，用通用知识给出谨慎、可执行的建议。`;
+        }
+
+        async function submitRoleForm(event) {
+            event.preventDefault();
+            const submit = document.getElementById('roleFormSubmit');
+            submit.disabled = true;
+            setStatus('roleFormStatus', '', '正在创建角色...');
+
+            const name = document.getElementById('customRoleName').value.trim();
+            const domain = document.getElementById('customRoleDomain').value.trim();
+            const description = document.getElementById('customRoleDesc').value.trim();
+            const personality = document.getElementById('customRolePersonality').value.trim();
+            const prompt = document.getElementById('customRolePrompt').value.trim() || buildRolePrompt(name, domain, personality);
+            const knowledgeText = document.getElementById('customKnowledgeText').value.trim();
+            const file = document.getElementById('customKnowledgeFile').files[0];
+
+            try {
+                const role = await api('/role/create', {
+                    method: 'POST',
+                    body: {
+                        name,
+                        description: description || domain || '自定义角色',
+                        domain,
+                        personality,
+                        template_content: prompt,
+                    }
+                });
+                roles[role.id] = {
+                    name: role.name,
+                    desc: role.description || '自定义角色',
+                    symbol: fallbackRoleVisual.symbol,
+                    color: fallbackRoleVisual.color,
+                    knowledgeBaseId: role.knowledge_base_id || role.id,
+                };
+                if (knowledgeText) {
+                    await addKnowledgeForRole(role.id, roles[role.id].knowledgeBaseId, knowledgeText);
+                }
+                if (file) {
+                    await uploadKnowledgeFile(role.id, roles[role.id].knowledgeBaseId, file);
+                }
+                await loadRoles();
+                await selectRole(role.id);
+                event.target.reset();
+                setStatus('roleFormStatus', 'ok', '角色已创建');
+                closeRoleModal();
+            } catch (error) {
+                setStatus('roleFormStatus', 'error', error.message || '创建失败');
+            } finally {
+                submit.disabled = false;
+            }
+        }
+
+        async function submitKnowledgeForm(event) {
+            event.preventDefault();
+            const role = roles[currentRoleId];
+            if (!role) return;
+            const submit = document.getElementById('knowledgeFormSubmit');
+            submit.disabled = true;
+            setStatus('knowledgeFormStatus', '', '正在保存资料...');
+
+            const text = document.getElementById('knowledgeText').value.trim();
+            const file = document.getElementById('knowledgeFile').files[0];
+            try {
+                if (!text && !file) throw new Error('请先填写资料文本或选择文件');
+                const knowledgeBaseId = role.knowledgeBaseId || currentRoleId;
+                if (text) await addKnowledgeForRole(currentRoleId, knowledgeBaseId, text);
+                if (file) await uploadKnowledgeFile(currentRoleId, knowledgeBaseId, file);
+                setStatus('knowledgeFormStatus', 'ok', '资料已加入当前角色的知识库');
+                document.getElementById('knowledgeText').value = '';
+                document.getElementById('knowledgeFile').value = '';
+            } catch (error) {
+                setStatus('knowledgeFormStatus', 'error', error.message || '保存失败');
+            } finally {
+                submit.disabled = false;
+            }
+        }
+
+        async function addKnowledgeForRole(roleId, knowledgeBaseId, content) {
+            await api('/knowledge/add', {
+                method: 'POST',
+                body: {
+                    knowledge_base_id: knowledgeBaseId || roleId,
+                    content,
+                }
+            });
+        }
+
+        async function uploadKnowledgeFile(roleId, knowledgeBaseId, file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            const query = new URLSearchParams({
+                role_id: roleId,
+                knowledge_base_id: knowledgeBaseId || roleId,
+            });
+            await apiForm(`/knowledge/upload?${query.toString()}`, formData);
+        }
+
+        async function selectRole(roleId) {
+            if (isSendingMessage) {
+                updateConversationHeader('姝ｅ湪鍥炲');
+                return;
+            }
+            currentRoleId = Number(roleId);
+            currentConversationId = null;
+            conversations = [];
+            activeConversationMessageCount = 0;
+            const role = roles[currentRoleId];
+            if (!role) return;
+            document.getElementById('activeRoleIcon').style.background = role.color;
+            document.getElementById('activeRoleIcon').textContent = role.symbol || 'AI';
+            document.getElementById('activeRoleName').textContent = role.name;
+            document.getElementById('activeRoleDesc').textContent = role.desc;
+            renderRoles();
+            updateConversationHeader('等待选择');
+            renderEmpty(`选择历史会话，或新建一个和${role.name}的对话`);
+            await loadConversations();
+        }
+
+        async function loadConversations(options = {}) {
+            if (isSendingMessage) return;
+            const { openLatest = true } = options;
+            const historyList = document.getElementById('historyList');
+            historyList.innerHTML = `<div class="history-meta">加载中...</div>`;
+            try {
+                conversations = await api(`/chat/conversations?user_id=${currentUser.id}&role_id=${currentRoleId}`);
+                renderConversations();
+                if (openLatest && !currentConversationId && conversations.length > 0) {
+                    await openConversation(conversations[0].id);
+                } else {
+                    updateConversationHeader();
+                }
+            } catch (error) {
+                historyList.innerHTML = `<div class="history-meta">${escapeHTML(error.message)}</div>`;
+                updateConversationHeader('加载失败');
+            }
+        }
+
+        function renderConversations() {
+            const historyList = document.getElementById('historyList');
+            if (!conversations.length) {
+                historyList.innerHTML = `<div class="history-meta">当前角色还没有历史会话</div>`;
+                return;
+            }
+            historyList.innerHTML = conversations.map(item => `
+                <button class="history-item ${item.id === currentConversationId ? 'active' : ''}" type="button" onclick="openConversation(${item.id})">
+                    <div class="history-title">${escapeHTML(item.title)}</div>
+                    <div class="history-question">${escapeHTML(item.last_question || '还没有提问')}</div>
+                    <div class="history-meta">${formatTime(item.updated_at)}</div>
+                </button>
+            `).join('');
+        }
+
+        function conversationTitleFromQuestion(question) {
+            const clean = String(question || '').trim().replace(/\s+/g, ' ');
+            return clean ? clean.slice(0, 28) : '';
+        }
+
+        function getCurrentConversation() {
+            return conversations.find(item => item.id === currentConversationId) || null;
+        }
+
+        function updateConversationHeader(stateText = '') {
+            const role = roles[currentRoleId];
+            if (!role) return;
+            const item = getCurrentConversation();
+            const title = item?.title || (currentConversationId ? `${role.name}的当前对话` : `和${role.name}开始对话`);
+            const state = stateText || (currentConversationId ? '可继续追问' : '发送后保存');
+            const stateEl = document.getElementById('sessionState');
+            document.getElementById('sessionLabel').textContent = currentConversationId ? '当前会话' : '准备开始';
+            document.getElementById('sessionTitle').textContent = title;
+            stateEl.textContent = state;
+            stateEl.className = 'session-state';
+            if (state.includes('正在') || state.includes('等待')) stateEl.classList.add('busy');
+            if (state.includes('失败')) stateEl.classList.add('error');
+            document.getElementById('composerHint').textContent = currentConversationId ? '继续向当前会话提问' : '发送第一条问题';
+            updateMessageCount(activeConversationMessageCount);
+        }
+
+        function updateMessageCount(count) {
+            activeConversationMessageCount = count || 0;
+            const el = document.getElementById('messageCount');
+            el.textContent = activeConversationMessageCount ? `${activeConversationMessageCount} 条消息` : '';
+        }
+
+        async function ensureConversationForSend(firstQuestion) {
+            if (currentConversationId) return;
+            if (conversations.length > 0) {
+                await openConversation(conversations[0].id);
+                return;
+            }
+            await createNewConversation(firstQuestion);
+        }
+
+        async function createNewConversation(firstQuestion = '') {
+            if (isSendingMessage) {
+                updateConversationHeader('姝ｅ湪鍥炲');
+                return;
+            }
+            const role = roles[currentRoleId];
+            if (!role) return;
+            const questionTitle = conversationTitleFromQuestion(firstQuestion);
+            const item = await api('/chat/conversations', {
+                method: 'POST',
+                body: { user_id: currentUser.id, role_id: currentRoleId, title: questionTitle || `${role.name}的新对话` }
+            });
+            currentConversationId = item.id;
+            conversations = [item, ...conversations];
+            renderConversations();
+            updateMessageCount(0);
+            updateConversationHeader('新会话已准备');
+            renderEmpty(`新的${role.name}对话已创建`);
+            document.getElementById('messageInput').focus();
+        }
+
+        async function openConversation(id) {
+            if (isSendingMessage) {
+                updateConversationHeader('姝ｅ湪鍥炲');
+                return;
+            }
+            currentConversationId = id;
+            renderConversations();
+            updateConversationHeader('正在打开');
+            const messages = await api(`/chat/conversations/${id}/messages?user_id=${currentUser.id}`);
+            renderMessages(messages);
+            updateConversationHeader();
+        }
+
+        function renderMessages(items) {
+            const box = document.getElementById('messages');
+            if (!items.length) {
+                updateMessageCount(0);
+                renderEmpty('这个对话还没有消息');
+                return;
+            }
+            box.innerHTML = items.map(item => messageHTML(item.sender, item.content, item.timestamp)).join('');
+            updateMessageCount(items.length);
+            scrollMessages();
+        }
+
+        function renderEmpty(text) {
+            updateMessageCount(0);
+            document.getElementById('messages').innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-card">
+                        <div class="empty-icon">聊</div>
+                        <p>${escapeHTML(text)}</p>
+                    </div>
+                </div>`;
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const button = document.getElementById('sendBtn');
+            const message = input.value.trim();
+            if (!message || isSendingMessage) return;
+
+            button.disabled = true;
+            input.disabled = true;
+            let loadingId = '';
+            try {
+            await ensureConversationForSend(message);
+            const sentConversationId = currentConversationId;
+            isSendingMessage = true;
+
+            input.value = '';
+            input.style.height = 'auto';
+            appendMessage('user', message, Math.floor(Date.now() / 1000));
+            loadingId = appendMessage('role', '正在思考...', Math.floor(Date.now() / 1000), true);
+            const loadingMessage = document.getElementById(loadingId);
+            const loadingBubble = loadingMessage?.querySelector('.bubble');
+            updateConversationHeader('正在回复');
+
+                const result = await streamChat({
+                    user_id: currentUser.id,
+                    role_id: currentRoleId,
+                    message,
+                    conversation_id: sentConversationId
+                }, chunk => {
+                    if (!loadingBubble) return;
+                    if (loadingBubble.textContent === '正在思考...') {
+                        loadingBubble.textContent = '';
+                    }
+                    loadingBubble.textContent += chunk;
+                    scrollMessages();
+                });
+                currentConversationId = result.conversation_id || sentConversationId;
+                if (loadingBubble && !loadingBubble.textContent.trim()) {
+                    loadingBubble.textContent = result.response || '我这边暂时没有生成回复，可以再试一次。';
+                }
+                isSendingMessage = false;
+                input.disabled = false;
+                await loadConversations({ openLatest: false });
+                updateConversationHeader('可继续追问');
+            } catch (error) {
+                if (loadingId) document.getElementById(loadingId)?.remove();
+                appendMessage('system', error.message || '发送失败', Math.floor(Date.now() / 1000));
+                updateConversationHeader('发送失败');
+            } finally {
+                isSendingMessage = false;
+                button.disabled = false;
+                input.disabled = false;
+                input.focus();
+            }
+        }
+
+        async function streamChat(payload, onToken) {
+            const headers = { 'Content-Type': 'application/json' };
+            if (currentUser?.token) headers.Authorization = `Bearer ${currentUser.token}`;
+            const response = await fetch(`${API_BASE_URL}/chat/stream`, {
+                method: 'POST',
+                headers,
+                body: JSON.stringify(payload)
+            });
+            if (!response.ok || !response.body) {
+                throw new Error('发送失败');
+            }
+
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder('utf-8');
+            let buffer = '';
+            const result = { response: '', conversation_id: payload.conversation_id };
+
+            while (true) {
+                const { value, done } = await reader.read();
+                if (done) break;
+                buffer += decoder.decode(value, { stream: true });
+                const events = buffer.split('\n\n');
+                buffer = events.pop() || '';
+                for (const rawEvent of events) {
+                    const parsed = parseSSE(rawEvent);
+                    if (!parsed) continue;
+                    if (parsed.event === 'token') {
+                        const chunk = parsed.data.content || '';
+                        result.response += chunk;
+                        onToken(chunk);
+                    } else if (parsed.event === 'meta') {
+                        result.conversation_id = parsed.data.conversation_id || result.conversation_id;
+                    } else if (parsed.event === 'done') {
+                        result.conversation_id = parsed.data.conversation_id || result.conversation_id;
+                        result.response = parsed.data.response || result.response;
+                    } else if (parsed.event === 'error') {
+                        throw new Error(parsed.data.detail || '发送失败');
+                    }
+                }
+            }
+            return result;
+        }
+
+        function parseSSE(rawEvent) {
+            const lines = rawEvent.split('\n');
+            let event = 'message';
+            let data = '';
+            for (const line of lines) {
+                if (line.startsWith('event:')) {
+                    event = line.slice(6).trim();
+                } else if (line.startsWith('data:')) {
+                    data += line.slice(5).trim();
+                }
+            }
+            if (!data) return null;
+            return { event, data: JSON.parse(data) };
+        }
+
+        function appendMessage(sender, content, timestamp, temporary = false) {
+            const box = document.getElementById('messages');
+            if (box.querySelector('.empty-state')) box.innerHTML = '';
+            const id = temporary ? `msg-${Date.now()}` : '';
+            box.insertAdjacentHTML('beforeend', messageHTML(sender, content, timestamp, id));
+            updateMessageCount(box.querySelectorAll('.message').length);
+            scrollMessages();
+            return id;
+        }
+
+        function messageHTML(sender, content, timestamp, id = '') {
+            const role = roles[currentRoleId];
+            if (!role) return '';
+            const isUser = sender === 'user';
+            const isSystem = sender === 'system';
+            const avatarStyle = isUser ? 'background:linear-gradient(135deg,#667085,#98a2b3)' : `background:${role.color}`;
+            const symbol = isUser ? '我' : (isSystem ? '!' : role.symbol || 'AI');
+            return `
+                <div class="message ${isUser ? 'user' : isSystem ? 'system' : 'role'}" ${id ? `id="${id}"` : ''}>
+                    <div class="msg-avatar" style="${avatarStyle}">${escapeHTML(symbol)}</div>
+                    <div class="msg-content">
+                        <div class="bubble">${escapeHTML(content)}</div>
+                        <div class="time">${formatTime(timestamp)}</div>
+                    </div>
+                </div>`;
+        }
+
+        function scrollMessages() {
+            const box = document.getElementById('messages');
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function escapeHTML(value) {
+            return String(value ?? '').replace(/[&<>"']/g, char => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
+            }[char]));
+        }
+
+        function formatTime(value) {
+            if (!value) return '刚刚';
+            const date = typeof value === 'number' ? new Date(value * 1000) : new Date(value);
+            if (Number.isNaN(date.getTime())) return '刚刚';
+            return date.toLocaleString('zh-CN', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+        }
+
+        const input = document.getElementById('messageInput');
+        input.addEventListener('input', () => {
+            input.style.height = 'auto';
+            input.style.height = Math.min(input.scrollHeight, 150) + 'px';
+        });
+        input.addEventListener('keydown', event => {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        });
+
+        const savedUser = localStorage.getItem('chatbot_user');
+        if (savedUser) {
+            try {
+                currentUser = JSON.parse(savedUser);
+                showApp().catch(() => localStorage.removeItem('chatbot_user'));
+            } catch {
+                localStorage.removeItem('chatbot_user');
+            }
+        }
+    </script>
+</body>
+</html>
