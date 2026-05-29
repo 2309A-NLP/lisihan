@@ -1,0 +1,14 @@
+{
+  "version": 5,
+  "role_id": 7,
+  "count": 1,
+  "items": [
+    {
+      "content": "现在进行时（Present Continuous Tense）用法：\n\n结构：主语 + be动词(am/is/are) + doing(现在分词)\n\n例句：\n- I am eating. (我正在吃饭)\n- She is reading. (她正在读书)\n- They are playing. (他们正在玩)\n\nbe动词有三种形式：am, is, are\ndoing是动词的-ing形式",
+      "role_ids": [
+        7
+      ],
+      "source_file": "现在进行时详解.txt"
+    }
+  ]
+}
