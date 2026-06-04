@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>PDF智能问答系统2 - 思维导图</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0f172a;
+    display: flex;
+    justify-content: center;
+    padding: 30px;
+    font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+    min-height: 100vh;
+  }
+  svg { max-width: 1400px; width: 100%; height: auto; }
+</style>
+</head>
+<body>
+<svg viewBox="0 0 1350 1850" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="shadow" x="-5%" y="-5%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.25"/>
+    </filter>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <linearGradient id="rootGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+    <linearGradient id="entryGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#60a5fa"/>
+    </linearGradient>
+    <linearGradient id="retrievalGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#34d399"/>
+    </linearGradient>
+    <linearGradient id="parserGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#fbbf24"/>
+    </linearGradient>
+    <linearGradient id="memoryGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f472b6"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+    <linearGradient id="infraGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#14b8a6"/>
+      <stop offset="100%" stop-color="#2dd4bf"/>
+    </linearGradient>
+    <linearGradient id="flowGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+    <marker id="arrowPink" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#f472b6"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#34d399"/>
+    </marker>
+  </defs>
+
+  <!-- 背景网格 -->
+  <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+    <circle cx="1" cy="1" r="1" fill="#1e293b"/>
+  </pattern>
+  <rect width="1350" height="1850" fill="url(#grid)"/>
+
+  <!-- ===== 连线 ===== -->
+  <!-- 根到6个一级分支 -->
+  <path d="M675,100 C500,130 480,200 430,270" stroke="#475569" stroke-width="2.5" fill="none" stroke-dasharray="6,3"/>
+  <path d="M675,100 C720,120 740,200 770,270" stroke="#475569" stroke-width="2.5" fill="none" stroke-dasharray="6,3"/>
+  <path d="M670,110 C500,190 280,280 240,380" stroke="#475569" stroke-width="2.5" fill="none" stroke-dasharray="6,3"/>
+  <path d="M670,110 C600,220 580,300 570,390" stroke="#475569" stroke-width="2.5" fill="none" stroke-dasharray="6,3"/>
+  <path d="M670,110 C750,220 800,300 820,380" stroke="#475569" stroke-width="2.5" fill="none" stroke-dasharray="6,3"/>
+  <path d="M670,110 C850,260 1000,350 1080,430" stroke="#475569" stroke-width="2.5" fill="none" stroke-dasharray="6,3"/>
+  <!-- 一级到二级连线 -->
+  <!-- 入口层 -->
+  <path d="M430,270 C430,340 430,380 430,420" stroke="#475569" stroke-width="2" fill="none"/>
+  <path d="M770,270 C770,340 770,380 770,420" stroke="#475569" stroke-width="2" fill="none"/>
+  <!-- 检索层 -->
+  <path d="M240,380 C260,460 280,500 310,550" stroke="#475569" stroke-width="2" fill="none"/>
+  <path d="M570,390 C580,460 590,500 600,550" stroke="#475569" stroke-width="2" fill="none"/>
+  <path d="M820,380 C830,460 840,500 840,550" stroke="#475569" stroke-width="2" fill="none"/>
+  <!-- PDF解析 -->
+  <path d="M1080,430 C1060,510 1050,560 1030,610" stroke="#475569" stroke-width="2" fill="none"/>
+  <path d="M1080,430 C1090,510 1100,560 1110,610" stroke="#475569" stroke-width="2" fill="none"/>
+  <!-- 记忆系统 -->
+  <path d="M240,600 C280,680 330,720 380,760" stroke="#475569" stroke-width="2" fill="none"/>
+  <path d="M700,600 C700,680 700,720 700,760" stroke="#475569" stroke-width="2" fill="none"/>
+  <!-- 基础设施 -->
+  <path d="M1080,600 C1100,680 1110,720 1120,760" stroke="#475569" stroke-width="2" fill="none"/>
+
+  <!-- ===== 节点 ===== -->
+
+  <!-- 根节点 -->
+  <rect x="555" y="50" width="240" height="60" rx="30" fill="url(#rootGrad)" filter="url(#shadow)"/>
+  <text x="675" y="87" text-anchor="middle" fill="#fff" font-size="20" font-weight="bold">PDF 智能问答系统 v2</text>
+
+  <!-- ===== 一级节点（6个） ===== -->
+
+  <!-- 1. 入口层 -->
+  <rect x="320" y="240" width="220" height="50" rx="25" fill="url(#entryGrad)" filter="url(#shadow)"/>
+  <text x="430" y="274" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold">📂 入口层</text>
+
+  <!-- 2. 混合检索层 -->
+  <rect x="140" y="350" width="200" height="50" rx="25" fill="url(#retrievalGrad)" filter="url(#shadow)"/>
+  <text x="240" y="384" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold">⚙️ 混合检索层</text>
+
+  <!-- 3. 回答生成 -->
+  <rect x="480" y="360" width="180" height="50" rx="25" fill="url(#retrievalGrad)" filter="url(#shadow)"/>
+  <text x="570" y="394" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold">💡 回答生成</text>
+
+  <!-- 4. PDF 解析 -->
+  <rect x="720" y="350" width="200" height="50" rx="25" fill="url(#parserGrad)" filter="url(#shadow)"/>
+  <text x="820" y="384" text-anchor="middle" fill="#1e293b" font-size="16" font-weight="bold">📄 PDF 解析模块</text>
+
+  <!-- 5. 记忆系统 -->
+  <rect x="990" y="400" width="180" height="50" rx="25" fill="url(#memoryGrad)" filter="url(#shadow)"/>
+  <text x="1080" y="434" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold">🧠 记忆系统</text>
+
+  <!-- 6. 基础设施 -->
+  <rect x="1030" y="570" width="180" height="50" rx="25" fill="url(#infraGrad)" filter="url(#shadow)"/>
+  <text x="1120" y="604" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold">🐳 基础设施</text>
+
+  <!-- ===== 二级节点 ===== -->
+
+  <!-- 入口层子节点 -->
+  <rect x="340" y="400" width="180" height="40" rx="20" fill="#1e3a5f"/>
+  <text x="430" y="426" text-anchor="middle" fill="#93c5fd" font-size="12">main.py · 入口/CLI/Web</text>
+  <text x="430" y="440" text-anchor="middle" fill="#64748b" font-size="9">+ 虚拟环境自动检测</text>
+
+  <rect x="680" y="400" width="180" height="40" rx="20" fill="#1e3a5f"/>
+  <text x="770" y="426" text-anchor="middle" fill="#93c5fd" font-size="12">app.py · Streamlit 界面</text>
+  <text x="770" y="440" text-anchor="middle" fill="#64748b" font-size="9">+ 检索模式/语言选择</text>
+
+  <!-- 混合检索子节点 -->
+  <rect x="130" y="550" width="220" height="40" rx="20" fill="#064e3b"/>
+  <text x="240" y="576" text-anchor="middle" fill="#6ee7b7" font-size="12">HybridRetriever · BM25检索</text>
+
+  <rect x="420" y="550" width="220" height="40" rx="20" fill="#064e3b"/>
+  <text x="530" y="576" text-anchor="middle" fill="#6ee7b7" font-size="12">HybridRetriever · 向量检索</text>
+  <text x="530" y="590" text-anchor="middle" fill="#64748b" font-size="9">SentenceTransformer → Milvus</text>
+
+  <rect x="710" y="550" width="220" height="40" rx="20" fill="#064e3b"/>
+  <text x="820" y="576" text-anchor="middle" fill="#6ee7b7" font-size="12">RRF 融合排序</text>
+  <text x="820" y="590" text-anchor="middle" fill="#64748b" font-size="9">BM25权重3.0 / 向量权重1.0 / K=30</text>
+
+  <!-- 回答生成子节点 -->
+  <rect x="130" y="620" width="220" height="40" rx="20" fill="#064e3b"/>
+  <text x="240" y="646" text-anchor="middle" fill="#6ee7b7" font-size="12">RAGEngine · 主流程编排</text>
+  <text x="240" y="660" text-anchor="middle" fill="#64748b" font-size="9">查询改写 / 元数据提取 / 上下文构建</text>
+
+  <rect x="390" y="620" width="220" height="40" rx="20" fill="#064e3b"/>
+  <text x="500" y="646" text-anchor="middle" fill="#6ee7b7" font-size="12">LLMEngine · 回答生成</text>
+  <text x="500" y="660" text-anchor="middle" fill="#64748b" font-size="9">离线提取 / 在线生成 / 多语言翻译</text>
+
+  <!-- PDF 解析子节点 -->
+  <rect x="830" y="610" width="240" height="40" rx="20" fill="#451a03"/>
+  <text x="950" y="636" text-anchor="middle" fill="#fcd34d" font-size="12">pdf_parser/main.py · 主入口</text>
+
+  <rect x="260" y="700" width="180" height="40" rx="20" fill="#451a03"/>
+  <text x="350" y="726" text-anchor="middle" fill="#fcd34d" font-size="12">chunk_merger.py · 块合并</text>
+
+  <rect x="470" y="700" width="180" height="40" rx="20" fill="#451a03"/>
+  <text x="560" y="726" text-anchor="middle" fill="#fcd34d" font-size="12">filters.py · 噪声过滤</text>
+
+  <rect x="680" y="700" width="180" height="40" rx="20" fill="#451a03"/>
+  <text x="770" y="726" text-anchor="middle" fill="#fcd34d" font-size="12">metadata_extractor.py · 元数据</text>
+
+  <rect x="890" y="700" width="180" height="40" rx="20" fill="#451a03"/>
+  <text x="980" y="726" text-anchor="middle" fill="#fcd34d" font-size="12">table_extractor.py · 表格</text>
+
+  <rect x="1100" y="700" width="180" height="40" rx="20" fill="#451a03"/>
+  <text x="1190" y="726" text-anchor="middle" fill="#fcd34d" font-size="12">text_extractor.py · 文本</text>
+
+  <!-- 记忆系统子节点 -->
+  <rect x="280" y="760" width="220" height="40" rx="20" fill="#4a1942"/>
+  <text x="390" y="786" text-anchor="middle" fill="#f9a8d4" font-size="12">RedisMemoryManager · 短期记忆</text>
+  <text x="390" y="800" text-anchor="middle" fill="#64748b" font-size="9">Redis · 最近20条对话 · 24h TTL</text>
+
+  <rect x="560" y="760" width="220" height="40" rx="20" fill="#4a1942"/>
+  <text x="670" y="786" text-anchor="middle" fill="#f9a8d4" font-size="12">LongTermMemoryManager · 长期记忆</text>
+  <text x="670" y="800" text-anchor="middle" fill="#64748b" font-size="9">Milvus · 向量存储 · "有帮助"自动入库</text>
+
+  <!-- 基础设施子节点 -->
+  <rect x="1000" y="760" width="240" height="40" rx="20" fill="#115e59"/>
+  <text x="1120" y="786" text-anchor="middle" fill="#5eead4" font-size="12">docker-compose.yml</text>
+  <text x="1120" y="800" text-anchor="middle" fill="#64748b" font-size="9">Milvus(19530) + Redis(6379)</text>
+
+  <!-- ===== 数据流 ===== -->
+  <rect x="200" y="880" width="950" height="50" rx="25" fill="url(#flowGrad)" filter="url(#shadow)"/>
+  <text x="675" y="912" text-anchor="middle" fill="#fff" font-size="18" font-weight="bold">🔄 完整数据流（问答系统2增强版）</text>
+
+  <!-- 步骤条 -->
+  <rect x="40" y="960" width="150" height="70" rx="12" fill="#1e1b4b" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="115" y="985" text-anchor="middle" fill="#a5b4fc" font-size="11" font-weight="bold">① PDF解析</text>
+  <text x="115" y="1000" text-anchor="middle" fill="#94a3b8" font-size="9">MinerU → Markdown</text>
+  <text x="115" y="1015" text-anchor="middle" fill="#94a3b8" font-size="9">语义分块+父子块</text>
+
+  <path d="M190,995 L210,995" stroke="#f472b6" stroke-width="2" marker-end="url(#arrowPink)"/>
+
+  <rect x="215" y="960" width="150" height="70" rx="12" fill="#1e1b4b" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="290" y="985" text-anchor="middle" fill="#a5b4fc" font-size="11" font-weight="bold">② BM25+向量索引</text>
+  <text x="290" y="1000" text-anchor="middle" fill="#94a3b8" font-size="9">HybridRetriever</text>
+  <text x="290" y="1015" text-anchor="middle" fill="#94a3b8" font-size="9">BM25 Okapi + Milvus</text>
+
+  <path d="M365,995 L385,995" stroke="#f472b6" stroke-width="2" marker-end="url(#arrowPink)"/>
+
+  <rect x="390" y="960" width="150" height="70" rx="12" fill="#1e1b4b" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="465" y="985" text-anchor="middle" fill="#a5b4fc" font-size="11" font-weight="bold">③ 用户提问</text>
+  <text x="465" y="1000" text-anchor="middle" fill="#94a3b8" font-size="9">问题分类 + 查询改写</text>
+  <text x="465" y="1015" text-anchor="middle" fill="#94a3b8" font-size="9">rewrite_query()</text>
+
+  <path d="M540,995 L560,995" stroke="#f472b6" stroke-width="2" marker-end="url(#arrowPink)"/>
+
+  <rect x="565" y="960" width="150" height="70" rx="12" fill="#1e1b4b" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="640" y="985" text-anchor="middle" fill="#a5b4fc" font-size="11" font-weight="bold">④ 元数据/记忆</text>
+  <text x="640" y="1000" text-anchor="middle" fill="#94a3b8" font-size="9">先查元数据 / 长期记忆</text>
+  <text x="640" y="1015" text-anchor="middle" fill="#94a3b8" font-size="9">命中则直接返回</text>
+
+  <path d="M715,995 L735,995" stroke="#f472b6" stroke-width="2" marker-end="url(#arrowPink)"/>
+
+  <rect x="740" y="960" width="150" height="70" rx="12" fill="#1e1b4b" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="815" y="985" text-anchor="middle" fill="#a5b4fc" font-size="11" font-weight="bold">⑤ 混合检索召回</text>
+  <text x="815" y="1000" text-anchor="middle" fill="#94a3b8" font-size="9">BM25 + 向量 + RRF融合</text>
+  <text x="815" y="1015" text-anchor="middle" fill="#94a3b8" font-size="9">关键词+语义双重匹配</text>
+
+  <path d="M890,995 L910,995" stroke="#f472b6" stroke-width="2" marker-end="url(#arrowPink)"/>
+
+  <rect x="915" y="960" width="150" height="70" rx="12" fill="#1e1b4b" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="990" y="985" text-anchor="middle" fill="#a5b4fc" font-size="11" font-weight="bold">⑥ LLM生成答案</text>
+  <text x="990" y="1000" text-anchor="middle" fill="#94a3b8" font-size="9">在线LLM / 离线提取</text>
+  <text x="990" y="1015" text-anchor="middle" fill="#94a3b8" font-size="9">+ 多语言翻译</text>
+
+  <!-- 特殊路径箭头：元数据直通 -->
+  <path d="M465,1035 C465,1070 640,1080 640,1050" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4,3" fill="none" marker-end="url(#arrowGreen)"/>
+  <text x="550" y="1075" text-anchor="middle" fill="#34d399" font-size="9">元数据/记忆命中时 → 快速返回</text>
+
+  <!-- 返回箭头 -->
+  <path d="M990,1035 C990,1100 675,1120 675,1090" stroke="#f472b6" stroke-width="2" fill="none" marker-end="url(#arrowPink)"/>
+  <rect x="575" y="1095" width="200" height="30" rx="15" fill="#1e1b4b" stroke="#f472b6" stroke-width="1"/>
+  <text x="675" y="1115" text-anchor="middle" fill="#f9a8d4" font-size="11" font-weight="bold">⑦ 返回结果 + 写入Redis短期记忆</text>
+
+  <!-- ===== 底部关键特性 ===== -->
+  <rect x="40" y="1170" width="1270" height="65" rx="12" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+  <text x="675" y="1195" text-anchor="middle" fill="#94a3b8" font-size="13" font-weight="bold">
+    📌 关键配置
+  </text>
+  <text x="675" y="1218" text-anchor="middle" fill="#64748b" font-size="11">
+    BM25_K=6 | VECTOR_K=4 | RRF_K=30 | BM25权重=3.0 | FINAL_K=3 | 精确查询跳过向量 | LLM_TIMEOUT=2.5s
+  </text>
+
+  <!-- ===== 底部特性 ===== -->
+  <rect x="40" y="1260" width="410" height="130" rx="12" fill="#0f172a" stroke="#1e3a5f" stroke-width="1.5"/>
+  <text x="245" y="1285" text-anchor="middle" fill="#60a5fa" font-size="13" font-weight="bold">🆕 相比 v1 新增功能</text>
+  <text x="60" y="1310" fill="#94a3b8" font-size="11">✅ 混合检索（BM25+向量+RRF）</text>
+  <text x="60" y="1330" fill="#94a3b8" font-size="11">✅ 查询改写（rewrite_query）</text>
+  <text x="60" y="1350" fill="#94a3b8" font-size="11">✅ 文档元数据快速提取</text>
+  <text x="60" y="1370" fill="#94a3b8" font-size="11">✅ Redis 短期记忆</text>
+
+  <rect x="470" y="1260" width="410" height="130" rx="12" fill="#0f172a" stroke="#064e3b" stroke-width="1.5"/>
+  <text x="675" y="1285" text-anchor="middle" fill="#34d399" font-size="13" font-weight="bold">🆕 相比 v1 新增功能（续）</text>
+  <text x="490" y="1310" fill="#94a3b8" font-size="11">✅ Milvus 长期记忆 + Docker 化</text>
+  <text x="490" y="1330" fill="#94a3b8" font-size="11">✅ PDF 解析模块化（7个子模块）</text>
+  <text x="490" y="1350" fill="#94a3b8" font-size="11">✅ 语义化父子块分块策略</text>
+  <text x="490" y="1370" fill="#94a3b8" font-size="11">✅ 多语言回答支持</text>
+
+  <rect x="900" y="1260" width="410" height="130" rx="12" fill="#0f172a" stroke="#451a03" stroke-width="1.5"/>
+  <text x="1105" y="1285" text-anchor="middle" fill="#fbbf24" font-size="13" font-weight="bold">🔧 待优化方向</text>
+  <text x="920" y="1310" fill="#94a3b8" font-size="11">⬜ BM25 索引持久化（启动提速）</text>
+  <text x="920" y="1330" fill="#94a3b8" font-size="11">⬜ 真正的 LLM 流式输出</text>
+  <text x="920" y="1350" fill="#94a3b8" font-size="11">⬜ REST API 接口</text>
+  <text x="920" y="1370" fill="#94a3b8" font-size="11">⬜ 恢复 PyMuPDF 降级路径</text>
+
+  <!-- 底部标注 -->
+  <text x="675" y="1430" text-anchor="middle" fill="#64748b" font-size="11">问答系统2（基于 v1 演进） ｜ 工单：人工智能NLP-RAG-基于PDF文档的问答系统 ｜ 2026-06</text>
+</svg>
+</body>
+</html>

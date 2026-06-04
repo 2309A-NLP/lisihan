@@ -1,0 +1,246 @@
+{
+  "total": 10,
+  "success_count": 10,
+  "results": [
+    {
+      "id": 260,
+      "question": "军用领域收入分别是多少",
+      "answer": "根据检索到的资料，收入分别为6,464.51 万元、14,414.16 万元、18,780.67 万元和4,627.14 万元，占；及2018 年四季度确认收入分别占各期营业收入总额88.70%、65.11%和47.04%；申请科创板上市的哈尔滨新光光电科技股份有限公司2016、2017 及2018 年四季。",
+      "question_type": "numeric",
+      "response_time": 0.0074427127838134766,
+      "elapsed_time": 0.0074427127838134766,
+      "has_context": true,
+      "retrieved_count": 4,
+      "query_analysis": {
+        "intent": "numeric_lookup",
+        "prompt_type": "numeric",
+        "question_type": "numeric",
+        "matched_rule": "q260",
+        "keywords": [
+          "军用领域收入分别是多少"
+        ],
+        "is_ambiguous": true,
+        "sub_questions": [
+          "军用领域收入分别是多少"
+        ],
+        "normalized_question": "军用领域收入分别是多少"
+      }
+    },
+    {
+      "id": 95,
+      "question": "参与制定了哪个技术标准",
+      "answer": "根据检索到的资料，视频指挥系统技术标准（即2019 年制订的《某视频指挥系统技术规范（1.0 版）》）；公司累计研发投入为7,445.42 万元，占收入的比重15.66%，具备较为雄厚的技；术积淀和应用能力，截至2019 年6 月30 日，公司形成了35 项专利（其中7 项。",
+      "question_type": "entity",
+      "response_time": 0.00484156608581543,
+      "elapsed_time": 0.00484156608581543,
+      "has_context": true,
+      "retrieved_count": 4,
+      "query_analysis": {
+        "intent": "entity_lookup",
+        "prompt_type": "entity",
+        "question_type": "entity",
+        "matched_rule": "q95",
+        "keywords": [
+          "参与制定了哪个技术标准"
+        ],
+        "is_ambiguous": true,
+        "sub_questions": [
+          "参与制定了哪个技术标准"
+        ],
+        "normalized_question": "参与制定了哪个技术标准"
+      }
+    },
+    {
+      "id": 33,
+      "question": "收入占主营业务收入的比重分别是多少",
+      "answer": "根据检索到的资料，注：2016年度其他类产品中的整体系统收入为数字化审讯系统收入，2017年度、2018年度、2019年1至6月；,409.11 万元、398.57 万元、1,021.81 万元和277.57 万元，占主营业务收入比重；,894.10 万元、18,121.58 万元和4,565.65 万元，占主营业务收入的比重分别为。",
+      "question_type": "percentage",
+      "response_time": 0.004729032516479492,
+      "elapsed_time": 0.004729032516479492,
+      "has_context": true,
+      "retrieved_count": 4,
+      "query_analysis": {
+        "intent": "percentage_lookup",
+        "prompt_type": "percentage",
+        "question_type": "percentage",
+        "matched_rule": "q33",
+        "keywords": [
+          "收入占主营业务收入的比重分别是多少"
+        ],
+        "is_ambiguous": true,
+        "sub_questions": [
+          "收入占主营业务收入的比重分别是多少"
+        ],
+        "normalized_question": "收入占主营业务收入的比重分别是多少"
+      }
+    },
+    {
+      "id": 34,
+      "question": "上游涉及哪些企业",
+      "answer": "根据检索到的资料，本公司于2014 年10 月14 日通过高新技术企业认定并取得编号为；GR201442000473 的高新技术企业证书，有效期为三年；子化、城市智能化进程的不断加快，市场对电子信息系统的依赖和投入逐步提升，。",
+      "question_type": "entity",
+      "response_time": 0.0047833919525146484,
+      "elapsed_time": 0.0047833919525146484,
+      "has_context": true,
+      "retrieved_count": 3,
+      "query_analysis": {
+        "intent": "entity_lookup",
+        "prompt_type": "entity",
+        "question_type": "entity",
+        "matched_rule": "q34",
+        "keywords": [
+          "上游涉及哪些企业"
+        ],
+        "is_ambiguous": true,
+        "sub_questions": [
+          "上游涉及哪些企业"
+        ],
+        "normalized_question": "上游涉及哪些企业"
+      }
+    },
+    {
+      "id": 957,
+      "question": "在哪个领域已经成为重要供应商",
+      "answer": "根据检索到的资料，万元、1,396.51 万元，报告期内公司采购总额先增后减，2017 年度同比增长14.00%，；公司累计研发投入为7,445.42 万元，占收入的比重15.66%，具备较为雄厚的技；术积淀和应用能力，截至2019 年6 月30 日，公司形成了35 项专利（其中7 项。",
+      "question_type": "entity",
+      "response_time": 0.006374835968017578,
+      "elapsed_time": 0.006374835968017578,
+      "has_context": true,
+      "retrieved_count": 4,
+      "query_analysis": {
+        "intent": "entity_lookup",
+        "prompt_type": "entity",
+        "question_type": "entity",
+        "matched_rule": "q957",
+        "keywords": [
+          "在哪个领域已经成为重要供应商"
+        ],
+        "is_ambiguous": true,
+        "sub_questions": [
+          "在哪个领域已经成为重要供应商"
+        ],
+        "normalized_question": "在哪个领域已经成为重要供应商"
+      }
+    },
+    {
+      "id": 793,
+      "question": "下游主要包括哪些行业",
+      "answer": "根据检索到的资料，研生产许可管理条例》、《武器装备科研生产单位保密资格审查认定管理办法》；同时拥有多种相关资质条件才能进行武器科研生产活动，其他潜在的市场进入者；息系统组成较为复杂，从而需要集成商作为总体集成单位统一协调部署实施。",
+      "question_type": "entity",
+      "response_time": 0.0047495365142822266,
+      "elapsed_time": 0.0047495365142822266,
+      "has_context": true,
+      "retrieved_count": 4,
+      "query_analysis": {
+        "intent": "entity_lookup",
+        "prompt_type": "entity",
+        "question_type": "entity",
+        "matched_rule": "q793",
+        "keywords": [
+          "下游主要包括哪些行业"
+        ],
+        "is_ambiguous": true,
+        "sub_questions": [
+          "下游主要包括哪些行业"
+        ],
+        "normalized_question": "下游主要包括哪些行业"
+      }
+    },
+    {
+      "id": 795,
+      "question": "哪个工程荣获了国家科技进步一等奖",
+      "answer": "根据检索到的资料，公司累计研发投入为7,445.42 万元，占收入的比重15.66%，具备较为雄厚的技；术积淀和应用能力，截至2019 年6 月30 日，公司形成了35 项专利（其中7 项；一体化工程”（即相当于美军的C4ISR 系统）荣获国家科技进步一等奖。",
+      "question_type": "entity",
+      "response_time": 0.004889249801635742,
+      "elapsed_time": 0.004889249801635742,
+      "has_context": true,
+      "retrieved_count": 4,
+      "query_analysis": {
+        "intent": "entity_lookup",
+        "prompt_type": "entity",
+        "question_type": "entity",
+        "matched_rule": "q795",
+        "keywords": [
+          "哪个工程荣获了国家科技进步一等奖"
+        ],
+        "is_ambiguous": true,
+        "sub_questions": [
+          "哪个工程荣获了国家科技进步一等奖"
+        ],
+        "normalized_question": "哪个工程荣获了国家科技进步一等奖"
+      }
+    },
+    {
+      "id": 543,
+      "question": "注册资本是多少",
+      "answer": "根据检索到的资料，税后净利润不低于4,500.00 万元，当2017 年度扣非税前净利润达成率达到85%；b.光谷人才创投和广垦太证二期出资合计2,600.00 万元，其中光谷人才创投；a.对《补充协议》中第4 条估值调整条款“公司承诺经审计的2017 年度扣非。",
+      "question_type": "numeric",
+      "response_time": 0.006363868713378906,
+      "elapsed_time": 0.006363868713378906,
+      "has_context": true,
+      "retrieved_count": 4,
+      "query_analysis": {
+        "intent": "numeric_lookup",
+        "prompt_type": "numeric",
+        "question_type": "numeric",
+        "matched_rule": "q543",
+        "keywords": [
+          "注册资本是多少"
+        ],
+        "is_ambiguous": true,
+        "sub_questions": [
+          "注册资本是多少"
+        ],
+        "normalized_question": "注册资本是多少"
+      }
+    },
+    {
+      "id": 531,
+      "question": "法定代表人是谁",
+      "answer": "根据检索到的资料，北京市丰台区南四环西路128 号2 号楼609 室；兴图新科持有100%股权；MA4927K93G。",
+      "question_type": "entity",
+      "response_time": 0.00633692741394043,
+      "elapsed_time": 0.00633692741394043,
+      "has_context": true,
+      "retrieved_count": 4,
+      "query_analysis": {
+        "intent": "entity_lookup",
+        "prompt_type": "entity",
+        "question_type": "entity",
+        "matched_rule": "q531",
+        "keywords": [
+          "法定代表人是谁"
+        ],
+        "is_ambiguous": true,
+        "sub_questions": [
+          "法定代表人是谁"
+        ],
+        "normalized_question": "法定代表人是谁"
+      }
+    },
+    {
+      "id": 207,
+      "question": "计划使用多少募集资金补充流动资金",
+      "answer": "根据检索到的资料，张：报告期各期末，公司应收账款账面价值分别为9,107.26 万元、11,485.28 万；上述事项应当经公司董事会审议通过，并在2 个交易日内报告交易所并公告；在资金全部归还后2 个交易日内报告上交所并公告。",
+      "question_type": "entity",
+      "response_time": 0.008103370666503906,
+      "elapsed_time": 0.008103370666503906,
+      "has_context": true,
+      "retrieved_count": 4,
+      "query_analysis": {
+        "intent": "entity_lookup",
+        "prompt_type": "entity",
+        "question_type": "entity",
+        "matched_rule": "q207",
+        "keywords": [
+          "计划使用多少募集资金补充流动资金"
+        ],
+        "is_ambiguous": true,
+        "sub_questions": [
+          "计划使用多少募集资金补充流动资金"
+        ],
+        "normalized_question": "计划使用多少募集资金补充流动资金"
+      }
+    }
+  ]
+}
