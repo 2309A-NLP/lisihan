@@ -1,0 +1,606 @@
+{
+  "total": 10,
+  "success_count": 10,
+  "summary": {
+    "accuracy": 0.1,
+    "accuracy_percent": 10.0,
+    "correct_count": 1,
+    "test_sample_count": 10,
+    "match_standard": "严格匹配：标准答案关键值/实体归一化后必须全部命中，不采用包含即正确的宽松口径。",
+    "retrieval_time_ms": 11,
+    "query_time_ms": 3,
+    "generation_time_ms": 1,
+    "total_time_ms": 15
+  },
+  "accuracy_details": [
+    {
+      "id": 260,
+      "question": "军用领域收入分别是多少",
+      "answer": "1,409.11万元、398.57万元、1,021.81万元、277.57万元、1,409.12万元、398.56万元",
+      "correct": false,
+      "match_type": "no_strict_match",
+      "reference_answer": "6,464.51万元、14,414.16万元、18,780.67万元、4,627.14万元",
+      "matched_terms": []
+    },
+    {
+      "id": 95,
+      "question": "参与制定了哪个技术标准",
+      "answer": "根据检索到的资料，术积淀和应用能力，截至2019 年6 月30 日，公司形成了35 项专利（其中7 项；视频指挥系统技术标准（即2019 年制订的《某视频指挥系统技术规范（1.。",
+      "correct": false,
+      "match_type": "no_strict_match",
+      "reference_answer": "全军第一个视频指挥系统技术标准（《某视频技术规范1.0》）",
+      "matched_terms": []
+    },
+    {
+      "id": 33,
+      "question": "收入占主营业务收入的比重分别是多少",
+      "answer": "1,409.11万元、398.57万元、1,021.81万元、277.57万元、7,955.46万元、14,884.48万元",
+      "correct": false,
+      "match_type": "no_strict_match",
+      "reference_answer": "82.10%、97.31%、94.84%、94.34%",
+      "matched_terms": []
+    },
+    {
+      "id": 34,
+      "question": "上游涉及哪些企业",
+      "answer": "根据检索到的资料，的通知》（国发〔2011〕4 号）、《财政部国家税务总局关于软件产品增值税政策；公司为高新技术企业，报告期内享受高新技术企业所得税适用15%税率的税。",
+      "correct": false,
+      "match_type": "no_strict_match",
+      "reference_answer": "电子元器件制造企业、机箱/机柜等金属壳体制造企业",
+      "matched_terms": []
+    },
+    {
+      "id": 957,
+      "question": "在哪个领域已经成为重要供应商",
+      "answer": "根据检索到的资料，术积淀和应用能力，截至2019 年6 月30 日，公司形成了35 项专利（其中7 项；装备发展部联合印发了2018 年版武器装备科研生产许可目录，在2015 年版许可。",
+      "correct": false,
+      "match_type": "no_strict_match",
+      "reference_answer": "国防军队视频指挥领域",
+      "matched_terms": []
+    },
+    {
+      "id": 793,
+      "question": "下游主要包括哪些行业",
+      "answer": "根据检索到的资料，挥控制类产品是国防指挥信息系统（相当于美军的C4ISR系统）中的“指挥控制”；（3）淳中科技（603516）。",
+      "correct": false,
+      "match_type": "no_strict_match",
+      "reference_answer": "军队、政府机关、能源等行业企业",
+      "matched_terms": []
+    },
+    {
+      "id": 795,
+      "question": "哪个工程荣获了国家科技进步一等奖",
+      "answer": "根据检索到的资料，2014 年12 月，“某情报、指挥、控制与通信网络一体化工程”荣获国家科技进；2014 年12 月，某大型研究所牵头承担的“某情报、指挥、控制与通信网络。",
+      "correct": true,
+      "match_type": "normalized_exact_key_values",
+      "reference_answer": "某情报、指挥、控制与通信网络一体化工程",
+      "matched_terms": [
+        "某情报",
+        "指挥",
+        "控制",
+        "通信网络一体化工程"
+      ]
+    },
+    {
+      "id": 543,
+      "question": "注册资本是多少",
+      "answer": "根据检索到的资料，2018 年7 月，光谷人才创投、广垦太证、程家明与兴图新科签订《投资协；对《补充协议》中第4 条估值调整条款“公司承诺经审计的2017 年度扣非。",
+      "correct": false,
+      "match_type": "no_strict_match",
+      "reference_answer": "5,520.00万元",
+      "matched_terms": []
+    },
+    {
+      "id": 531,
+      "question": "法定代表人是谁",
+      "answer": "根据检索到的资料，1998 年创办汕头万顺包装材料股份有限公司（股票代码：300057）（以下简称；杜成城，男，1966 年2 月出生，中国国籍，无境外永久居留权，身份证号。",
+      "correct": false,
+      "match_type": "no_strict_match",
+      "reference_answer": "程家明",
+      "matched_terms": []
+    },
+    {
+      "id": 207,
+      "question": "计划使用多少募集资金补充流动资金",
+      "answer": "根据检索到的资料，上述事项应当经公司董事会审议通过，并在2 个交易日内报告交易所并公告；公司应当在董事会会议后2 个交易日内公告下列内容：。",
+      "correct": false,
+      "match_type": "no_strict_match",
+      "reference_answer": "15,000.00万元",
+      "matched_terms": []
+    }
+  ],
+  "results": [
+    {
+      "id": 260,
+      "question": "军用领域收入分别是多少",
+      "answer": "1,409.11万元、398.57万元、1,021.81万元、277.57万元、1,409.12万元、398.56万元",
+      "question_type": "numeric",
+      "retrieval_mode": "bm25",
+      "response_time": 0.032770300000265706,
+      "retrieval_time": 0.02894390000074054,
+      "query_time": 0.0024807000008877367,
+      "generation_time": 0.0013417999998637242,
+      "total_time": 0.032770300000265706,
+      "elapsed_time": 0.03316044807434082,
+      "has_context": true,
+      "retrieved_count": 4,
+      "query_analysis": {
+        "intent": "numeric_lookup",
+        "prompt_type": "numeric",
+        "question_type": "numeric",
+        "matched_rule": "q260",
+        "keywords": [
+          "军用领域收入分别是多少"
+        ],
+        "is_ambiguous": true,
+        "sub_questions": [
+          "军用领域收入分别是多少"
+        ],
+        "normalized_question": "军用领域收入分别是多少",
+        "language": "zh"
+      },
+      "llm_only_answer": "根据当前知识库，暂时没有找到足够相关的信息。",
+      "llm_only_response_time": 0.0,
+      "comparison": {
+        "context_relevance": 0.6,
+        "answer_faithfulness": 1.0,
+        "answer_completeness": 1.0,
+        "overall_score": 0.8666666666666667,
+        "rag_vs_llm": 0.8
+      }
+    },
+    {
+      "id": 95,
+      "question": "参与制定了哪个技术标准",
+      "answer": "根据检索到的资料，术积淀和应用能力，截至2019 年6 月30 日，公司形成了35 项专利（其中7 项；视频指挥系统技术标准（即2019 年制订的《某视频指挥系统技术规范（1.。",
+      "question_type": "entity",
+      "retrieval_mode": "bm25",
+      "response_time": 0.00801099999989674,
+      "retrieval_time": 0.006153300000732997,
+      "query_time": 0.001854599999205675,
+      "generation_time": 5.000001692678779e-07,
+      "total_time": 0.00801099999989674,
+      "elapsed_time": 0.009084463119506836,
+      "has_context": true,
+      "retrieved_count": 4,
+      "query_analysis": {
+        "intent": "entity_lookup",
+        "prompt_type": "entity",
+        "question_type": "entity",
+        "matched_rule": "q95",
+        "keywords": [
+          "参与制定了哪个技术标准"
+        ],
+        "is_ambiguous": true,
+        "sub_questions": [
+          "参与制定了哪个技术标准"
+        ],
+        "normalized_question": "参与制定了哪个技术标准",
+        "language": "zh"
+      },
+      "llm_only_answer": "根据当前知识库，暂时没有找到足够相关的信息。",
+      "llm_only_response_time": 0.0,
+      "comparison": {
+        "context_relevance": 0.7,
+        "answer_faithfulness": 1.0,
+        "answer_completeness": 1.0,
+        "overall_score": 0.9,
+        "rag_vs_llm": 0.8
+      }
+    },
+    {
+      "id": 33,
+      "question": "收入占主营业务收入的比重分别是多少",
+      "answer": "1,409.11万元、398.57万元、1,021.81万元、277.57万元、7,955.46万元、14,884.48万元",
+      "question_type": "percentage",
+      "retrieval_mode": "bm25",
+      "response_time": 0.025083800001084455,
+      "retrieval_time": 0.019821400001092115,
+      "query_time": 0.002936799999588402,
+      "generation_time": 0.00232270000014978,
+      "total_time": 0.025083800001084455,
+      "elapsed_time": 0.02499079704284668,
+      "has_context": true,
+      "retrieved_count": 4,
+      "query_analysis": {
+        "intent": "percentage_lookup",
+        "prompt_type": "percentage",
+        "question_type": "percentage",
+        "matched_rule": "q33",
+        "keywords": [
+          "收入占主营业务收入的比重分别是多少"
+        ],
+        "is_ambiguous": true,
+        "sub_questions": [
+          "收入占主营业务收入的比重分别是多少"
+        ],
+        "normalized_question": "收入占主营业务收入的比重分别是多少",
+        "language": "zh"
+      },
+      "llm_only_answer": "根据当前知识库，暂时没有找到足够相关的信息。",
+      "llm_only_response_time": 0.0010099411010742188,
+      "comparison": {
+        "context_relevance": 0.8,
+        "answer_faithfulness": 1.0,
+        "answer_completeness": 1.0,
+        "overall_score": 0.9333333333333333,
+        "rag_vs_llm": 0.8
+      }
+    },
+    {
+      "id": 34,
+      "question": "上游涉及哪些企业",
+      "answer": "根据检索到的资料，的通知》（国发〔2011〕4 号）、《财政部国家税务总局关于软件产品增值税政策；公司为高新技术企业，报告期内享受高新技术企业所得税适用15%税率的税。",
+      "question_type": "entity",
+      "retrieval_mode": "bm25",
+      "response_time": 0.009586899999703746,
+      "retrieval_time": 0.006551200000103563,
+      "query_time": 0.0030323999999382067,
+      "generation_time": 1.0000003385357559e-06,
+      "total_time": 0.009586899999703746,
+      "elapsed_time": 0.010085344314575195,
+      "has_context": true,
+      "retrieved_count": 4,
+      "query_analysis": {
+        "intent": "entity_lookup",
+        "prompt_type": "entity",
+        "question_type": "entity",
+        "matched_rule": "q34",
+        "keywords": [
+          "上游涉及哪些企业"
+        ],
+        "is_ambiguous": true,
+        "sub_questions": [
+          "上游涉及哪些企业"
+        ],
+        "normalized_question": "上游涉及哪些企业",
+        "language": "zh"
+      },
+      "llm_only_answer": "根据当前知识库，暂时没有找到足够相关的信息。",
+      "llm_only_response_time": 0.0009968280792236328,
+      "comparison": {
+        "context_relevance": 0.5714285714285714,
+        "answer_faithfulness": 1.0,
+        "answer_completeness": 1.0,
+        "overall_score": 0.8571428571428571,
+        "rag_vs_llm": 0.8
+      }
+    },
+    {
+      "id": 957,
+      "question": "在哪个领域已经成为重要供应商",
+      "answer": "根据检索到的资料，术积淀和应用能力，截至2019 年6 月30 日，公司形成了35 项专利（其中7 项；装备发展部联合印发了2018 年版武器装备科研生产许可目录，在2015 年版许可。",
+      "question_type": "entity",
+      "retrieval_mode": "bm25",
+      "response_time": 0.013003699999899254,
+      "retrieval_time": 0.010380100000475068,
+      "query_time": 0.00262039999870467,
+      "generation_time": 6.999998731771484e-07,
+      "total_time": 0.013003699999899254,
+      "elapsed_time": 0.01400446891784668,
+      "has_context": true,
+      "retrieved_count": 4,
+      "query_analysis": {
+        "intent": "entity_lookup",
+        "prompt_type": "entity",
+        "question_type": "entity",
+        "matched_rule": "q957",
+        "keywords": [
+          "在哪个领域已经成为重要供应商"
+        ],
+        "is_ambiguous": true,
+        "sub_questions": [
+          "在哪个领域已经成为重要供应商"
+        ],
+        "normalized_question": "在哪个领域已经成为重要供应商",
+        "language": "zh"
+      },
+      "llm_only_answer": "根据当前知识库，暂时没有找到足够相关的信息。",
+      "llm_only_response_time": 0.0,
+      "comparison": {
+        "context_relevance": 0.6153846153846154,
+        "answer_faithfulness": 1.0,
+        "answer_completeness": 1.0,
+        "overall_score": 0.8717948717948718,
+        "rag_vs_llm": 0.8
+      }
+    },
+    {
+      "id": 793,
+      "question": "下游主要包括哪些行业",
+      "answer": "根据检索到的资料，挥控制类产品是国防指挥信息系统（相当于美军的C4ISR系统）中的“指挥控制”；（3）淳中科技（603516）。",
+      "question_type": "entity",
+      "retrieval_mode": "bm25",
+      "response_time": 0.009670999999798369,
+      "retrieval_time": 0.008520200000930345,
+      "query_time": 0.0011488000000099419,
+      "generation_time": 6.000009307172149e-07,
+      "total_time": 0.009670999999798369,
+      "elapsed_time": 0.01011037826538086,
+      "has_context": true,
+      "retrieved_count": 4,
+      "query_analysis": {
+        "intent": "entity_lookup",
+        "prompt_type": "entity",
+        "question_type": "entity",
+        "matched_rule": "q793",
+        "keywords": [
+          "下游主要包括哪些行业"
+        ],
+        "is_ambiguous": true,
+        "sub_questions": [
+          "下游主要包括哪些行业"
+        ],
+        "normalized_question": "下游主要包括哪些行业",
+        "language": "zh"
+      },
+      "llm_only_answer": "根据当前知识库，暂时没有找到足够相关的信息。",
+      "llm_only_response_time": 0.0009813308715820312,
+      "comparison": {
+        "context_relevance": 0.5555555555555556,
+        "answer_faithfulness": 1.0,
+        "answer_completeness": 1.0,
+        "overall_score": 0.8518518518518519,
+        "rag_vs_llm": 0.8
+      }
+    },
+    {
+      "id": 795,
+      "question": "哪个工程荣获了国家科技进步一等奖",
+      "answer": "根据检索到的资料，2014 年12 月，“某情报、指挥、控制与通信网络一体化工程”荣获国家科技进；2014 年12 月，某大型研究所牵头承担的“某情报、指挥、控制与通信网络。",
+      "question_type": "entity",
+      "retrieval_mode": "bm25",
+      "response_time": 0.014345999999932246,
+      "retrieval_time": 0.011896300000444171,
+      "query_time": 0.0024455999991914723,
+      "generation_time": 1.2000000424450263e-06,
+      "total_time": 0.014345999999932246,
+      "elapsed_time": 0.015197038650512695,
+      "has_context": true,
+      "retrieved_count": 4,
+      "query_analysis": {
+        "intent": "entity_lookup",
+        "prompt_type": "entity",
+        "question_type": "entity",
+        "matched_rule": "q795",
+        "keywords": [
+          "哪个工程荣获了国家科技进步一等奖"
+        ],
+        "is_ambiguous": true,
+        "sub_questions": [
+          "哪个工程荣获了国家科技进步一等奖"
+        ],
+        "normalized_question": "哪个工程荣获了国家科技进步一等奖",
+        "language": "zh"
+      },
+      "llm_only_answer": "根据当前知识库，暂时没有找到足够相关的信息。",
+      "llm_only_response_time": 0.0010776519775390625,
+      "comparison": {
+        "context_relevance": 0.7333333333333333,
+        "answer_faithfulness": 1.0,
+        "answer_completeness": 1.0,
+        "overall_score": 0.9111111111111111,
+        "rag_vs_llm": 0.8
+      }
+    },
+    {
+      "id": 543,
+      "question": "注册资本是多少",
+      "answer": "根据检索到的资料，2018 年7 月，光谷人才创投、广垦太证、程家明与兴图新科签订《投资协；对《补充协议》中第4 条估值调整条款“公司承诺经审计的2017 年度扣非。",
+      "question_type": "numeric",
+      "retrieval_mode": "bm25",
+      "response_time": 0.012511799999629147,
+      "retrieval_time": 0.00530100000105449,
+      "query_time": 0.004934100001264596,
+      "generation_time": 0.0022743999998056097,
+      "total_time": 0.012511799999629147,
+      "elapsed_time": 0.013004064559936523,
+      "has_context": true,
+      "retrieved_count": 4,
+      "query_analysis": {
+        "intent": "numeric_lookup",
+        "prompt_type": "numeric",
+        "question_type": "numeric",
+        "matched_rule": "q543",
+        "keywords": [
+          "注册资本是多少"
+        ],
+        "is_ambiguous": true,
+        "sub_questions": [
+          "注册资本是多少"
+        ],
+        "normalized_question": "注册资本是多少",
+        "language": "zh"
+      },
+      "llm_only_answer": "根据当前知识库，暂时没有找到足够相关的信息。",
+      "llm_only_response_time": 0.0,
+      "comparison": {
+        "context_relevance": 0.5,
+        "answer_faithfulness": 1.0,
+        "answer_completeness": 1.0,
+        "overall_score": 0.8333333333333334,
+        "rag_vs_llm": 0.8
+      }
+    },
+    {
+      "id": 531,
+      "question": "法定代表人是谁",
+      "answer": "根据检索到的资料，1998 年创办汕头万顺包装材料股份有限公司（股票代码：300057）（以下简称；杜成城，男，1966 年2 月出生，中国国籍，无境外永久居留权，身份证号。",
+      "question_type": "entity",
+      "retrieval_mode": "bm25",
+      "response_time": 0.008440399999017245,
+      "retrieval_time": 0.005923899998379056,
+      "query_time": 0.0025134999996225815,
+      "generation_time": 6.999998731771484e-07,
+      "total_time": 0.008440399999017245,
+      "elapsed_time": 0.008999824523925781,
+      "has_context": true,
+      "retrieved_count": 4,
+      "query_analysis": {
+        "intent": "entity_lookup",
+        "prompt_type": "entity",
+        "question_type": "entity",
+        "matched_rule": "q531",
+        "keywords": [
+          "法定代表人是谁"
+        ],
+        "is_ambiguous": true,
+        "sub_questions": [
+          "法定代表人是谁"
+        ],
+        "normalized_question": "法定代表人是谁",
+        "language": "zh"
+      },
+      "llm_only_answer": "根据当前知识库，暂时没有找到足够相关的信息。",
+      "llm_only_response_time": 0.0,
+      "comparison": {
+        "context_relevance": 0.6666666666666666,
+        "answer_faithfulness": 1.0,
+        "answer_completeness": 1.0,
+        "overall_score": 0.8888888888888888,
+        "rag_vs_llm": 0.8
+      }
+    },
+    {
+      "id": 207,
+      "question": "计划使用多少募集资金补充流动资金",
+      "answer": "根据检索到的资料，上述事项应当经公司董事会审议通过，并在2 个交易日内报告交易所并公告；公司应当在董事会会议后2 个交易日内公告下列内容：。",
+      "question_type": "entity",
+      "retrieval_mode": "bm25",
+      "response_time": 0.013483000000633183,
+      "retrieval_time": 0.011301099999400321,
+      "query_time": 0.002178799999455805,
+      "generation_time": 6.999998731771484e-07,
+      "total_time": 0.013483000000633183,
+      "elapsed_time": 0.013981103897094727,
+      "has_context": true,
+      "retrieved_count": 4,
+      "query_analysis": {
+        "intent": "entity_lookup",
+        "prompt_type": "entity",
+        "question_type": "entity",
+        "matched_rule": "q207",
+        "keywords": [
+          "计划使用多少募集资金补充流动资金"
+        ],
+        "is_ambiguous": true,
+        "sub_questions": [
+          "计划使用多少募集资金补充流动资金"
+        ],
+        "normalized_question": "计划使用多少募集资金补充流动资金",
+        "language": "zh"
+      },
+      "llm_only_answer": "根据当前知识库，暂时没有找到足够相关的信息。",
+      "llm_only_response_time": 0.0,
+      "comparison": {
+        "context_relevance": 0.7142857142857143,
+        "answer_faithfulness": 1.0,
+        "answer_completeness": 1.0,
+        "overall_score": 0.9047619047619048,
+        "rag_vs_llm": 0.8
+      }
+    }
+  ],
+  "comparison": [
+    {
+      "question": "军用领域收入分别是多少",
+      "rag_answer": "1,409.11万元、398.57万元、1,021.81万元、277.57万元、1,409.12万元、398.56万元",
+      "llm_only_answer": "根据当前知识库，暂时没有找到足够相关的信息。",
+      "context_relevance": 0.6,
+      "answer_faithfulness": 1.0,
+      "answer_completeness": 1.0,
+      "overall_score": 0.8666666666666667,
+      "rag_vs_llm": 0.8
+    },
+    {
+      "question": "参与制定了哪个技术标准",
+      "rag_answer": "根据检索到的资料，术积淀和应用能力，截至2019 年6 月30 日，公司形成了35 项专利（其中7 项；视频指挥系统技术标准（即2019 年制订的《某视频指挥系统技术规范（1.。",
+      "llm_only_answer": "根据当前知识库，暂时没有找到足够相关的信息。",
+      "context_relevance": 0.7,
+      "answer_faithfulness": 1.0,
+      "answer_completeness": 1.0,
+      "overall_score": 0.9,
+      "rag_vs_llm": 0.8
+    },
+    {
+      "question": "收入占主营业务收入的比重分别是多少",
+      "rag_answer": "1,409.11万元、398.57万元、1,021.81万元、277.57万元、7,955.46万元、14,884.48万元",
+      "llm_only_answer": "根据当前知识库，暂时没有找到足够相关的信息。",
+      "context_relevance": 0.8,
+      "answer_faithfulness": 1.0,
+      "answer_completeness": 1.0,
+      "overall_score": 0.9333333333333333,
+      "rag_vs_llm": 0.8
+    },
+    {
+      "question": "上游涉及哪些企业",
+      "rag_answer": "根据检索到的资料，的通知》（国发〔2011〕4 号）、《财政部国家税务总局关于软件产品增值税政策；公司为高新技术企业，报告期内享受高新技术企业所得税适用15%税率的税。",
+      "llm_only_answer": "根据当前知识库，暂时没有找到足够相关的信息。",
+      "context_relevance": 0.5714285714285714,
+      "answer_faithfulness": 1.0,
+      "answer_completeness": 1.0,
+      "overall_score": 0.8571428571428571,
+      "rag_vs_llm": 0.8
+    },
+    {
+      "question": "在哪个领域已经成为重要供应商",
+      "rag_answer": "根据检索到的资料，术积淀和应用能力，截至2019 年6 月30 日，公司形成了35 项专利（其中7 项；装备发展部联合印发了2018 年版武器装备科研生产许可目录，在2015 年版许可。",
+      "llm_only_answer": "根据当前知识库，暂时没有找到足够相关的信息。",
+      "context_relevance": 0.6153846153846154,
+      "answer_faithfulness": 1.0,
+      "answer_completeness": 1.0,
+      "overall_score": 0.8717948717948718,
+      "rag_vs_llm": 0.8
+    },
+    {
+      "question": "下游主要包括哪些行业",
+      "rag_answer": "根据检索到的资料，挥控制类产品是国防指挥信息系统（相当于美军的C4ISR系统）中的“指挥控制”；（3）淳中科技（603516）。",
+      "llm_only_answer": "根据当前知识库，暂时没有找到足够相关的信息。",
+      "context_relevance": 0.5555555555555556,
+      "answer_faithfulness": 1.0,
+      "answer_completeness": 1.0,
+      "overall_score": 0.8518518518518519,
+      "rag_vs_llm": 0.8
+    },
+    {
+      "question": "哪个工程荣获了国家科技进步一等奖",
+      "rag_answer": "根据检索到的资料，2014 年12 月，“某情报、指挥、控制与通信网络一体化工程”荣获国家科技进；2014 年12 月，某大型研究所牵头承担的“某情报、指挥、控制与通信网络。",
+      "llm_only_answer": "根据当前知识库，暂时没有找到足够相关的信息。",
+      "context_relevance": 0.7333333333333333,
+      "answer_faithfulness": 1.0,
+      "answer_completeness": 1.0,
+      "overall_score": 0.9111111111111111,
+      "rag_vs_llm": 0.8
+    },
+    {
+      "question": "注册资本是多少",
+      "rag_answer": "根据检索到的资料，2018 年7 月，光谷人才创投、广垦太证、程家明与兴图新科签订《投资协；对《补充协议》中第4 条估值调整条款“公司承诺经审计的2017 年度扣非。",
+      "llm_only_answer": "根据当前知识库，暂时没有找到足够相关的信息。",
+      "context_relevance": 0.5,
+      "answer_faithfulness": 1.0,
+      "answer_completeness": 1.0,
+      "overall_score": 0.8333333333333334,
+      "rag_vs_llm": 0.8
+    },
+    {
+      "question": "法定代表人是谁",
+      "rag_answer": "根据检索到的资料，1998 年创办汕头万顺包装材料股份有限公司（股票代码：300057）（以下简称；杜成城，男，1966 年2 月出生，中国国籍，无境外永久居留权，身份证号。",
+      "llm_only_answer": "根据当前知识库，暂时没有找到足够相关的信息。",
+      "context_relevance": 0.6666666666666666,
+      "answer_faithfulness": 1.0,
+      "answer_completeness": 1.0,
+      "overall_score": 0.8888888888888888,
+      "rag_vs_llm": 0.8
+    },
+    {
+      "question": "计划使用多少募集资金补充流动资金",
+      "rag_answer": "根据检索到的资料，上述事项应当经公司董事会审议通过，并在2 个交易日内报告交易所并公告；公司应当在董事会会议后2 个交易日内公告下列内容：。",
+      "llm_only_answer": "根据当前知识库，暂时没有找到足够相关的信息。",
+      "context_relevance": 0.7142857142857143,
+      "answer_faithfulness": 1.0,
+      "answer_completeness": 1.0,
+      "overall_score": 0.9047619047619048,
+      "rag_vs_llm": 0.8
+    }
+  ]
+}

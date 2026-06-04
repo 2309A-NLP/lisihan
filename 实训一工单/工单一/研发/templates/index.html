@@ -1,0 +1,169 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PDF智能问答系统</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-icon">📄</span>
+      <div>
+        <h1>PDF智能问答系统</h1>
+        <p>基于PDF文档的RAG问答</p>
+      </div>
+    </div>
+
+    <section class="panel">
+      <h2>系统状态</h2>
+      <div class="status-row">
+        <span>知识库</span>
+        <strong id="kbStatus">待连接</strong>
+      </div>
+      <div class="status-row">
+        <span>检索模式</span>
+        <strong id="modeStatus">BM25</strong>
+      </div>
+      <div class="status-row">
+        <span>响应时间</span>
+        <strong id="timeStatus">--</strong>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>示例问题</h2>
+      <button class="sample" type="button">注册资本是多少</button>
+      <button class="sample" type="button">法定代表人是谁</button>
+      <button class="sample" type="button">上游涉及哪些企业</button>
+      <button class="sample" type="button">参与制定了哪个技术标准</button>
+    </section>
+  </aside>
+
+  <main class="workspace">
+    <header class="topbar">
+      <div>
+        <h2>文档问答</h2>
+        <p>输入问题后，系统会从PDF知识库中检索相关片段并生成答案。</p>
+      </div>
+      <button id="rebuildBtn" type="button">重建知识库</button>
+    </header>
+
+    <section id="chatList" class="chat-list">
+      <article class="message assistant">
+        <div class="avatar">AI</div>
+        <div class="bubble">
+          <p>你好，我可以根据项目中的PDF文档回答问题。请在下方输入你的问题。</p>
+        </div>
+      </article>
+    </section>
+
+    <section id="sourcePanel" class="source-panel" hidden>
+      <h3>检索片段</h3>
+      <div id="sourceList"></div>
+    </section>
+
+    <form id="questionForm" class="composer">
+      <input id="questionInput" type="text" autocomplete="off" placeholder="请输入你的问题，例如：注册资本是多少">
+      <button type="submit">发送</button>
+    </form>
+  </main>
+
+  <script>
+    const chatList = document.querySelector("#chatList");
+    const questionForm = document.querySelector("#questionForm");
+    const questionInput = document.querySelector("#questionInput");
+    const sourcePanel = document.querySelector("#sourcePanel");
+    const sourceList = document.querySelector("#sourceList");
+    const timeStatus = document.querySelector("#timeStatus");
+    const kbStatus = document.querySelector("#kbStatus");
+    const modeStatus = document.querySelector("#modeStatus");
+
+    function addMessage(role, text) {
+      const article = document.createElement("article");
+      article.className = `message ${role}`;
+      const avatar = document.createElement("div");
+      avatar.className = "avatar";
+      avatar.textContent = role === "user" ? "你" : "AI";
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      const paragraph = document.createElement("p");
+      paragraph.textContent = text;
+      bubble.appendChild(paragraph);
+      article.append(avatar, bubble);
+      chatList.appendChild(article);
+      chatList.scrollTop = chatList.scrollHeight;
+      return paragraph;
+    }
+
+    function renderSources(contexts = [], scores = []) {
+      sourceList.innerHTML = "";
+      if (!contexts.length) {
+        sourcePanel.hidden = true;
+        return;
+      }
+      sourcePanel.hidden = false;
+      contexts.forEach((ctx, index) => {
+        const item = document.createElement("div");
+        item.className = "source-item";
+        const score = typeof scores[index] === "number" ? scores[index].toFixed(4) : "--";
+        item.innerHTML = `<strong>片段 ${index + 1} · 分数 ${score}</strong><p></p>`;
+        item.querySelector("p").textContent = ctx.length > 500 ? `${ctx.slice(0, 500)}...` : ctx;
+        sourceList.appendChild(item);
+      });
+    }
+
+    async function ask(question) {
+      addMessage("user", question);
+      const answerNode = addMessage("assistant", "正在检索并生成答案...");
+      renderSources();
+      timeStatus.textContent = "--";
+      modeStatus.textContent = "BM25";
+
+      try {
+        const response = await fetch("/api/ask", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({question})
+        });
+        if (!response.ok) {
+          throw new Error(`请求失败：${response.status}`);
+        }
+        const data = await response.json();
+        answerNode.textContent = data.answer || "根据当前知识库，暂时没有找到足够相关的信息。";
+        timeStatus.textContent = data.response_time ? `${data.response_time.toFixed(3)}s` : "--";
+        kbStatus.textContent = "已连接";
+        renderSources(data.retrieved_contexts || [], data.scores || []);
+      } catch (error) {
+        answerNode.textContent = "当前页面已恢复，但没有检测到可用的 /api/ask 接口。请使用 Streamlit 前端，或为该模板接入后端接口。";
+        kbStatus.textContent = "未连接";
+      }
+    }
+
+    questionForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const question = questionInput.value.trim();
+      if (!question) return;
+      questionInput.value = "";
+      ask(question);
+    });
+
+    document.querySelectorAll(".sample").forEach((button) => {
+      button.addEventListener("click", () => {
+        questionInput.value = button.textContent;
+        questionInput.focus();
+      });
+    });
+
+    document.querySelector("#rebuildBtn").addEventListener("click", async () => {
+      try {
+        const response = await fetch("/api/reindex", {method: "POST"});
+        kbStatus.textContent = response.ok ? "重建完成" : "重建失败";
+      } catch {
+        kbStatus.textContent = "未连接";
+      }
+    });
+  </script>
+</body>
+</html>
