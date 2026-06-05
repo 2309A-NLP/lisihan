@@ -1,0 +1,22 @@
+2026-06-05 21:46:55.721 Uvicorn server started on 127.0.0.1:8502
+2026-06-05 21:48:24,676 | INFO | src.rag_engine.engine | initializer.py:55 | init knowledge base start | pdf_dir=./data
+2026-06-05 21:48:28,476 | INFO | src.retriever.hybrid | hybrid.py:76 | hybrid bm25 index built | collection=pdf_documents | chunks=3588
+2026-06-05 21:48:28,476 | INFO | src.rag_engine.engine | initializer.py:78 | knowledge base indexed | documents=3588
+2026-06-05 21:55:53,110 | INFO | src.rag_engine.engine | initializer.py:55 | init knowledge base start | pdf_dir=./data
+2026-06-05 21:55:57,411 | INFO | src.retriever.hybrid | hybrid.py:76 | hybrid bm25 index built | collection=pdf_documents | chunks=3588
+2026-06-05 21:55:57,412 | INFO | src.rag_engine.engine | initializer.py:78 | knowledge base indexed | documents=3588
+2026-06-05 21:57:58,854 | INFO | src.rag_engine.engine | answering.py:95 | ask start | question=报告期内，武汉兴图新科电子股份有限公司来自军用领域的收入分别是多少？ | question_type=numeric
+2026-06-05 21:57:58,912 | INFO | src.retriever.hybrid | hybrid.py:123 | hybrid search done | query=直接和间接向国防客户的销售额合计分别是多少 | source_file=招股说明书1.pdf | bm25_hits=6 | vector_hits=0 | fused_hits=3
+2026-06-05 21:57:58,917 | INFO | src.rag_engine.engine | answering.py:400 | ask done | question=报告期内，武汉兴图新科电子股份有限公司来自军用领域的收入分别是多少？ | question_type=numeric | intent=numeric_lookup | ambiguous=True | has_context=True | hits=3 | elapsed=0.064
+2026-06-05 21:58:36,459 | INFO | src.rag_engine.engine | answering.py:95 | ask start | question=武汉兴图新科电子股份有限公司参与的哪个工程荣获了国家科技进步一等奖？ | question_type=entity
+2026-06-05 21:58:36,594 | INFO | src.retriever.hybrid | hybrid.py:123 | hybrid search done | query=武汉兴图新科电子股份有限公司参与的哪个工程荣获了国家科技进步一等奖？ | source_file=招股说明书1.pdf | bm25_hits=6 | vector_hits=0 | fused_hits=3
+2026-06-05 21:58:36,596 | INFO | src.rag_engine.engine | answering.py:400 | ask done | question=武汉兴图新科电子股份有限公司参与的哪个工程荣获了国家科技进步一等奖？ | question_type=entity | intent=entity_lookup | ambiguous=True | has_context=True | hits=3 | elapsed=0.137
+2026-06-05 21:58:52,519 | INFO | src.rag_engine.engine | answering.py:95 | ask start | question=武汉兴图新科电子股份有限公司的法定代表人是谁？ | question_type=entity
+2026-06-05 21:58:52,583 | INFO | src.retriever.hybrid | hybrid.py:123 | hybrid search done | query=武汉兴图新科电子股份有限公司的法定代表人是谁？ | source_file=招股说明书1.pdf | bm25_hits=6 | vector_hits=0 | fused_hits=3
+2026-06-05 21:58:52,587 | INFO | src.rag_engine.engine | answering.py:400 | ask done | question=武汉兴图新科电子股份有限公司的法定代表人是谁？ | question_type=entity | intent=entity_lookup | ambiguous=True | has_context=True | hits=3 | elapsed=0.069
+2026-06-05 21:59:04,127 | INFO | src.rag_engine.engine | answering.py:95 | ask start | question=武汉力源信息技术股份有限公司的法定代表人是谁？ | question_type=entity
+2026-06-05 21:59:04,181 | INFO | src.retriever.hybrid | hybrid.py:123 | hybrid search done | query=武汉力源信息技术股份有限公司的法定代表人是谁？ | source_file=招股说明书2.pdf | bm25_hits=6 | vector_hits=0 | fused_hits=3
+2026-06-05 21:59:04,182 | INFO | src.retriever.cache | cache.py:29 | hybrid search cache hit | query=武汉力源信息技术股份有限公司的法定代表人是谁？ | mode=hybrid | source_file=招股说明书2.pdf | hits=3
+2026-06-05 21:59:04,183 | INFO | src.rag_engine.engine | answering.py:400 | ask done | question=武汉力源信息技术股份有限公司的法定代表人是谁？ | question_type=entity | intent=entity_lookup | ambiguous=True | has_context=True | hits=3 | elapsed=0.055
+2026-06-05 21:59:14,734 | INFO | src.rag_engine.engine | answering.py:95 | ask start | question=武汉力源信息技术股份有限公司组织结构图中，哪个销售部的销售处最多？有哪些销售处？ | question_type=entity
+2026-06-05 21:59:22,740 | INFO | src.rag_engine.engine | multimodal.py:300 | multimodal answer length=58 | question=武汉力源信息技术股份有限公司组织结构图中，哪个销售部的销售处最多？有哪些销售处？
