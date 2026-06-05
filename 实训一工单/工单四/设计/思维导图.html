@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF 招股说明书智能问答系统 — 思维导图 (v4)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0f0f1e; overflow: hidden; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; height: 100vh; }
+
+  #toolbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; gap: 16px;
+    padding: 10px 24px; background: rgba(15,15,30,0.92); backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  #toolbar h1 { font-size: 15px; color: #c8d6e5; font-weight: 500; margin-right: auto; }
+  #toolbar .badge {
+    background: #6c5ce7; color: #fff; font-size: 11px; padding: 2px 10px;
+    border-radius: 10px; font-weight: 600; margin-left: 8px;
+  }
+  #toolbar button {
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+    color: #c8d6e5; padding: 6px 16px; border-radius: 6px; cursor: pointer;
+    font-size: 13px; transition: all 0.2s;
+  }
+  #toolbar button:hover { background: rgba(255,255,255,0.12); }
+  #toolbar .hint { color: #5f6a7a; font-size: 12px; }
+
+  svg { display: block; width: 100%; height: 100vh; cursor: grab; }
+  svg:active { cursor: grabbing; }
+
+  .node-rect {
+    fill: #1e1e38; stroke: #3a3a5c; stroke-width: 1.5; rx: 8; ry: 8;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+    transition: all 0.15s;
+  }
+  .node-rect.level-0 { fill: #6c5ce7; stroke: #8b7cf7; }
+  .node-rect.level-1 { fill: #1a1a30; stroke: #fd79a8; }
+  .node-rect.level-2 { fill: #1e1e38; stroke: #74b9ff; }
+
+  .node-text {
+    fill: #dfe6e9; font-size: 14px; dominant-baseline: central;
+    text-anchor: middle; pointer-events: none;
+  }
+  .node-text.level-0 { fill: #fff; font-size: 18px; font-weight: 600; }
+  .node-text.level-1 { fill: #dfe6e9; font-size: 14px; font-weight: 600; }
+  .node-text.level-2 { fill: #b2bec3; font-size: 11.5px; font-weight: 400; text-anchor: start; }
+
+  .link { stroke: #3a3a5c; stroke-width: 1.8; fill: none; stroke-linecap: round; }
+  .link.level-0 { stroke: #8b7cf7; stroke-width: 2.5; stroke-dasharray: none; }
+  .link.level-1 { stroke: #3a3a5c; stroke-width: 1.5; }
+
+  #legend {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: rgba(15,15,30,0.9); backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.06); border-radius: 10px;
+    padding: 8px 20px; display: flex; gap: 24px; align-items: center;
+    color: #5f6a7a; font-size: 12px; z-index: 100;
+  }
+  .legend-dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+  .legend-dot.l0 { background: #6c5ce7; }
+  .legend-dot.l1 { background: #fd79a8; }
+  .legend-dot.l2 { background: #74b9ff; }
+  .legend-dot.new { background: #00b894; box-shadow: 0 0 6px #00b894; }
+</style>
+</head>
+<body>
+
+<div id="toolbar">
+  <h1>🧠 PDF招股说明书智能问答系统 <span class="badge">v4 · 多模态</span></h1>
+  <span class="hint">🖱 拖拽 · 滚轮缩放</span>
+  <button onclick="resetView()">重置</button>
+  <button onclick="toggleCollapse()">折叠/展开</button>
+  <button onclick="saveSVG()">导出 SVG</button>
+</div>
+
+<svg id="canvas" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6c5ce7" />
+    </marker>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0f0f1e"/>
+      <stop offset="100%" stop-color="#080814"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#bgGrad)"/>
+  <g id="mindmap"></g>
+</svg>
+
+<div id="legend">
+  <span><span class="legend-dot l0"></span>根节点</span>
+  <span><span class="legend-dot l1"></span>一级分支</span>
+  <span><span class="legend-dot l2"></span>二级分支</span>
+  <span><span class="legend-dot new"></span>v4 新增</span>
+  <span style="color:#5f6a7a;">|  滚轮缩放 · 拖拽平移</span>
+</div>
+
+<script>
+const data = {
+  id: "root", label: "PDF 招股说明书\n智能问答系统 v4", level: 0, w: 190, h: 60, isNew: false,
+  children: [
+    { id: "overview", label: "📋 系统概述", level: 1, w: 140, h: 38, isNew: false, children: [
+      { id: "o1", label: "RAG + 多模态视觉理解", level: 2, w: 185, h: 28, isNew: true },
+      { id: "o2", label: "工单：图像内容解析及检索优化", level: 2, w: 215, h: 28, isNew: true },
+      { id: "o3", label: "自然语言提问→检索/看图→生成", level: 2, w: 225, h: 28, isNew: false },
+      { id: "o4", label: "v3 所有能力 + 多模态图片问答", level: 2, w: 215, h: 28, isNew: true },
+    ]},
+    { id: "features", label: "⚡ 核心功能", level: 1, w: 140, h: 38, isNew: false, children: [
+      { id: "f1", label: "🆕 多模态图片问答", level: 2, w: 175, h: 28, isNew: true },
+      { id: "f2", label: "PDF 解析 MinerU (默认主后端)", level: 2, w: 210, h: 28, isNew: false },
+      { id: "f3", label: "👁️ 视觉PDF解析 (检测/渲染/提取)", level: 2, w: 225, h: 28, isNew: true },
+      { id: "f4", label: "BM25 + 向量 + RRF 混合检索", level: 2, w: 200, h: 28, isNew: false },
+      { id: "f5", label: "Redis 短期 + Milvus 长期记忆", level: 2, w: 205, h: 28, isNew: false },
+      { id: "f6", label: "元数据直答 + 规则抽取 + LLM", level: 2, w: 200, h: 28, isNew: false },
+      { id: "f7", label: "Milvus 文档存储", level: 2, w: 140, h: 28, isNew: true },
+      { id: "f8", label: "Redis 多模态缓存 (1h TTL)", level: 2, w: 195, h: 28, isNew: true },
+    ]},
+    { id: "arch", label: "🏗 技术架构", level: 1, w: 140, h: 38, isNew: false, children: [
+      { id: "a1", label: "Streamlit 前端 (port 8502)", level: 2, w: 185, h: 28, isNew: false },
+      { id: "a2", label: "🆕 RAG引擎 mixin包 (rag_engine/)", level: 2, w: 215, h: 28, isNew: true },
+      { id: "a3", label: "HybridRetriever (retriever/ 包)", level: 2, w: 215, h: 28, isNew: true },
+      { id: "a4", label: "小米 MiMo API (mimo-v2.5-pro)", level: 2, w: 210, h: 28, isNew: true },
+      { id: "a5", label: "🆕 MultimodalImageParser (mimo-v2.5)", level: 2, w: 240, h: 28, isNew: true },
+      { id: "a6", label: "sentence-transformers 嵌入模型", level: 2, w: 210, h: 28, isNew: false },
+      { id: "a7", label: "Redis + Milvus (Docker)", level: 2, w: 175, h: 28, isNew: false },
+    ]},
+    { id: "newv4", label: "🆕 v4 新增功能", level: 1, w: 150, h: 38, isNew: true, children: [
+      { id: "n1", label: "🌟 多模态图片问答", level: 2, w: 170, h: 28, isNew: true, children: [
+        { id: "n1a", label: "组织结构图 (p39)", level: 3, w: 140, h: 22, isNew: true },
+        { id: "n1b", label: "IC市场增长图 (p72)", level: 3, w: 155, h: 22, isNew: true },
+        { id: "n1c", label: "mimo-v2.5 视觉理解", level: 3, w: 155, h: 22, isNew: true },
+        { id: "n1d", label: "Redis 缓存 (1h)", level: 3, w: 135, h: 22, isNew: true },
+      ]},
+      { id: "n2", label: "👁️ 视觉PDF解析", level: 2, w: 160, h: 28, isNew: true, children: [
+        { id: "n2a", label: "visual_detection 区域检测", level: 3, w: 185, h: 22, isNew: true },
+        { id: "n2b", label: "visual_render 页面渲染", level: 3, w: 170, h: 22, isNew: true },
+        { id: "n2c", label: "visual_extractor 内容提取", level: 3, w: 180, h: 22, isNew: true },
+        { id: "n2d", label: "visual_geometry 几何计算", level: 3, w: 170, h: 22, isNew: true },
+      ]},
+      { id: "n3", label: "📦 模块化重构", level: 2, w: 160, h: 28, isNew: true, children: [
+        { id: "n3a", label: "rag_engine/ mixin 包 (6模块)", level: 3, w: 190, h: 22, isNew: true },
+        { id: "n3b", label: "retriever/ 包 (6模块)", level: 3, w: 165, h: 22, isNew: true },
+        { id: "n3c", label: "utils/llm_engine/ 包 (6模块)", level: 3, w: 185, h: 22, isNew: true },
+      ]},
+      { id: "n4", label: "小米 MiMo LLM 供应商", level: 2, w: 170, h: 28, isNew: true },
+      { id: "n5", label: "MinerU 强制主后端", level: 2, w: 165, h: 28, isNew: true },
+      { id: "n6", label: "Milvus 文档存储", level: 2, w: 145, h: 28, isNew: true },
+    ]},
+    { id: "dirs", label: "📁 目录结构", level: 1, w: 140, h: 38, isNew: false, children: [
+      { id: "d1", label: "data/ — PDF 原文", level: 2, w: 140, h: 28, isNew: false },
+      { id: "d2", label: "mineru_output/ — MinerU解析+图片", level: 2, w: 225, h: 28, isNew: true },
+      { id: "d3", label: "pdf_parser/ — 含视觉解析模块", level: 2, w: 195, h: 28, isNew: false },
+      { id: "d4", label: "src/rag_engine/ — mixin包", level: 2, w: 175, h: 28, isNew: true },
+      { id: "d5", label: "src/retriever/ — 检索器包", level: 2, w: 170, h: 28, isNew: true },
+      { id: "d6", label: "src/multimodal/ — 多模态模块", level: 2, w: 190, h: 28, isNew: true },
+      { id: "d7", label: "utils/llm_engine/ — LLM引擎包", level: 2, w: 185, h: 28, isNew: true },
+      { id: "d8", label: "app.py + main.py — 入口文件", level: 2, w: 180, h: 28, isNew: false },
+    ]},
+    { id: "modes", label: "▶ 运行模式", level: 1, w: 140, h: 38, isNew: false, children: [
+      { id: "m1", label: "Web 模式 — streamlit (8502)", level: 2, w: 195, h: 28, isNew: false },
+      { id: "m2", label: "CLI 模式 — main.py --mode cli", level: 2, w: 205, h: 28, isNew: false },
+      { id: "m3", label: "工单测试 — test_工单问题.py", level: 2, w: 200, h: 28, isNew: false },
+      { id: "m4", label: "🆕 MinerU 独立解析 CLI", level: 2, w: 185, h: 28, isNew: true },
+    ]},
+    { id: "services", label: "🔧 依赖服务", level: 1, w: 140, h: 38, isNew: false, children: [
+      { id: "s1", label: "Redis (6379) — 短期记忆+多模态缓存", level: 2, w: 245, h: 28, isNew: false },
+      { id: "s2", label: "Milvus (19530) — 向量库+文档存储", level: 2, w: 225, h: 28, isNew: false },
+      { id: "s3", label: "🆕 小米 MiMo API — LLM+多模态", level: 2, w: 220, h: 28, isNew: true },
+      { id: "s4", label: "MinerU (WSL) — PDF 高精度解析", level: 2, w: 220, h: 28, isNew: false },
+    ]},
+    { id: "deploy", label: "🚀 部署流程", level: 1, w: 140, h: 38, isNew: false, children: [
+      { id: "e1", label: "1. python -m venv .venv", level: 2, w: 175, h: 28, isNew: false },
+      { id: "e2", label: "2. pip install -r requirements.txt", level: 2, w: 225, h: 28, isNew: false },
+      { id: "e3", label: "3. docker compose up -d", level: 2, w: 185, h: 28, isNew: false },
+      { id: "e4", label: "4. 配置 .env (小米 MiMo Key)", level: 2, w: 210, h: 28, isNew: true },
+      { id: "e5", label: "5. 放置 PDF 到 data/", level: 2, w: 160, h: 28, isNew: false },
+      { id: "e6", label: "🆕 6. 运行 MinerU 解析", level: 2, w: 185, h: 28, isNew: true },
+      { id: "e7", label: "7. python main.py 启动", level: 2, w: 175, h: 28, isNew: false },
+    ]},
+    { id: "config", label: "⚙ 配置管理", level: 1, w: 140, h: 38, isNew: false, children: [
+      { id: "c1", label: ".env — 小米MiMo Key / 模型选择", level: 2, w: 220, h: 28, isNew: true },
+      { id: "c2", label: "src/config.py — 检索/切块/多模态参数", level: 2, w: 250, h: 28, isNew: false },
+      { id: "c3", label: "ℹ v4 新增配置项", level: 2, w: 155, h: 28, isNew: true, children: [
+        { id: "c3a", label: "MULTIMODAL_API_* — 多模态API", level: 3, w: 190, h: 22, isNew: true },
+        { id: "c3b", label: "ENABLE_MILVUS_DOCUMENT_STORE", level: 3, w: 210, h: 22, isNew: true },
+        { id: "c3c", label: "PDF_PARSE_BACKEND=mineru", level: 3, w: 185, h: 22, isNew: true },
+        { id: "c3d", label: "MINERU_FALLBACK_TO_LOCAL", level: 3, w: 180, h: 22, isNew: true },
+        { id: "c3e", label: "MULTIMODAL_WORK_ORDER_IMAGES", level: 3, w: 205, h: 22, isNew: true },
+        { id: "c3f", label: "ENABLE_MULTIMODAL_REDIS_CACHE", level: 3, w: 205, h: 22, isNew: true },
+      ]},
+    ]},
+  ]
+};
+
+const SVG_NS = "http://www.w3.org/2000/svg";
+const NODE_GAP_X = 250;
+const NODE_GAP_Y = 10;
+const CHILD_OFFSET_X = 85;
+const LEAF_GAP_Y = 6;
+
+let nodePositions = {};
+let collapsed = {};
+
+function layoutTree(node, depth, startY, parentX) {
+  if (!node) return startY;
+  const w = node.w || 140;
+  const h = node.h || 36;
+  const x = depth === 0 ? 0 : parentX + NODE_GAP_X;
+  let children = (node.children || []).filter(c => !collapsed[c.id]);
+  if (children.length === 0) {
+    nodePositions[node.id] = { x, y: startY, w, h, node, depth };
+    return startY + h + (depth >= 2 ? LEAF_GAP_Y : NODE_GAP_Y);
+  }
+  let childY = startY;
+  let childMids = [];
+  for (const child of children) {
+    const beforeY = childY;
+    childY = layoutTree(child, depth + 1, childY, x + CHILD_OFFSET_X);
+    childMids.push({ id: child.id, y: (beforeY + childY - (depth >= 2 ? LEAF_GAP_Y : NODE_GAP_Y)) / 2 });
+  }
+  const totalChildH = childY - startY;
+  const myY = startY + totalChildH / 2 - h / 2;
+  nodePositions[node.id] = { x, y: myY, w, h, node, depth, children: childMids };
+  return childY;
+}
+
+function computeEdges() {
+  const edges = [];
+  for (const [id, pos] of Object.entries(nodePositions)) {
+    if (!pos.children) continue;
+    for (const child of pos.children) {
+      const cp = nodePositions[child.id];
+      if (!cp) continue;
+      edges.push({
+        from: { x: pos.x + pos.w / 2, y: pos.y + pos.h / 2 },
+        to: { x: cp.x, y: child.y },
+        fromLevel: pos.depth,
+      });
+    }
+  }
+  return edges;
+}
+
+function render() {
+  nodePositions = {};
+  layoutTree(data, 0, 50, 0);
+  const g = document.getElementById("mindmap");
+  g.innerHTML = "";
+
+  const edges = computeEdges();
+  for (const e of edges) {
+    const line = document.createElementNS(SVG_NS, "path");
+    const dx = e.to.x - e.from.x;
+    const cpx = e.from.x + dx * 0.5;
+    const d = `M ${e.from.x},${e.from.y} Q ${cpx},${e.from.y} ${cpx},${e.to.y} L ${e.to.x},${e.to.y}`;
+    line.setAttribute("d", d);
+    line.classList.add("link");
+    if (e.fromLevel === 0) line.classList.add("level-0");
+    g.appendChild(line);
+  }
+
+  for (const [id, pos] of Object.entries(nodePositions)) {
+    const { x, y, w, h, node, depth } = pos;
+    const rect = document.createElementNS(SVG_NS, "rect");
+    rect.setAttribute("x", x);
+    rect.setAttribute("y", y);
+    rect.setAttribute("width", w);
+    rect.setAttribute("height", h);
+    rect.classList.add("node-rect", `level-${depth}`);
+    if (node.isNew && depth === 2) {
+      rect.setAttribute("stroke", "#00b894");
+      rect.setAttribute("stroke-dasharray", "4,3");
+    }
+    if (depth === 0) rect.style.filter = "url(#glow)";
+    g.appendChild(rect);
+
+    // NEW badge for level-1 new sections
+    if (node.isNew && depth === 1) {
+      const badge = document.createElementNS(SVG_NS, "rect");
+      badge.setAttribute("x", x + w - 22);
+      badge.setAttribute("y", y + 4);
+      badge.setAttribute("width", 18);
+      badge.setAttribute("height", 12);
+      badge.setAttribute("rx", 6);
+      badge.setAttribute("fill", "#00b894");
+      badge.setAttribute("opacity", "0.9");
+      g.appendChild(badge);
+      const badgeText = document.createElementNS(SVG_NS, "text");
+      badgeText.setAttribute("x", x + w - 13);
+      badgeText.setAttribute("y", y + 10);
+      badgeText.setAttribute("font-size", "7");
+      badgeText.setAttribute("fill", "#fff");
+      badgeText.setAttribute("font-weight", "bold");
+      badgeText.setAttribute("text-anchor", "middle");
+      badgeText.textContent = "NEW";
+      g.appendChild(badgeText);
+    }
+
+    const label = node.label || "";
+    const lines = label.split("\n");
+    const text = document.createElementNS(SVG_NS, "text");
+    text.classList.add("node-text", `level-${depth}`);
+    const centerY = y + h / 2;
+    if (lines.length === 1) {
+      text.setAttribute("x", x + w / 2);
+      text.setAttribute("y", centerY);
+      text.textContent = lines[0];
+    } else {
+      for (let i = 0; i < lines.length; i++) {
+        const tspan = document.createElementNS(SVG_NS, "tspan");
+        tspan.setAttribute("x", x + w / 2);
+        tspan.setAttribute("dy", i === 0 ? "-7" : "16");
+        tspan.textContent = lines[i];
+        text.appendChild(tspan);
+      }
+    }
+    g.appendChild(text);
+
+    if (node.children && node.children.length > 0 && depth > 0) {
+      const toggle = document.createElementNS(SVG_NS, "text");
+      toggle.setAttribute("x", x + w - 14);
+      toggle.setAttribute("y", y + h / 2 + 1);
+      toggle.setAttribute("font-size", "11");
+      toggle.setAttribute("fill", "#74b9ff");
+      toggle.setAttribute("cursor", "pointer");
+      toggle.setAttribute("text-anchor", "middle");
+      toggle.setAttribute("dominant-baseline", "central");
+      toggle.textContent = collapsed[node.id] ? "▶" : "▼";
+      toggle.style.userSelect = "none";
+      toggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        collapsed[node.id] = !collapsed[node.id];
+        render();
+      });
+      g.appendChild(toggle);
+    }
+  }
+}
+
+let viewState = { tx: 0, ty: 0, scale: 1 };
+let isDragging = false, dragStart = { x: 0, y: 0 };
+const svg = document.getElementById("canvas");
+const mindmap = document.getElementById("mindmap");
+
+function applyTransform() {
+  const { tx, ty, scale } = viewState;
+  mindmap.setAttribute("transform", `translate(${tx},${ty}) scale(${scale})`);
+}
+applyTransform();
+
+svg.addEventListener("mousedown", (e) => {
+  isDragging = true;
+  dragStart.x = e.clientX - viewState.tx;
+  dragStart.y = e.clientY - viewState.ty;
+  svg.style.cursor = "grabbing";
+});
+window.addEventListener("mousemove", (e) => {
+  if (!isDragging) return;
+  viewState.tx = e.clientX - dragStart.x;
+  viewState.ty = e.clientY - dragStart.y;
+  applyTransform();
+});
+window.addEventListener("mouseup", () => { isDragging = false; svg.style.cursor = "grab"; });
+
+svg.addEventListener("wheel", (e) => {
+  e.preventDefault();
+  const factor = e.deltaY > 0 ? 0.9 : 1.1;
+  const newScale = Math.min(2, Math.max(0.3, viewState.scale * factor));
+  const rect = svg.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+  viewState.tx = mx - (mx - viewState.tx) * (newScale / viewState.scale);
+  viewState.ty = my - (my - viewState.ty) * (newScale / viewState.scale);
+  viewState.scale = newScale;
+  applyTransform();
+}, { passive: false });
+
+let lastTouch = null;
+svg.addEventListener("touchstart", (e) => {
+  if (e.touches.length === 1) lastTouch = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+});
+svg.addEventListener("touchmove", (e) => {
+  if (e.touches.length === 1 && lastTouch) {
+    e.preventDefault();
+    viewState.tx += e.touches[0].clientX - lastTouch.x;
+    viewState.ty += e.touches[0].clientY - lastTouch.y;
+    lastTouch = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    applyTransform();
+  }
+});
+svg.addEventListener("touchend", () => { lastTouch = null; });
+
+window.resetView = function() {
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  viewState.tx = w * 0.08;
+  viewState.ty = h * 0.06;
+  viewState.scale = 0.75;
+  applyTransform();
+};
+resetView();
+
+window.toggleCollapse = function() {
+  for (const child of data.children) {
+    if (child.children) collapsed[child.id] = collapsed[child.id] ? false : true;
+  }
+  render();
+};
+
+window.saveSVG = function() {
+  const serializer = new XMLSerializer();
+  const svgStr = serializer.serializeToString(svg);
+  const blob = new Blob([svgStr], {type: 'image/svg+xml;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = '问答系统v4_思维导图.svg';
+  a.click();
+  URL.revokeObjectURL(url);
+};
+
+render();
+resetView();
+</script>
+</body>
+</html>
