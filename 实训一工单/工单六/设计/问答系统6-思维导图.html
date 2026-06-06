@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>问答系统6 — 思维导图</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#020617;font-family:'JetBrains Mono',monospace;color:#e2e8f0;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:30px 20px}
+.wrapper{max-width:1400px;width:100%;}
+.header{text-align:center;margin-bottom:28px}
+.header h1{font-size:22px;font-weight:700;color:#f1f5f9;letter-spacing:1px}
+.header .sub{font-size:11px;color:#64748b;margin-top:6px}
+.header .sub span{color:#22d3ee}
+.diagram-card{background:#0f172a;border:1px solid #1e293b;border-radius:12px;padding:30px 20px 20px;overflow-x:auto}
+.diagram-card svg{display:block;margin:0 auto;max-width:100%;height:auto}
+.footer{text-align:center;margin-top:20px;font-size:9px;color:#334155}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div class="header">
+  <h1>📄 PDF招股说明书智能问答系统 · 架构思维导图</h1>
+  <div class="sub">问答系统6 ｜ <span>v6</span> ｜ MinerU解析 + Hybird RAG + 多模态 + 多轮对话</div>
+</div>
+<div class="diagram-card">
+<svg viewBox="0 0 1360 2320" xmlns="http://www.w3.org/2000/svg" style="width:1360px;height:2320px">
+<defs>
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.5"/>
+  </pattern>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M 0 0 L 10 5 L 0 10 Z" fill="#475569"/>
+  </marker>
+  <marker id="arrow-cyan" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M 0 0 L 10 5 L 0 10 Z" fill="#22d3ee"/>
+  </marker>
+  <marker id="arrow-emerald" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M 0 0 L 10 5 L 0 10 Z" fill="#34d399"/>
+  </marker>
+  <marker id="arrow-violet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M 0 0 L 10 5 L 0 10 Z" fill="#a78bfa"/>
+  </marker>
+  <marker id="arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M 0 0 L 10 5 L 0 10 Z" fill="#fbbf24"/>
+  </marker>
+
+  <!-- Glow filter -->
+  <filter id="glow">
+    <feGaussianBlur stdDeviation="3" result="blur"/>
+    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+
+  <!-- Root node gradient -->
+  <linearGradient id="root-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#1e3a5f"/>
+    <stop offset="100%" stop-color="#0f172a"/>
+  </linearGradient>
+</defs>
+
+<!-- Background -->
+<rect width="1360" height="2320" fill="url(#grid)"/>
+
+<!-- ================================================================ -->
+<!-- ROOT NODE -->
+<!-- ================================================================ -->
+<rect x="430" y="20" width="500" height="52" rx="8" fill="url(#root-grad)" stroke="#22d3ee" stroke-width="2" filter="url(#glow)"/>
+<text x="680" y="50" text-anchor="middle" fill="#22d3ee" font-size="15" font-weight="600">PDF招股说明书智能问答系统</text>
+
+<!-- ================================================================ -->
+<!-- LAYER 1: 5 Main Branches -->
+<!-- ================================================================ -->
+
+<!-- Branch 1: PDF解析模块 -->
+<rect x="30" y="110" width="230" height="36" rx="6" fill="rgba(8,51,68,0.5)" stroke="#22d3ee" stroke-width="1.5"/>
+<text x="145" y="133" text-anchor="middle" fill="#22d3ee" font-size="11" font-weight="500">① PDF解析模块 pdf_parser/</text>
+<line x1="680" y1="72" x2="145" y2="110" stroke="#475569" stroke-width="1" marker-end="url(#arrow)"/>
+
+<!-- Branch 2: 检索与索引 -->
+<rect x="360" y="110" width="230" height="36" rx="6" fill="rgba(6,78,59,0.5)" stroke="#34d399" stroke-width="1.5"/>
+<text x="475" y="133" text-anchor="middle" fill="#34d399" font-size="11" font-weight="500">② 检索与索引 src/retriever/</text>
+<line x1="680" y1="72" x2="475" y2="110" stroke="#475569" stroke-width="1" marker-end="url(#arrow)"/>
+
+<!-- Branch 3: RAG引擎 -->
+<rect x="690" y="110" width="230" height="36" rx="6" fill="rgba(76,29,149,0.5)" stroke="#a78bfa" stroke-width="1.5"/>
+<text x="805" y="133" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="500">③ RAG引擎 src/rag_engine/</text>
+<line x1="680" y1="72" x2="805" y2="110" stroke="#475569" stroke-width="1" marker-end="url(#arrow)"/>
+
+<!-- Branch 4: LLM与回答 -->
+<rect x="1030" y="110" width="270" height="36" rx="6" fill="rgba(120,53,15,0.4)" stroke="#fbbf24" stroke-width="1.5"/>
+<text x="1165" y="133" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="500">④ LLM调用与回答生成 utils/llm_engine/</text>
+<line x1="680" y1="72" x2="1165" y2="110" stroke="#475569" stroke-width="1" marker-end="url(#arrow)"/>
+
+<!-- Branch 5: 前端与入口 -->
+<rect x="30" y="170" width="230" height="36" rx="6" fill="rgba(136,19,55,0.4)" stroke="#fb7185" stroke-width="1.5"/>
+<text x="145" y="193" text-anchor="middle" fill="#fb7185" font-size="11" font-weight="500">⑤ 前端与入口</text>
+<line x1="680" y1="72" x2="145" y2="170" stroke="#475569" stroke-width="1" marker-end="url(#arrow)"/>
+
+<!-- ================================================================ -->
+<!-- SECTION 1: PDF解析模块 — 子节点 -->
+<!-- ================================================================ -->
+
+<rect x="20" y="230" width="270" height="30" rx="5" fill="rgba(8,51,68,0.35)" stroke="#22d3ee" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="155" y="249" text-anchor="middle" fill="#22d3ee" font-size="9">PDF解析  pipeline</text>
+
+<!-- sub-children under PDF parsing -->
+<rect x="20" y="280" width="270" height="26" rx="4" fill="rgba(8,51,68,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="155" y="296" text-anchor="middle" fill="#94a3b8" font-size="8">text_extractor.py — PyMuPDF 正文提取</text>
+<line x1="155" y1="260" x2="155" y2="280" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="20" y="316" width="270" height="26" rx="4" fill="rgba(8,51,68,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="155" y="332" text-anchor="middle" fill="#94a3b8" font-size="8">table_extractor.py — pdfplumber 表格提取</text>
+<line x1="155" y1="306" x2="155" y2="316" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="20" y="352" width="270" height="26" rx="4" fill="rgba(8,51,68,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="155" y="368" text-anchor="middle" fill="#94a3b8" font-size="8">chunk_merger.py — 文本/表格合并拼接</text>
+<line x1="155" y1="342" x2="155" y2="352" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="20" y="388" width="270" height="26" rx="4" fill="rgba(8,51,68,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="155" y="404" text-anchor="middle" fill="#94a3b8" font-size="8">filters.py — 页眉页脚噪声过滤</text>
+<line x1="155" y1="378" x2="155" y2="388" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="20" y="424" width="270" height="26" rx="4" fill="rgba(8,51,68,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="155" y="440" text-anchor="middle" fill="#94a3b8" font-size="8">metadata_extractor.py — 元数据抽取</text>
+<line x1="155" y1="414" x2="155" y2="424" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="20" y="460" width="270" height="26" rx="4" fill="rgba(8,51,68,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="155" y="476" text-anchor="middle" fill="#94a3b8" font-size="8">visual_extractor.py — 图片/视觉提取</text>
+<line x1="155" y1="450" x2="155" y2="460" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<!-- MinerU parser -->
+<rect x="20" y="510" width="270" height="26" rx="4" fill="rgba(8,51,68,0.3)" stroke="#155e75" stroke-width="0.8"/>
+<text x="155" y="526" text-anchor="middle" fill="#67e8f9" font-size="8">mineru_backend.py — MinerU 解析后端</text>
+<line x1="155" y1="486" x2="155" y2="510" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<!-- ================================================================ -->
+<!-- SECTION 2: 检索与索引 -->
+<!-- ================================================================ -->
+
+<rect x="350" y="230" width="270" height="30" rx="5" fill="rgba(6,78,59,0.35)" stroke="#34d399" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="485" y="249" text-anchor="middle" fill="#34d399" font-size="9">混合检索 HybridRetriever</text>
+
+<rect x="350" y="280" width="270" height="26" rx="4" fill="rgba(6,78,59,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="485" y="296" text-anchor="middle" fill="#94a3b8" font-size="8">BM25 全文检索（主召回）rank_bm25</text>
+<line x1="485" y1="260" x2="485" y2="280" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="350" y="316" width="270" height="26" rx="4" fill="rgba(6,78,59,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="485" y="332" text-anchor="middle" fill="#94a3b8" font-size="8">Milvus 向量检索（辅助）</text>
+<line x1="485" y1="306" x2="485" y2="316" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="350" y="352" width="270" height="26" rx="4" fill="rgba(6,78,59,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="485" y="368" text-anchor="middle" fill="#94a3b8" font-size="8">RRF 倒数排名融合</text>
+<line x1="485" y1="342" x2="485" y2="352" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="350" y="388" width="270" height="26" rx="4" fill="rgba(6,78,59,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="485" y="404" text-anchor="middle" fill="#94a3b8" font-size="8">reranker.py — LLM/TF-IDF/自适应重排</text>
+<line x1="485" y1="378" x2="485" y2="388" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="350" y="424" width="270" height="26" rx="4" fill="rgba(6,78,59,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="485" y="440" text-anchor="middle" fill="#94a3b8" font-size="8">动态权重（BM25 0.4~0.8）</text>
+<line x1="485" y1="414" x2="485" y2="424" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="350" y="460" width="270" height="26" rx="4" fill="rgba(6,78,59,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="485" y="476" text-anchor="middle" fill="#94a3b8" font-size="8">精确问题跳过向量检索（快速路径）</text>
+<line x1="485" y1="450" x2="485" y2="460" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="350" y="496" width="270" height="26" rx="4" fill="rgba(6,78,59,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="485" y="512" text-anchor="middle" fill="#94a3b8" font-size="8">query.py — 查询改写与同义词扩展</text>
+<line x1="485" y1="486" x2="485" y2="496" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<!-- ================================================================ -->
+<!-- SECTION 3: RAG引擎 -->
+<!-- ================================================================ -->
+
+<rect x="640" y="230" width="300" height="30" rx="5" fill="rgba(76,29,149,0.35)" stroke="#a78bfa" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="790" y="249" text-anchor="middle" fill="#a78bfa" font-size="9">RAGEngine 核心编排</text>
+
+<rect x="640" y="280" width="300" height="26" rx="4" fill="rgba(76,29,149,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="790" y="296" text-anchor="middle" fill="#94a3b8" font-size="8">initializer.py — 初始化 PDF/BM25/Milvus</text>
+<line x1="790" y1="260" x2="790" y2="280" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="640" y="316" width="300" height="26" rx="4" fill="rgba(76,29,149,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="790" y="332" text-anchor="middle" fill="#94a3b8" font-size="8">context.py — 检索上下文拼装</text>
+<line x1="790" y1="306" x2="790" y2="316" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="640" y="352" width="300" height="26" rx="4" fill="rgba(76,29,149,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="790" y="368" text-anchor="middle" fill="#94a3b8" font-size="8">answering.py — 答案生成与后处理</text>
+<line x1="790" y1="342" x2="790" y2="352" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="640" y="388" width="300" height="26" rx="4" fill="rgba(76,29,149,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="790" y="404" text-anchor="middle" fill="#94a3b8" font-size="8">metadata.py — 元数据直答</text>
+<line x1="790" y1="378" x2="790" y2="388" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="640" y="424" width="300" height="26" rx="4" fill="rgba(76,29,149,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="790" y="440" text-anchor="middle" fill="#94a3b8" font-size="8">multimodal.py — 多模态图文问答</text>
+<line x1="790" y1="414" x2="790" y2="424" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="640" y="460" width="300" height="26" rx="4" fill="rgba(76,29,149,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="790" y="476" text-anchor="middle" fill="#94a3b8" font-size="8">cache.py — 答案缓存（30s TTL）</text>
+<line x1="790" y1="450" x2="790" y2="460" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<!-- session / memory / coreference sub-modules -->
+<rect x="640" y="510" width="300" height="26" rx="4" fill="rgba(76,29,149,0.3)" stroke="#7c3aed" stroke-width="0.8"/>
+<text x="790" y="526" text-anchor="middle" fill="#c4b5fd" font-size="8">session_manager.py — 多轮对话历史管理</text>
+<line x1="790" y1="486" x2="790" y2="510" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="640" y="546" width="300" height="26" rx="4" fill="rgba(76,29,149,0.3)" stroke="#7c3aed" stroke-width="0.8"/>
+<text x="790" y="562" text-anchor="middle" fill="#c4b5fd" font-size="8">coreference_resolver.py — 公司指代消解</text>
+<line x1="790" y1="536" x2="790" y2="546" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="640" y="582" width="300" height="26" rx="4" fill="rgba(76,29,149,0.3)" stroke="#7c3aed" stroke-width="0.8"/>
+<text x="790" y="598" text-anchor="middle" fill="#c4b5fd" font-size="8">memory_manager.py — Redis短期 + Milvus长期记忆</text>
+<line x1="790" y1="572" x2="790" y2="582" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="640" y="618" width="300" height="26" rx="4" fill="rgba(76,29,149,0.3)" stroke="#7c3aed" stroke-width="0.8"/>
+<text x="790" y="634" text-anchor="middle" fill="#c4b5fd" font-size="8">models.py / documents.py — 数据模型定义</text>
+<line x1="790" y1="608" x2="790" y2="618" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<!-- ================================================================ -->
+<!-- SECTION 4: LLM与回答生成 -->
+<!-- ================================================================ -->
+
+<rect x="1000" y="230" width="310" height="30" rx="5" fill="rgba(120,53,15,0.35)" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="1155" y="249" text-anchor="middle" fill="#fbbf24" font-size="9">LLM调用与答案生成</text>
+
+<rect x="1000" y="280" width="310" height="26" rx="4" fill="rgba(120,53,15,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="1155" y="296" text-anchor="middle" fill="#94a3b8" font-size="8">engine.py — LLM API调用（DeepSeek/小米MiMo）</text>
+<line x1="1155" y1="260" x2="1155" y2="280" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="1000" y="316" width="310" height="26" rx="4" fill="rgba(120,53,15,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="1155" y="332" text-anchor="middle" fill="#94a3b8" font-size="8">generation.py — LLM生成逻辑</text>
+<line x1="1155" y1="306" x2="1155" y2="316" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="1000" y="352" width="310" height="26" rx="4" fill="rgba(120,53,15,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="1155" y="368" text-anchor="middle" fill="#94a3b8" font-size="8">local_answer.py — 本地规则直接抽取答案</text>
+<line x1="1155" y1="342" x2="1155" y2="352" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="1000" y="388" width="310" height="26" rx="4" fill="rgba(120,53,15,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="1155" y="404" text-anchor="middle" fill="#94a3b8" font-size="8">numeric.py / text_tools.py — 数值/文本工具</text>
+<line x1="1155" y1="378" x2="1155" y2="388" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="1000" y="424" width="310" height="26" rx="4" fill="rgba(120,53,15,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="1155" y="440" text-anchor="middle" fill="#94a3b8" font-size="8">entities.py — 实体抽取</text>
+<line x1="1155" y1="414" x2="1155" y2="424" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="1000" y="460" width="310" height="26" rx="4" fill="rgba(120,53,15,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="1155" y="476" text-anchor="middle" fill="#94a3b8" font-size="8">question_classifier.py — 问题分类</text>
+<line x1="1155" y1="450" x2="1155" y2="460" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="1000" y="496" width="310" height="26" rx="4" fill="rgba(120,53,15,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="1155" y="512" text-anchor="middle" fill="#94a3b8" font-size="8">prompts.py — Prompt模板（numeric/entity等）</text>
+<line x1="1155" y1="486" x2="1155" y2="496" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="1000" y="532" width="310" height="26" rx="4" fill="rgba(120,53,15,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="1155" y="548" text-anchor="middle" fill="#94a3b8" font-size="8">answer_validator.py — 答案质量校验</text>
+<line x1="1155" y1="522" x2="1155" y2="532" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="1000" y="568" width="310" height="26" rx="4" fill="rgba(120,53,15,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="1155" y="584" text-anchor="middle" fill="#94a3b8" font-size="8">negative_handler.py — 否定问题处理</text>
+<line x1="1155" y1="558" x2="1155" y2="568" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<!-- ================================================================ -->
+<!-- SECTION 5: 前端与入口 -->
+<!-- ================================================================ -->
+
+<rect x="20" y="630" width="270" height="30" rx="5" fill="rgba(136,19,55,0.35)" stroke="#fb7185" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="155" y="649" text-anchor="middle" fill="#fb7185" font-size="9">前端与入口</text>
+
+<rect x="20" y="680" width="270" height="26" rx="4" fill="rgba(136,19,55,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="155" y="696" text-anchor="middle" fill="#94a3b8" font-size="8">main.py — 统一启动入口</text>
+<line x1="155" y1="660" x2="155" y2="680" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="20" y="716" width="270" height="26" rx="4" fill="rgba(136,19,55,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="155" y="732" text-anchor="middle" fill="#94a3b8" font-size="8">app.py — Streamlit Web界面</text>
+<line x1="155" y1="706" x2="155" y2="716" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="20" y="752" width="270" height="26" rx="4" fill="rgba(136,19,55,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="155" y="768" text-anchor="middle" fill="#94a3b8" font-size="8">evaluator.py — 评估工具</text>
+<line x1="155" y1="742" x2="155" y2="752" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<rect x="20" y="788" width="270" height="26" rx="4" fill="rgba(136,19,55,0.25)" stroke="#334155" stroke-width="0.8"/>
+<text x="155" y="804" text-anchor="middle" fill="#94a3b8" font-size="8">logger.py — 日志记录</text>
+<line x1="155" y1="778" x2="155" y2="788" stroke="#334155" stroke-width="0.8" marker-end="url(#arrow)"/>
+
+<!-- ================================================================ -->
+<!-- DATA FLOW SECTION -->
+<!-- ================================================================ -->
+
+<rect x="350" y="570" width="570" height="30" rx="5" fill="rgba(30,41,59,0.4)" stroke="#64748b" stroke-width="1"/>
+<text x="635" y="589" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="500">🔄 核心数据流 (Pipeline)</text>
+
+<!-- Flow boxes -->
+<rect x="20" y="860" width="170" height="42" rx="6" fill="rgba(8,51,68,0.4)" stroke="#22d3ee" stroke-width="1.2"/>
+<text x="105" y="878" text-anchor="middle" fill="#22d3ee" font-size="9" font-weight="500">PDF</text>
+<text x="105" y="893" text-anchor="middle" fill="#64748b" font-size="7">data/*.pdf</text>
+
+<rect x="220" y="860" width="170" height="42" rx="6" fill="rgba(8,51,68,0.4)" stroke="#22d3ee" stroke-width="1.2"/>
+<text x="305" y="878" text-anchor="middle" fill="#22d3ee" font-size="9" font-weight="500">MinerU 解析</text>
+<text x="305" y="893" text-anchor="middle" fill="#64748b" font-size="7">chunks + markdown</text>
+
+<rect x="420" y="860" width="170" height="42" rx="6" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1.2"/>
+<text x="505" y="878" text-anchor="middle" fill="#34d399" font-size="9" font-weight="500">BM25 索引</text>
+<text x="505" y="893" text-anchor="middle" fill="#64748b" font-size="7">全文检索</text>
+
+<rect x="620" y="860" width="170" height="42" rx="6" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1.2"/>
+<text x="705" y="878" text-anchor="middle" fill="#34d399" font-size="9" font-weight="500">Milvus 向量</text>
+<text x="705" y="893" text-anchor="middle" fill="#64748b" font-size="7">语义检索</text>
+
+<rect x="820" y="860" width="170" height="42" rx="6" fill="rgba(76,29,149,0.4)" stroke="#a78bfa" stroke-width="1.2"/>
+<text x="905" y="878" text-anchor="middle" fill="#a78bfa" font-size="9" font-weight="500">RRF融合</text>
+<text x="905" y="893" text-anchor="middle" fill="#64748b" font-size="7">排序 Top-K</text>
+
+<rect x="1020" y="860" width="170" height="42" rx="6" fill="rgba(120,53,15,0.4)" stroke="#fbbf24" stroke-width="1.2"/>
+<text x="1105" y="878" text-anchor="middle" fill="#fbbf24" font-size="9" font-weight="500">LLM 生成</text>
+<text x="1105" y="893" text-anchor="middle" fill="#64748b" font-size="7">答案输出</text>
+
+<!-- Flow arrows -->
+<line x1="190" y1="881" x2="220" y2="881" stroke="#475569" stroke-width="1.2" marker-end="url(#arrow)"/>
+<line x1="390" y1="881" x2="420" y2="881" stroke="#475569" stroke-width="1.2" marker-end="url(#arrow)"/>
+<line x1="590" y1="881" x2="620" y2="881" stroke="#475569" stroke-width="1.2" marker-end="url(#arrow)"/>
+<line x1="790" y1="881" x2="820" y2="881" stroke="#475569" stroke-width="1.2" marker-end="url(#arrow)"/>
+<line x1="990" y1="881" x2="1020" y2="881" stroke="#475569" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+<!-- ================================================================ -->
+<!-- 回答优先级 -->
+<!-- ================================================================ -->
+
+<rect x="350" y="940" width="570" height="30" rx="5" fill="rgba(30,41,59,0.4)" stroke="#64748b" stroke-width="1"/>
+<text x="635" y="959" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="500">🎯 回答优先级 (Answer Pipeline)</text>
+
+<rect x="20" y="990" width="370" height="40" rx="6" fill="rgba(76,29,149,0.3)" stroke="#a78bfa" stroke-width="1"/>
+<text x="205" y="1008" text-anchor="middle" fill="#a78bfa" font-size="9" font-weight="500">1. 元数据直答</text>
+<text x="205" y="1022" text-anchor="middle" fill="#64748b" font-size="7">法定代表人 / 注册资本 / 成立日期 / 注册地址</text>
+
+<rect x="420" y="990" width="370" height="40" rx="6" fill="rgba(76,29,149,0.3)" stroke="#a78bfa" stroke-width="1"/>
+<text x="605" y="1008" text-anchor="middle" fill="#a78bfa" font-size="9" font-weight="500">2. 长期记忆命中</text>
+<text x="605" y="1022" text-anchor="middle" fill="#64748b" font-size="7">Milvus/memory.json 中已确认的Q&A</text>
+
+<rect x="820" y="990" width="370" height="40" rx="6" fill="rgba(76,29,149,0.3)" stroke="#a78bfa" stroke-width="1"/>
+<text x="1005" y="1008" text-anchor="middle" fill="#a78bfa" font-size="9" font-weight="500">3. 检索上下文规则抽取</text>
+<text x="1005" y="1022" text-anchor="middle" fill="#64748b" font-size="7">local_answer.py 正则/关键词直接提取</text>
+
+<rect x="20" y="1045" width="370" height="40" rx="6" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1"/>
+<text x="205" y="1063" text-anchor="middle" fill="#fbbf24" font-size="9" font-weight="500">4. LLM 生成</text>
+<text x="205" y="1077" text-anchor="middle" fill="#64748b" font-size="7">根据检索上下文拼接Prompt，调用LLM</text>
+
+<rect x="420" y="1045" width="370" height="40" rx="6" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1"/>
+<text x="605" y="1063" text-anchor="middle" fill="#fbbf24" font-size="9" font-weight="500">5. 离线兜底抽取</text>
+<text x="605" y="1077" text-anchor="middle" fill="#64748b" font-size="7">如果以上全部失败，返回"未找到相关信息"</text>
+
+<rect x="820" y="1045" width="370" height="40" rx="6" fill="rgba(251,146,60,0.3)" stroke="#fb923c" stroke-width="1"/>
+<text x="1005" y="1063" text-anchor="middle" fill="#fb923c" font-size="9" font-weight="500">答案后处理</text>
+<text x="1005" y="1077" text-anchor="middle" fill="#64748b" font-size="7">清除表格残片 / 过滤无关内容 / 格式规范化</text>
+
+<!-- ================================================================ -->
+<!-- 多轮对话模块 -->
+<!-- ================================================================ -->
+
+<rect x="350" y="1125" width="570" height="30" rx="5" fill="rgba(30,41,59,0.4)" stroke="#64748b" stroke-width="1"/>
+<text x="635" y="1144" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="500">💬 多轮对话 (Session & Coreference)</text>
+
+<rect x="20" y="1175" width="300" height="135" rx="8" fill="rgba(76,29,149,0.2)" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4,3"/>
+<text x="170" y="1195" text-anchor="middle" fill="#a78bfa" font-size="9" font-weight="500">指代消解 CoreferenceResolver</text>
+<text x="30" y="1215" fill="#94a3b8" font-size="8">• 公司别名映射（兴图新科/力源信息）</text>
+<text x="30" y="1235" fill="#94a3b8" font-size="8">• 代词替换（这个公司/该公司/他/它）</text>
+<text x="30" y="1255" fill="#94a3b8" font-size="8">• "那XX呢" 切换公司追问</text>
+<text x="30" y="1275" fill="#94a3b8" font-size="8">• 回看上一条用户问题改写</text>
+<text x="30" y="1295" fill="#94a3b8" font-size="8">• 输出 resolved_question 供 RAG 检索</text>
+
+<rect x="350" y="1175" width="300" height="135" rx="8" fill="rgba(76,29,149,0.2)" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4,3"/>
+<text x="500" y="1195" text-anchor="middle" fill="#a78bfa" font-size="9" font-weight="500">Session 历史管理</text>
+<text x="360" y="1215" fill="#94a3b8" font-size="8">• Redis 存储（默认 6379）</text>
+<text x="360" y="1235" fill="#94a3b8" font-size="8">• 进程内存回退（Redis不可用时）</text>
+<text x="360" y="1255" fill="#94a3b8" font-size="8">• 最近 5 轮（SESSION_HISTORY_LIMIT）</text>
+<text x="360" y="1275" fill="#94a3b8" font-size="8">• 记录 question / resolved_question</text>
+<text x="360" y="1295" fill="#94a3b8" font-size="8">• record mentioned_companies</text>
+
+<rect x="680" y="1175" width="300" height="135" rx="8" fill="rgba(76,29,149,0.2)" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4,3"/>
+<text x="830" y="1195" text-anchor="middle" fill="#a78bfa" font-size="9" font-weight="500">记忆系统 Memory</text>
+<text x="690" y="1215" fill="#94a3b8" font-size="8">• Redis 短期记忆（最近20条消息）</text>
+<text x="690" y="1235" fill="#94a3b8" font-size="8">• Milvus 长期记忆（embedding检索）</text>
+<text x="690" y="1255" fill="#94a3b8" font-size="8">• memory.json 本地文件兜底</text>
+<text x="690" y="1275" fill="#94a3b8" font-size="8">• QA 对 + helpful_count 评分</text>
+<text x="690" y="1295" fill="#94a3b8" font-size="8">• 精确问题跳过记忆（加速）</text>
+
+<!-- ================================================================ -->
+<!-- 多模态模块 -->
+<!-- ================================================================ -->
+
+<rect x="350" y="1350" width="570" height="30" rx="5" fill="rgba(30,41,59,0.4)" stroke="#64748b" stroke-width="1"/>
+<text x="635" y="1369" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="500">🖼️ 多模态图文问答</text>
+
+<rect x="20" y="1400" width="300" height="95" rx="8" fill="rgba(251,146,60,0.2)" stroke="#fb923c" stroke-width="1"/>
+<text x="170" y="1420" text-anchor="middle" fill="#fb923c" font-size="9" font-weight="500">MultimodalImageParser</text>
+<text x="30" y="1440" fill="#94a3b8" font-size="8">• 小米 MiMo v2.5 多模态模型</text>
+<text x="30" y="1460" fill="#94a3b8" font-size="8">• Base64 图片编码 → OpenAI API 格式</text>
+<text x="30" y="1480" fill="#94a3b8" font-size="8">• Redis 多模态缓存（1h TTL）</text>
+
+<rect x="350" y="1400" width="300" height="95" rx="8" fill="rgba(251,146,60,0.2)" stroke="#fb923c" stroke-width="1"/>
+<text x="500" y="1420" text-anchor="middle" fill="#fb923c" font-size="9" font-weight="500">预设工作图片</text>
+<text x="360" y="1440" fill="#94a3b8" font-size="8">• 组织结构图 (p039)</text>
+<text x="360" y="1460" fill="#94a3b8" font-size="8">• 2008年中国IC市场增长图 (p072)</text>
+<text x="360" y="1480" fill="#94a3b8" font-size="8">• Config.MULTIMODAL_WORK_ORDER_IMAGES</text>
+
+<rect x="680" y="1400" width="300" height="95" rx="8" fill="rgba(251,146,60,0.2)" stroke="#fb923c" stroke-width="1"/>
+<text x="830" y="1420" text-anchor="middle" fill="#fb923c" font-size="9" font-weight="500">可视化渲染</text>
+<text x="690" y="1440" fill="#94a3b8" font-size="8">• visual_extractor.py PDF→图片</text>
+<text x="690" y="1460" fill="#94a3b8" font-size="8">• 表格视觉提取（表格转图片分析）</text>
+<text x="690" y="1480" fill="#94a3b8" font-size="8">• render_pdf_page_to_image()</text>
+
+<!-- ================================================================ -->
+<!-- 基础设施 -->
+<!-- ================================================================ -->
+
+<rect x="350" y="1535" width="570" height="30" rx="5" fill="rgba(30,41,59,0.4)" stroke="#64748b" stroke-width="1"/>
+<text x="635" y="1554" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="500">⚙️ 基础设施 & 部署</text>
+
+<rect x="20" y="1585" width="255" height="80" rx="8" fill="rgba(120,53,15,0.2)" stroke="#fbbf24" stroke-width="1"/>
+<text x="147" y="1605" text-anchor="middle" fill="#fbbf24" font-size="9" font-weight="500">Docker 服务</text>
+<text x="30" y="1625" fill="#94a3b8" font-size="8">• Redis（端口 6379）</text>
+<text x="30" y="1645" fill="#94a3b8" font-size="8">• Milvus（端口 19530）</text>
+<text x="30" y="1665" fill="#94a3b8" font-size="8">• docker-compose.yml 一键启动</text>
+
+<rect x="305" y="1585" width="255" height="80" rx="8" fill="rgba(120,53,15,0.2)" stroke="#fbbf24" stroke-width="1"/>
+<text x="432" y="1605" text-anchor="middle" fill="#fbbf24" font-size="9" font-weight="500">嵌入模型</text>
+<text x="315" y="1625" fill="#94a3b8" font-size="8">• BAAI/bge-base-zh-v1.5</text>
+<text x="315" y="1645" fill="#94a3b8" font-size="8">• 768维向量</text>
+<text x="315" y="1665" fill="#94a3b8" font-size="8">• 本地加载（SentenceTransformer）</text>
+
+<rect x="590" y="1585" width="255" height="80" rx="8" fill="rgba(120,53,15,0.2)" stroke="#fbbf24" stroke-width="1"/>
+<text x="717" y="1605" text-anchor="middle" fill="#fbbf24" font-size="9" font-weight="500">应用部署</text>
+<text x="600" y="1625" fill="#94a3b8" font-size="8">• Web： main.py → Streamlit</text>
+<text x="600" y="1645" fill="#94a3b8" font-size="8">• CLI： main.py --mode cli</text>
+<text x="600" y="1665" fill="#94a3b8" font-size="8">• .venv 虚拟环境自动切换</text>
+
+<rect x="875" y="1585" width="255" height="80" rx="8" fill="rgba(120,53,15,0.2)" stroke="#fbbf24" stroke-width="1"/>
+<text x="1002" y="1605" text-anchor="middle" fill="#fbbf24" font-size="9" font-weight="500">配置文件</text>
+<text x="885" y="1625" fill="#94a3b8" font-size="8">• .env 环境变量</text>
+<text x="885" y="1645" fill="#94a3b8" font-size="8">• src/config.py 全部配置</text>
+<text x="885" y="1665" fill="#94a3b8" font-size="8">• 动态 BM25/向量权重</text>
+
+<!-- ================================================================ -->
+<!-- 文件结构 -->
+<!-- ================================================================ -->
+
+<rect x="350" y="1705" width="570" height="30" rx="5" fill="rgba(30,41,59,0.4)" stroke="#64748b" stroke-width="1"/>
+<text x="635" y="1724" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="500">📁 目录结构一览</text>
+
+<rect x="20" y="1755" width="420" height="185" rx="8" fill="rgba(30,41,59,0.25)" stroke="#334155" stroke-width="1"/>
+<text x="20" y="1775" fill="#64748b" font-size="8" font-family="sans-serif">问答系统6/</text>
+<text x="30" y="1793" fill="#475569" font-size="7.5" font-family="sans-serif">├── main.py              # 统一启动入口</text>
+<text x="30" y="1810" fill="#475569" font-size="7.5" font-family="sans-serif">├── app.py               # Streamlit Web界面</text>
+<text x="30" y="1827" fill="#475569" font-size="7.5" font-family="sans-serif">├── docker-compose.yml   # Redis + Milvus</text>
+<text x="30" y="1844" fill="#475569" font-size="7.5" font-family="sans-serif">├── requirements.txt     # 依赖</text>
+<text x="30" y="1861" fill="#475569" font-size="7.5" font-family="sans-serif">├── data/                # PDF源文件</text>
+<text x="30" y="1878" fill="#475569" font-size="7.5" font-family="sans-serif">├── mineru_output/       # MinerU解析输出</text>
+<text x="30" y="1895" fill="#475569" font-size="7.5" font-family="sans-serif">├── pdf_parser/          # PDF解析模块</text>
+<text x="30" y="1912" fill="#475569" font-size="7.5" font-family="sans-serif">├── src/                 # 核心源码</text>
+<text x="30" y="1929" fill="#475569" font-size="7.5" font-family="sans-serif">├── utils/               # 工具模块</text>
+<text x="30" y="1946" fill="#475569" font-size="7.5" font-family="sans-serif">├── 技术文档.md          # 架构文档</text>
+
+<rect x="470" y="1755" width="420" height="185" rx="8" fill="rgba(30,41,59,0.25)" stroke="#334155" stroke-width="1"/>
+<text x="470" y="1775" fill="#64748b" font-size="8" font-family="sans-serif">src/ 核心模块详解</text>
+<text x="480" y="1793" fill="#475569" font-size="7.5" font-family="sans-serif">├── config.py            # 配置（环境变量）</text>
+<text x="480" y="1810" fill="#475569" font-size="7.5" font-family="sans-serif">├── constants.py         # 常量定义</text>
+<text x="480" y="1827" fill="#475569" font-size="7.5" font-family="sans-serif">├── document.py          # Document数据类</text>
+<text x="480" y="1844" fill="#475569" font-size="7.5" font-family="sans-serif">├── models.py            # InitResult/RAGResponse</text>
+<text x="480" y="1861" fill="#475569" font-size="7.5" font-family="sans-serif">├── prompts.py           # Prompt模板</text>
+<text x="480" y="1878" fill="#475569" font-size="7.5" font-family="sans-serif">├── retriever/           # 混合检索</text>
+<text x="480" y="1895" fill="#475569" font-size="7.5" font-family="sans-serif">├── rag_engine/          # RAG编排</text>
+<text x="480" y="1912" fill="#475569" font-size="7.5" font-family="sans-serif">├── multimodal/          # 多模态解析</text>
+<text x="480" y="1929" fill="#475569" font-size="7.5" font-family="sans-serif">├── validation/          # 答案验证</text>
+<text x="480" y="1946" fill="#475569" font-size="7.5" font-family="sans-serif">├── session_manager.py   # 对话管理</text>
+
+<!-- ================================================================ -->
+<!-- 关键技术指标 -->
+<!-- ================================================================ -->
+
+<rect x="350" y="1975" width="570" height="30" rx="5" fill="rgba(30,41,59,0.4)" stroke="#64748b" stroke-width="1"/>
+<text x="635" y="1994" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="500">📊 关键技术指标</text>
+
+<rect x="20" y="2025" width="320" height="75" rx="8" fill="rgba(6,78,59,0.2)" stroke="#34d399" stroke-width="1"/>
+<text x="180" y="2048" text-anchor="middle" fill="#34d399" font-size="11" font-weight="500">检索参数</text>
+<text x="30" y="2070" fill="#94a3b8" font-size="8">BM25_K=6  |  VECTOR_K=4  |  RRF_K=30</text>
+<text x="30" y="2088" fill="#94a3b8" font-size="8">FINAL_K=3  |  BM25权重=3.0  |  向量权重=1.0</text>
+
+<rect x="370" y="2025" width="320" height="75" rx="8" fill="rgba(120,53,15,0.2)" stroke="#fbbf24" stroke-width="1"/>
+<text x="530" y="2048" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="500">LLM 参数</text>
+<text x="380" y="2070" fill="#94a3b8" font-size="8">LLM_TIMEOUT=2.0s  |  MAX_TOKENS=512</text>
+<text x="380" y="2088" fill="#94a3b8" font-size="8">CONTEXT_MAX_CHARS=1800  |  温度=0.1</text>
+
+<rect x="720" y="2025" width="320" height="75" rx="8" fill="rgba(76,29,149,0.2)" stroke="#a78bfa" stroke-width="1"/>
+<text x="880" y="2048" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="500">记忆 & 缓存</text>
+<text x="730" y="2070" fill="#94a3b8" font-size="8">短期记忆=20条  |  会话历史=5轮</text>
+<text x="730" y="2088" fill="#94a3b8" font-size="8">答案缓存=30s  |  长期记忆阈值=0.35</text>
+
+<!-- ================================================================ -->
+<!-- 工单演进 -->
+<!-- ================================================================ -->
+
+<rect x="350" y="2135" width="570" height="30" rx="5" fill="rgba(30,41,59,0.4)" stroke="#64748b" stroke-width="1"/>
+<text x="635" y="2154" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="500">📝 工单迭代历程</text>
+
+<rect x="20" y="2185" width="260" height="65" rx="6" fill="rgba(8,51,68,0.25)" stroke="#22d3ee" stroke-width="0.8"/>
+<text x="150" y="2205" text-anchor="middle" fill="#22d3ee" font-size="8" font-weight="500">工单一 ~ 工单四</text>
+<text x="30" y="2222" fill="#94a3b8" font-size="7">文本检索 / 结构化问答</text>
+<text x="30" y="2238" fill="#94a3b8" font-size="7">负向问题 / 图片解析</text>
+
+<rect x="310" y="2185" width="260" height="65" rx="6" fill="rgba(6,78,59,0.25)" stroke="#34d399" stroke-width="0.8"/>
+<text x="440" y="2205" text-anchor="middle" fill="#34d399" font-size="8" font-weight="500">工单五</text>
+<text x="320" y="2222" fill="#94a3b8" font-size="7">多轮对话 + 指代消解</text>
+<text x="320" y="2238" fill="#94a3b8" font-size="7">Session历史 + Coreference</text>
+
+<rect x="600" y="2185" width="260" height="65" rx="6" fill="rgba(76,29,149,0.25)" stroke="#a78bfa" stroke-width="0.8"/>
+<text x="730" y="2205" text-anchor="middle" fill="#a78bfa" font-size="8" font-weight="500">工单六 (当前)</text>
+<text x="610" y="2222" fill="#94a3b8" font-size="7">Query理解优化 / MinerU集成</text>
+<text x="610" y="2238" fill="#94a3b8" font-size="7">混合检索增强 / 多模态缓存</text>
+
+<rect x="890" y="2185" width="260" height="65" rx="6" fill="rgba(136,19,55,0.25)" stroke="#fb7185" stroke-width="0.8"/>
+<text x="1020" y="2205" text-anchor="middle" fill="#fb7185" font-size="8" font-weight="500">未来方向</text>
+<text x="900" y="2222" fill="#94a3b8" font-size="7">更多公司招股书 / 跨文档问答</text>
+<text x="900" y="2238" fill="#94a3b8" font-size="7">复杂推理 / Agent化</text>
+
+</svg>
+</div>
+<div class="footer">PDF招股说明书智能问答系统 v6  ｜  生成于 2026-06-06</div>
+</div>
+</body>
+</html>
