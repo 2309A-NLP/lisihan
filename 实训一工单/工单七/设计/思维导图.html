@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>问答系统7 思维导图</title>
+<style>
+  body { margin: 0; background: #f5f5f5; }
+  #mindmap { width: 100vw; height: 100vh; }
+</style>
+</head>
+<body>
+<div id="mindmap"></div>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader"></script>
+<script>
+window.markmap = {
+  autoLoader: { manual: false },
+  data: {
+    "t": "root",
+    "c": [{
+      "t": "问答系统7",
+      "c": [{
+        "t": "1. 数据层",
+        "c": [
+          {
+            "t": "PDF文档（11本）",
+            "c": [
+              { "t": "招股说明书", "c": [
+                { "t": "招股说明书1.pdf" },
+                { "t": "招股说明书2.pdf" }
+              ]},
+              { "t": "金融年报", "c": [
+                { "t": "平安银行 2019" },
+                { "t": "中国平安 2019" },
+                { "t": "招商银行 2019" },
+                { "t": "邮储银行 2019" },
+                { "t": "中信证券 2020" },
+                { "t": "中国人寿 2020" },
+                { "t": "中国太保 2021" },
+                { "t": "招商证券 2021" },
+                { "t": "国泰君安 2021" }
+              ]}
+            ]
+          },
+          { "t": "MinerU 解析输出", "c": [
+            { "t": "*_chunks.json（RAG片段）" },
+            { "t": "*_metadata.json（元数据）" },
+            { "t": "*/auto/*.md（全文）" },
+            { "t": "*/auto/*_content_list.json（结构化内容）" },
+            { "t": "images/（提取图片）" }
+          ]},
+          { "t": "多模态表格提取", "c": [
+            { "t": "pages/（页面渲染图）" },
+            { "t": "crops/（表格裁剪）" },
+            { "t": "stitched/（跨页拼接）" },
+            { "t": "tables.json（Markdown结果）" }
+          ]},
+          { "t": "内存层", "c": [
+            { "t": "answers.json" },
+            { "t": "memory.json（长期记忆）" }
+          ]}
+        ]
+      }, {
+        "t": "2. PDF解析层",
+        "c": [
+          { "t": "pdf_parser 模块", "c": [
+            { "t": "main.py - PDFParser主类" },
+            { "t": "parser.py - 解析主逻辑" },
+            { "t": "text_extractor.py - PyMuPDF文本" },
+            { "t": "table_extractor.py - pdfplumber表格" },
+            { "t": "chunk_merger.py - 合并+分块" },
+            { "t": "metadata_extractor.py - 元数据提取" },
+            { "t": "filters.py - 页眉页脚过滤" },
+            { "t": "cli.py - 命令行入口" }
+          ]},
+          { "t": "MinerU适配", "c": [
+            { "t": "mineru_backend.py - MinerU转chunks" },
+            { "t": "run_mineru_wsl.py - WSL运行脚本" },
+            { "t": "utils/wsl_mineru.py - WSL桥接" },
+            { "t": "视觉分析", "c": [
+              { "t": "visual_detection.py" },
+              { "t": "visual_extractor.py" },
+              { "t": "visual_render.py" },
+              { "t": "visual_geometry.py" }
+            ]}
+          ]},
+          { "t": "多模态表格提取", "c": [
+            { "t": "multimodal_table_extractor.py" },
+            { "t": "处理流程", "c": [
+              { "t": "pdf_to_images - PDF→页面图片" },
+              { "t": "detect_tables - 视觉API检测表格bbox" },
+              { "t": "crop_table_regions - 裁剪表格区域" },
+              { "t": "group_cross_page - 跨页表格分组" },
+              { "t": "stitch_table_group - 拼接跨页表格" },
+              { "t": "extract_table_markdown - 视觉API提取Markdown" }
+            ]}
+          ]}
+        ]
+      }, {
+        "t": "3. 核心引擎",
+        "c": [
+          { "t": "RAGEngine", "c": [
+            { "t": "engine.py - 6大Mixin组合" },
+            { "t": "answering.py - 回答生成流程" },
+            { "t": "context.py - 检索上下文构建" },
+            { "t": "metadata.py - 元数据路由+置信度" },
+            { "t": "multimodal.py - 多模态图片问答" },
+            { "t": "cache.py - 回答缓存(30s TTL)" },
+            { "t": "initializer.py - 知识库初始化" }
+          ]},
+          { "t": "检索模块", "c": [
+            { "t": "hybrid.py - BM25+Milvus+RRF混合", "c": [
+              { "t": "动态权重(proper_noun/numeric/abstract)" },
+              { "t": "同义词扩展(20组)" },
+              { "t": "精确查询快速路径" },
+              { "t": "自动模糊降级" },
+              { "t": "短语/布尔/模糊3种匹配" }
+            ]},
+            { "t": "vector.py - Milvus向量检索" },
+            { "t": "fusion.py - RRF/加权平均融合" },
+            { "t": "reranker.py - LLM/TF-IDF/自适应重排" },
+            { "t": "query.py - 查询处理" },
+            { "t": "cache.py - LRU搜索缓存(100条)" },
+            { "t": "fulltext_retriever.py - 全文检索" },
+            { "t": "hybrid_retriever.py - 混合检索器" }
+          ]},
+          { "t": "记忆管理", "c": [
+            { "t": "memory_manager.py", "c": [
+              { "t": "RedisMemoryManager - 短期(20条)" },
+              { "t": "LongTermMemoryManager - 长期(文件+Milvus)" }
+            ]}
+          ]},
+          { "t": "多轮对话", "c": [
+            { "t": "coreference_resolver.py", "c": [
+              { "t": "公司别名(19个)" },
+              { "t": "代词识别(这个公司/他/它)" },
+              { "t": "话题切换(那兴图新科呢？)" }
+            ]},
+            { "t": "session_manager.py", "c": [
+              { "t": "最近5轮问答" },
+              { "t": "Redis/进程内存双模式" }
+            ]}
+          ]},
+          { "t": "MetadataCache", "c": [
+            { "t": "多公司元数据路由" },
+            { "t": "支持字段", "c": [
+              { "t": "法定代表人" },
+              { "t": "注册资本" },
+              { "t": "成立日期" },
+              { "t": "注册地址" },
+              { "t": "公司名称" },
+              { "t": "发行股数+比例" },
+              { "t": "控制关系关联方" }
+            ]}
+          ]}
+        ]
+      }, {
+        "t": "4. LLM与工具层",
+        "c": [
+          { "t": "LLM Engine", "c": [
+            { "t": "engine.py - OpenAI客户端" },
+            { "t": "generation.py - LLM生成" },
+            { "t": "local_answer.py - 本地规则抽取" },
+            { "t": "numeric.py - 数值提取" },
+            { "t": "text_tools.py - 文本处理" },
+            { "t": "entities.py - 实体抽取" }
+          ]},
+          { "t": "Query理解", "c": [
+            { "t": "query_rewriter.py - Query改写" },
+            { "t": "table_extractor.py - 招股书表格抽取" },
+            { "t": "question_classifier.py - 问题分类" }
+          ]},
+          { "t": "答案质量保障", "c": [
+            { "t": "answer_validator.py", "c": [
+              { "t": "12维质量校验" },
+              { "t": "自动重试(2.2s预算)" }
+            ]},
+            { "t": "negative_handler.py", "c": [
+              { "t": "否定类问题处理" },
+              { "t": "正→排除→否定两步法" }
+            ]}
+          ]},
+          { "t": "评估系统", "c": [
+            { "t": "evaluator.py", "c": [
+              { "t": "上下文相关性" },
+              { "t": "答案忠实度" },
+              { "t": "答案完整度" },
+              { "t": "RAG对比值" }
+            ]}
+          ]},
+          { "t": "Infra", "c": [
+            { "t": "logger.py - 日志" },
+            { "t": "text_utils.py - 文本工具" },
+            { "t": "retrieval_utils.py - 检索工具" },
+            { "t": "prompts.py - Prompt模板" },
+            { "t": "models.py - 数据模型" },
+            { "t": "constants.py - 常量" },
+            { "t": "document.py - 文档对象" }
+          ]}
+        ]
+      }, {
+        "t": "5. 前端与入口",
+        "c": [
+          { "t": "Streamlit Web", "c": [
+            { "t": "app.py - PDFQASystem主类" },
+            { "t": "render_sidebar()", "c": [
+              { "t": "索引管理面板" },
+              { "t": "检索策略(模式/匹配/重排/融合)" },
+              { "t": "混合权重滑块" },
+              { "t": "短期/长期记忆查看" },
+              { "t": "运行工单评估" }
+            ]},
+            { "t": "render_chat()", "c": [
+              { "t": "聊天对话界面" },
+              { "t": "检索片段展开" },
+              { "t": "有帮助/需改进反馈" },
+              { "t": "评估对比结果" }
+            ]}
+          ]},
+          { "t": "测试入口", "c": [
+            { "t": "test_work_order_7.py", "c": [
+              { "t": "10个年报测试问题" },
+              { "t": "PatchedRAGEngine" },
+              { "t": "JSON+Markdown双报告" }
+            ]},
+            { "t": "test_coreference_resolver.py" }
+          ]},
+          { "t": "运行脚本", "c": [
+            { "t": "run_mineru_wsl.py" }
+          ]}
+        ]
+      }, {
+        "t": "6. 外部服务",
+        "c": [
+          { "t": "Redis", "c": [
+            { "t": "短期记忆(20条)" },
+            { "t": "多模态缓存(1h TTL)" },
+            { "t": "Session历史(5轮)" },
+            { "t": "端口 6379" }
+          ]},
+          { "t": "Milvus", "c": [
+            { "t": "向量检索" },
+            { "t": "长期记忆存储" },
+            { "t": "端口 19530" },
+            { "t": "自动降级为BM25" }
+          ]},
+          { "t": "LLM API", "c": [
+            { "t": "小米 MiMo API" },
+            { "t": "mimo-v2.5-pro(文本)" },
+            { "t": "mimo-v2.5(多模态)" },
+            { "t": "OpenAI兼容接口" }
+          ]}
+        ]
+      }, {
+        "t": "7. 配置与运维",
+        "c": [
+          { "t": "src/config.py", "c": [
+            { "t": "LLM配置(APi/模型/超时)" },
+            { "t": "检索策略(RRF/动态权重)" },
+            { "t": "Milvus/Redis连接" },
+            { "t": "MinerU参数(方法/并发/重用)" },
+            { "t": "多模态配置" },
+            { "t": "14个评估问题" }
+          ]},
+          { "t": ".env", "c": [
+            { "t": "API Key" },
+            { "t": "API Base URL" },
+            { "t": "LLM模型名" }
+          ]},
+          { "t": "docker-compose.yml", "c": [
+            { "t": "Redis" },
+            { "t": "Milvus" }
+          ]},
+          { "t": "requirements.txt", "c": [
+            { "t": "streamlit / openai / torch" },
+            { "t": "pymilvus / redis / rank-bm25" },
+            { "t": "PyMuPDF / pdfplumber" },
+            { "t": "sentence-transformers" }
+          ]}
+        ]
+      }, {
+        "t": "8. 优化体系",
+        "c": [
+          { "t": "检索优化", "c": [
+            { "t": "BM25+向量+RRF混合" },
+            { "t": "4类动态权重" },
+            { "t": "20组同义词扩展" },
+            { "t": "精确查询快速路径" },
+            { "t": "自动模糊降级" },
+            { "t": "LRU搜索缓存" }
+          ]},
+          { "t": "回答优化", "c": [
+            { "t": "元数据直答(8种字段)" },
+            { "t": "本地规则抽取" },
+            { "t": "12维质量校验+重试" },
+            { "t": "负向问题两步法" },
+            { "t": "答案后处理" },
+            { "t": "多公司MetadataCache" },
+            { "t": "长期记忆复用" }
+          ]},
+          { "t": "性能优化", "c": [
+            { "t": "回答缓存(30s TTL)" },
+            { "t": "Milvus自动降级" },
+            { "t": "Redis双模式" },
+            { "t": "上下文截断" },
+            { "t": "多模态Redis缓存" },
+            { "t": "质量重试时间预算" },
+            { "t": "MinerU重用输出" }
+          ]},
+          { "t": "多模态优化", "c": [
+            { "t": "关键词语义触发" },
+            { "t": "4级图片智能定位" },
+            { "t": "双重缓存(进程+Redis)" },
+            { "t": "多模态表格检测提取" }
+          ]}
+        ]
+      }]
+    }]
+  }
+};
+</script>
+</body>
+</html>
