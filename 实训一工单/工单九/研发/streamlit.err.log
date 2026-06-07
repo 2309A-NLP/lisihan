@@ -1,0 +1,13 @@
+2026-06-02 08:55:04.941 Uvicorn server started on 127.0.0.1:8502
+2026-06-02 08:57:11,404 | INFO | src.graph_rag.graph_store | graph_store.py:84 | neo4j connected | uri=bolt://127.0.0.1:7687 | database=neo4j
+2026-06-02 08:57:14,256 | INFO | src.rag_engine.engine | initializer.py:48 | init knowledge base start | pdf_dir=./data
+2026-06-02 08:57:35,422 | INFO | src.retriever.hybrid | hybrid.py:124 | hybrid bm25 index built | collection=pdf_documents | chunks=43016
+2026-06-02 08:59:20,526 | INFO | src.graph_rag.graph_store | graph_store.py:124 | knowledge graph built | backend=neo4j+memory | nodes=4998 | relations=19996 | chunks=43016
+2026-06-02 08:59:20,532 | INFO | src.rag_engine.engine | initializer.py:79 | knowledge base indexed | documents=43016
+2026-06-02 09:54:48,640 | INFO | src.graph_rag.graph_store | graph_store.py:87 | neo4j connected | uri=bolt://127.0.0.1:7687 | database=neo4j
+2026-06-02 09:54:54,170 | INFO | src.rag_engine.engine | initializer.py:48 | init knowledge base start | pdf_dir=./data
+2026-06-02 09:55:35,196 | INFO | src.retriever.hybrid | hybrid.py:124 | hybrid bm25 index built | collection=pdf_documents | chunks=43016
+2026-06-02 09:56:01,692 | INFO | src.graph_rag.graph_store | graph_store.py:127 | knowledge graph built | backend=neo4j+memory | nodes=1088 | relations=1826 | chunks=43016
+2026-06-02 09:56:01,696 | INFO | src.rag_engine.engine | initializer.py:79 | knowledge base indexed | documents=43016
+2026-06-02 09:58:02,300 | INFO | src.rag_engine.engine | answering.py:335 | ask start | question=武汉力源信息技术股份有限公司组织结构图中，销售部有几个部门构成，其中大客户销售部有几个销售处构成？ | question_type=entity
+2026-06-02 09:58:15,578 | INFO | src.rag_engine.engine | multimodal.py:292 | multimodal answer length=90 | question=武汉力源信息技术股份有限公司组织结构图中，销售部有几个部门构成，其中大客户销售部有几个销售处构成？
