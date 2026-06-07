@@ -1,0 +1,2868 @@
+{
+  "summary": {
+    "work_order": "人工智能 NLP-RAG-Graph RAG 知识图谱问答",
+    "test_time": "2026-06-02 10:48:38",
+    "retrieval_mode": "hybrid_graph",
+    "total": 14,
+    "success_count": 14,
+    "failed_count": 0,
+    "context_count": 14,
+    "context_rate": 1.0,
+    "graph_hit_count": 14,
+    "graph_hit_rate": 1.0,
+    "average_accuracy": 1.0,
+    "average_response_time": 0.45988946301596506,
+    "average_graph_nodes": 3.7857142857142856,
+    "average_graph_edges": 4.285714285714286,
+    "graph_stats": {
+      "node_count": 1146,
+      "relation_count": 1942,
+      "chunk_count": 43016,
+      "backend": "neo4j+memory",
+      "neo4j_available": true
+    },
+    "comparison_with_work_order_7": {
+      "work_order_7": {
+        "work_order": "人工智能 NLP-RAG-功能测试及评估",
+        "test_time": "2026-05-28 08:00:48",
+        "retrieval_mode": "hybrid",
+        "total": 10,
+        "success_count": 10,
+        "failed_count": 0,
+        "context_count": 10,
+        "context_rate": 1.0,
+        "average_accuracy": 1.0,
+        "average_response_time": 0.4612279891967773
+      },
+      "work_order_8": {
+        "retrieval_mode": "hybrid_graph",
+        "average_accuracy": 1.0,
+        "average_response_time": 0.45988946301596506,
+        "graph_structure_output": true
+      },
+      "delta": {
+        "accuracy_delta": 0.0,
+        "response_time_delta": -0.0013385261808122606,
+        "graph_structure_delta": "工单八新增每题图谱实体、关系、子图节点和边"
+      }
+    }
+  },
+  "results": [
+    {
+      "id": 1,
+      "question": "军用领域收入分别是多少",
+      "answer": "6,464.51万元、14,414.16万元、18,780.67万元",
+      "accuracy": 1.0,
+      "response_time": 0.6708917617797852,
+      "retrieval_mode": "hybrid_graph",
+      "has_context": true,
+      "retrieved_count": 3,
+      "graph_backend": "neo4j+memory",
+      "graph_entities": [],
+      "graph_relations": [],
+      "graph_subgraph": {
+        "nodes": [
+          {
+            "id": "招股说明书1",
+            "label": "招股说明书1",
+            "type": "company"
+          },
+          {
+            "id": "82.10%",
+            "label": "82.10%",
+            "type": "entity"
+          }
+        ],
+        "edges": [
+          {
+            "source": "招股说明书1",
+            "target": "82.10%",
+            "label": "主营业务收入",
+            "source_file": "招股说明书1.pdf",
+            "page": 4,
+            "chunk_id": "p4_008"
+          },
+          {
+            "source": "招股说明书1",
+            "target": "82.10%",
+            "label": "主营业务收入",
+            "source_file": "招股说明书1.pdf",
+            "page": 39,
+            "chunk_id": "p39_008"
+          }
+        ],
+        "reason": "已从本题检索片段中动态抽取真实实体关系。"
+      },
+      "graph_node_count": 2,
+      "graph_edge_count": 2,
+      "citations": [
+        {
+          "source_file": "招股说明书1.pdf",
+          "page": 4,
+          "chunk_id": "p4_008",
+          "retrieval_source": "hybrid",
+          "score": 71.90657972760914
+        },
+        {
+          "source_file": "招股说明书1.pdf",
+          "page": 39,
+          "chunk_id": "p39_008",
+          "retrieval_source": "hybrid",
+          "score": 45.581641765887554
+        },
+        {
+          "source_file": "招股说明书1.pdf",
+          "page": 36,
+          "chunk_id": "p36_006",
+          "retrieval_source": "hybrid",
+          "score": 71.3070681426602
+        }
+      ],
+      "source_chunks": [
+        {
+          "content": "报告期内，公司主要向国防客户提供视频指挥控制、视频预警控制等视音频系统产品，直接和间接向国防客户的销售额合计分别为 6,464.51 万元、14,414.16万元、18,780.67 万元和 4,627.14 万元，占主营业务收入的比重分别为 82.10%、97.31%、94.84%和 94.34%；我国军工行业用户集中度高，导致以国防客户为主的发行人具有客户集中的特征，发行人报告期内向前五名客户合计销售额分别为4,189.49 万元、10,208.22 万元、16,014.91 万元和 4,401.33 万元，占营业收入的比重分别为 52.66%、68.58%、80.83%和 89.72%，2016 年受军改的影响，来自军方最终用户的订单不同程度的延迟或取消等，导致当年发行人资产状况、收入和利润水平受到较大影响，因此行业政策变动或特定用户需求变动均可能对公司经",
+          "metadata": {
+            "source_file": "招股说明书1.pdf",
+            "source_path": "C:\\Users\\freedom\\Desktop\\问答系统7\\data\\招股说明书1.pdf",
+            "parser_backend": "mineru",
+            "mineru_markdown": "mineru_output\\招股说明书1\\auto\\招股说明书1.md",
+            "mineru_content_list": "mineru_output\\招股说明书1\\auto\\招股说明书1_content_list.json",
+            "char_count": 386,
+            "has_table": false,
+            "page": 4,
+            "chunk_id": "p4_008",
+            "type": "text",
+            "auto_fallback": true,
+            "fallback_from": "phrase"
+          },
+          "relevance_score": 71.90657972760914,
+          "auto_fallback": true,
+          "fallback_from": "phrase"
+        },
+        {
+          "content": "保守国家秘密，是任何一家从事军工业务企业的第一要务。根据《武器装备科研生产单位保密资格审查认证管理办法》，拟承担武器装备科研生产任务的具有法人资格的企事业单位，均须经过保密资格审查认证。公司取得相关保密证书，在生产经营中一直将安全保密工作放在首位，采取各项有效措施保守国家秘密。但不排除一些意外情况发生导致有关国家秘密泄漏，如发生严重泄密事件，可能会导致公司丧失保密资质，不能继续开展军工涉密业务。报告期内，公司直接和间接向国防客户的销售额合计分别为 6,464.51 万元、14,414.16 万元、18,780.67万元和 4,627.14 万元，占主营业务收入的比重分别为 82.10%、97.31%、94.84%和 94.34%，如果因泄密等原因导致不能开展军工涉密业务，将对公司的生产经营、生存和发展产生重大不利影响。",
+          "metadata": {
+            "source_file": "招股说明书1.pdf",
+            "source_path": "C:\\Users\\freedom\\Desktop\\问答系统7\\data\\招股说明书1.pdf",
+            "parser_backend": "mineru",
+            "mineru_markdown": "mineru_output\\招股说明书1\\auto\\招股说明书1.md",
+            "mineru_content_list": "mineru_output\\招股说明书1\\auto\\招股说明书1_content_list.json",
+            "char_count": 364,
+            "has_table": false,
+            "page": 39,
+            "chunk_id": "p39_008",
+            "type": "text",
+            "auto_fallback": true,
+            "fallback_from": "phrase"
+          },
+          "relevance_score": 45.581641765887554,
+          "auto_fallback": true,
+          "fallback_from": "phrase"
+        },
+        {
+          "content": "报告期内，公司主要向国防客户提供视频指挥控制、视频预警控制等视音频系统产品，直接和间接向国防客户的销售额合计分别为 6,464.51 万元、14,414.1697.31%、94.84%和 94.34%；我国军工行业用户集中度高，导致以国防客户为主的发行人具有客户集中的特征，发行人报告期内向前五名客户合计销售额分别为4,189.49 万元、10,208.22 万元、16,014.91 万元和 4,401.33 万元，占营业收入的比重分别为 52.66%、68.58%、80.83%和 89.72%，2016 年受军改的影响，来自军方最终用户的订单不同程度的延迟或取消等，导致当年发行人资产状况、收入和利润水平受到较大影响，因此行业政策变动或特定用户需求变动均可能对公司经营产生较大影响，公司存在行业及客户集中度较高的风险。",
+          "metadata": {
+            "source_file": "招股说明书1.pdf",
+            "source_path": "C:\\Users\\freedom\\Desktop\\问答系统7\\data\\招股说明书1.pdf",
+            "parser_backend": "mineru",
+            "mineru_markdown": "mineru_output\\招股说明书1\\auto\\招股说明书1.md",
+            "mineru_content_list": "mineru_output\\招股说明书1\\auto\\招股说明书1_content_list.json",
+            "char_count": 362,
+            "has_table": false,
+            "page": 36,
+            "chunk_id": "p36_006",
+            "type": "text",
+            "auto_fallback": true,
+            "fallback_from": "phrase"
+          },
+          "relevance_score": 71.3070681426602,
+          "auto_fallback": true,
+          "fallback_from": "phrase"
+        }
+      ],
+      "status": "success",
+      "error": ""
+    },
+    {
+      "id": 2,
+      "question": "参与制定了哪个技术标准",
+      "answer": "[知识图谱关系] 招股说明书1 --参与制定技术标准--> 某视频技术规范1.0 [来源] 招股说明书1.pdf 第241页 chunk=p241_006 [原文证据] 公司目前已经成为军队视频指挥领域的重要供应商，参与制定了全军第一个视频指挥系统技术标准（即《某视频技术规范1.0》）",
+      "accuracy": 1.0,
+      "response_time": 0.3681917190551758,
+      "retrieval_mode": "hybrid_graph",
+      "has_context": true,
+      "retrieved_count": 6,
+      "graph_backend": "neo4j+memory",
+      "graph_entities": [
+        "本公司从万得信息技术股份有限公司",
+        "分众传媒信息技术股份有限公司",
+        "从万得信息技术股份有限公司",
+        "就职于北京鼎汉技术股份有限公司",
+        "杭州海康威视数字技术股份有限公司",
+        "浙江大华技术股份有限公司",
+        "武汉光庭信息技术股份有限公司",
+        "武汉力源信息技术股份有限公司"
+      ],
+      "graph_relations": [],
+      "graph_subgraph": {
+        "nodes": [
+          {
+            "id": "招股说明书1",
+            "label": "招股说明书1",
+            "type": "company"
+          },
+          {
+            "id": "某视频技术规范1.0",
+            "label": "某视频技术规范1.0",
+            "type": "entity"
+          },
+          {
+            "id": "2019年制订的《某视频指挥系统技术规范（1.0版",
+            "label": "2019年制订的《某视频指挥系统技术规范（1.0版",
+            "type": "entity"
+          }
+        ],
+        "edges": [
+          {
+            "source": "招股说明书1",
+            "target": "某视频技术规范1.0",
+            "label": "参与制定技术标准",
+            "source_file": "招股说明书1.pdf",
+            "page": 241,
+            "chunk_id": "p241_006"
+          },
+          {
+            "source": "招股说明书1",
+            "target": "某视频技术规范1.0",
+            "label": "参与制定技术标准",
+            "source_file": "招股说明书1.pdf",
+            "page": 182,
+            "chunk_id": "p182_008"
+          },
+          {
+            "source": "招股说明书1",
+            "target": "某视频技术规范1.0",
+            "label": "参与制定技术标准",
+            "source_file": "招股说明书1.pdf",
+            "page": 177,
+            "chunk_id": "p177_001"
+          },
+          {
+            "source": "招股说明书1",
+            "target": "2019年制订的《某视频指挥系统技术规范（1.0版",
+            "label": "参与制定技术标准",
+            "source_file": "招股说明书1.pdf",
+            "page": 160,
+            "chunk_id": "p160_001"
+          }
+        ],
+        "reason": "已从本题检索片段中动态抽取真实实体关系。"
+      },
+      "graph_node_count": 3,
+      "graph_edge_count": 4,
+      "citations": [
+        {
+          "source_file": "招股说明书1.pdf",
+          "page": 241,
+          "chunk_id": "p241_006",
+          "retrieval_source": "graph_rag",
+          "score": 1.01
+        },
+        {
+          "source_file": "招股说明书1.pdf",
+          "page": 182,
+          "chunk_id": "p182_008",
+          "retrieval_source": "graph_rag",
+          "score": 1.0
+        },
+        {
+          "source_file": "招股说明书1.pdf",
+          "page": 177,
+          "chunk_id": "p177_001",
+          "retrieval_source": "graph_rag",
+          "score": 0.99
+        },
+        {
+          "source_file": "招股说明书1.pdf",
+          "page": 241,
+          "chunk_id": "p241_006",
+          "retrieval_source": "hybrid",
+          "score": 216.09080712399464
+        },
+        {
+          "source_file": "招股说明书1.pdf",
+          "page": 160,
+          "chunk_id": "p160_001",
+          "retrieval_source": "hybrid",
+          "score": 163.27092261130264
+        },
+        {
+          "source_file": "招股说明书1.pdf",
+          "page": 177,
+          "chunk_id": "p177_001",
+          "retrieval_source": "hybrid",
+          "score": 148.3309455530284
+        }
+      ],
+      "source_chunks": [
+        {
+          "content": "[知识图谱关系] 招股说明书1 --参与制定技术标准--> 某视频技术规范1.0\n[来源] 招股说明书1.pdf 第241页 chunk=p241_006\n[原文证据] 公司目前已经成为军队视频指挥领域的重要供应商，参与制定了全军第一个视频指挥系统技术标准（即《某视频技术规范1.0》）。",
+          "metadata": {
+            "source_file": "招股说明书1.pdf",
+            "page": 241,
+            "chunk_id": "p241_006",
+            "type": "graph_relation",
+            "graph_source": "招股说明书1",
+            "graph_relation": "参与制定技术标准",
+            "graph_target": "某视频技术规范1.0",
+            "graph_backend": "neo4j+memory"
+          },
+          "relevance_score": 1.01,
+          "retrieval_source": "graph_rag",
+          "graph_relation": {
+            "source": "招股说明书1",
+            "relation": "参与制定技术标准",
+            "target": "某视频技术规范1.0",
+            "confidence": 0.9
+          }
+        },
+        {
+          "content": "[知识图谱关系] 招股说明书1 --参与制定技术标准--> 某视频技术规范1.0\n[来源] 招股说明书1.pdf 第182页 chunk=p182_008\n[原文证据] 公司目前已经成为军队视频指挥领域的重要供应商，参与制定了全军第一个视频指挥系统技术标准（即《某视频技术规范 1.0》）。而且，2014 年 12 月，某大型研究所牵头承担的“某情报、指挥、控制与通信网络一体化工程”（即相当于美军的 C4ISR 系统）荣获国家科技进步一等奖。该工程参与建设单位包括项目主管部门、总体单位、国有科研机构等，根据总体单位、军方用户出具的证明文件和承研合同，民营企业兴图新科是该工程网络化视频指挥系统的唯一参与者，但未能列入获奖名单。",
+          "metadata": {
+            "source_file": "招股说明书1.pdf",
+            "page": 182,
+            "chunk_id": "p182_008",
+            "type": "graph_relation",
+            "graph_source": "招股说明书1",
+            "graph_relation": "参与制定技术标准",
+            "graph_target": "某视频技术规范1.0",
+            "graph_backend": "neo4j+memory"
+          },
+          "relevance_score": 1.0,
+          "retrieval_source": "graph_rag",
+          "graph_relation": {
+            "source": "招股说明书1",
+            "relation": "参与制定技术标准",
+            "target": "某视频技术规范1.0",
+            "confidence": 0.9
+          }
+        },
+        {
+          "content": "[知识图谱关系] 招股说明书1 --参与制定技术标准--> 某视频技术规范1.0\n[来源] 招股说明书1.pdf 第177页 chunk=p177_001\n[原文证据] 截至报告期末，公司获得专利认证 35项、软件著作权 56项，且未包括公司尚未申请和尚未获得授权的专利技术和软件著作权，参与制定了全军第一个视频指挥系统技术标准（即《某视频技术规范 1.0》）。较为雄厚的技术积淀和应用能力，帮助公司在电子信息领域，尤其在军队指挥信息系统领域具备较强的技术竞争力。",
+          "metadata": {
+            "source_file": "招股说明书1.pdf",
+            "page": 177,
+            "chunk_id": "p177_001",
+            "type": "graph_relation",
+            "graph_source": "招股说明书1",
+            "graph_relation": "参与制定技术标准",
+            "graph_target": "某视频技术规范1.0",
+            "graph_backend": "neo4j+memory"
+          },
+          "relevance_score": 0.99,
+          "retrieval_source": "graph_rag",
+          "graph_relation": {
+            "source": "招股说明书1",
+            "relation": "参与制定技术标准",
+            "target": "某视频技术规范1.0",
+            "confidence": 0.9
+          }
+        },
+        {
+          "content": "公司目前已经成为军队视频指挥领域的重要供应商，参与制定了全军第一个视频指挥系统技术标准（即《某视频技术规范1.0》）。",
+          "metadata": {
+            "source_file": "招股说明书1.pdf",
+            "source_path": "C:\\Users\\freedom\\Desktop\\问答系统7\\data\\招股说明书1.pdf",
+            "parser_backend": "mineru",
+            "mineru_markdown": "mineru_output\\招股说明书1\\auto\\招股说明书1.md",
+            "mineru_content_list": "mineru_output\\招股说明书1\\auto\\招股说明书1_content_list.json",
+            "char_count": 59,
+            "has_table": false,
+            "page": 241,
+            "chunk_id": "p241_006",
+            "type": "text"
+          },
+          "relevance_score": 216.09080712399464,
+          "auto_fallback": false,
+          "fallback_from": ""
+        },
+        {
+          "content": "公司目前已经成为军队视频指挥领域的重要供应商，参与制定了全军第一个视频指挥系统技术标准（即 2019年制订的《某视频指挥系统技术规范（1.0版）》）。该技术标准由军事科学院牵头，联合数据通信科学技术研究所、北京大学共同制定，“兴图新科、飞讯数码、维盛网域、科达、数码视讯、海康威视、浙江大华、深圳邦彦、奥维通信等国内主流视频设备厂商，参与了技术规范制定和试验验证等工作”。该技术规范主要用于指导视频指挥系统相关设备的研制及系统建设。",
+          "metadata": {
+            "source_file": "招股说明书1.pdf",
+            "source_path": "C:\\Users\\freedom\\Desktop\\问答系统7\\data\\招股说明书1.pdf",
+            "parser_backend": "mineru",
+            "mineru_markdown": "mineru_output\\招股说明书1\\auto\\招股说明书1.md",
+            "mineru_content_list": "mineru_output\\招股说明书1\\auto\\招股说明书1_content_list.json",
+            "char_count": 216,
+            "has_table": false,
+            "page": 160,
+            "chunk_id": "p160_001",
+            "type": "text"
+          },
+          "relevance_score": 163.27092261130264,
+          "auto_fallback": false,
+          "fallback_from": ""
+        },
+        {
+          "content": "截至报告期末，公司获得专利认证 35项、软件著作权 56项，且未包括公司尚未申请和尚未获得授权的专利技术和软件著作权，参与制定了全军第一个视频指挥系统技术标准（即《某视频技术规范 1.0》）。较为雄厚的技术积淀和应用能力，帮助公司在电子信息领域，尤其在军队指挥信息系统领域具备较强的技术竞争力。",
+          "metadata": {
+            "source_file": "招股说明书1.pdf",
+            "source_path": "C:\\Users\\freedom\\Desktop\\问答系统7\\data\\招股说明书1.pdf",
+            "parser_backend": "mineru",
+            "mineru_markdown": "mineru_output\\招股说明书1\\auto\\招股说明书1.md",
+            "mineru_content_list": "mineru_output\\招股说明书1\\auto\\招股说明书1_content_list.json",
+            "char_count": 147,
+            "has_table": false,
+            "page": 177,
+            "chunk_id": "p177_001",
+            "type": "text"
+          },
+          "relevance_score": 148.3309455530284,
+          "auto_fallback": false,
+          "fallback_from": ""
+        }
+      ],
+      "status": "success",
+      "error": ""
+    },
+    {
+      "id": 3,
+      "question": "收入占主营业务收入的比重分别是多少",
+      "answer": "78.76%、53.89%、62.76%",
+      "accuracy": 1.0,
+      "response_time": 0.44464826583862305,
+      "retrieval_mode": "hybrid_graph",
+      "has_context": true,
+      "retrieved_count": 6,
+      "graph_backend": "neo4j+memory",
+      "graph_entities": [
+        "主营业务收入",
+        "营业收入",
+        "营业部",
+        "机构与交易业务委员会"
+      ],
+      "graph_relations": [
+        {
+          "source": "中国平安保险集团股份有限公司",
+          "relation": "涉及组织",
+          "target": "营业部",
+          "confidence": 0.78,
+          "source_file": "2020-02-21__中国平安保险集团股份有限公司__601318__中国平安__2019年__年度报告.pdf",
+          "page": 31,
+          "chunk_id": "p31_006"
+        },
+        {
+          "source": "中信证券股份有限公司",
+          "relation": "涉及组织",
+          "target": "营业部",
+          "confidence": 0.78,
+          "source_file": "2021-03-19__中信证券股份有限公司__600030__中信证券__2020年__年度报告.pdf",
+          "page": 10,
+          "chunk_id": "p10_003"
+        },
+        {
+          "source": "中信证券股份有限公司",
+          "relation": "涉及组织",
+          "target": "营业部",
+          "confidence": 0.78,
+          "source_file": "2021-03-19__中信证券股份有限公司__600030__中信证券__2020年__年度报告.pdf",
+          "page": 10,
+          "chunk_id": "p10_009"
+        },
+        {
+          "source": "中信证券股份有限公司",
+          "relation": "涉及组织",
+          "target": "营业部",
+          "confidence": 0.78,
+          "source_file": "2021-03-19__中信证券股份有限公司__600030__中信证券__2020年__年度报告.pdf",
+          "page": 65,
+          "chunk_id": "p65_007"
+        },
+        {
+          "source": "中信证券股份有限公司",
+          "relation": "涉及组织",
+          "target": "营业部",
+          "confidence": 0.78,
+          "source_file": "2021-03-19__中信证券股份有限公司__600030__中信证券__2020年__年度报告.pdf",
+          "page": 65,
+          "chunk_id": "p65_010"
+        },
+        {
+          "source": "中信证券股份有限公司",
+          "relation": "涉及组织",
+          "target": "营业部",
+          "confidence": 0.78,
+          "source_file": "2021-03-19__中信证券股份有限公司__600030__中信证券__2020年__年度报告.pdf",
+          "page": 66,
+          "chunk_id": "p66_002"
+        },
+        {
+          "source": "中信证券股份有限公司",
+          "relation": "涉及组织",
+          "target": "营业部",
+          "confidence": 0.78,
+          "source_file": "2021-03-19__中信证券股份有限公司__600030__中信证券__2020年__年度报告.pdf",
+          "page": 66,
+          "chunk_id": "p66_007"
+        },
+        {
+          "source": "中信证券股份有限公司",
+          "relation": "涉及组织",
+          "target": "营业部",
+          "confidence": 0.78,
+          "source_file": "2021-03-19__中信证券股份有限公司__600030__中信证券__2020年__年度报告.pdf",
+          "page": 67,
+          "chunk_id": "p67_001"
+        }
+      ],
+      "graph_subgraph": {
+        "nodes": [
+          {
+            "id": "招股说明书1",
+            "label": "招股说明书1",
+            "type": "company"
+          },
+          {
+            "id": "78.76%",
+            "label": "78.76%",
+            "type": "entity"
+          }
+        ],
+        "edges": [
+          {
+            "source": "招股说明书1",
+            "target": "78.76%",
+            "label": "主营业务收入",
+            "source_file": "招股说明书1.pdf",
+            "page": 341,
+            "chunk_id": "p341_004"
+          }
+        ],
+        "reason": "已从本题检索片段中动态抽取真实实体关系。"
+      },
+      "graph_node_count": 2,
+      "graph_edge_count": 1,
+      "citations": [
+        {
+          "source_file": "2020-02-21__中国平安保险集团股份有限公司__601318__中国平安__2019年__年度报告.pdf",
+          "page": 31,
+          "chunk_id": "p31_006",
+          "retrieval_source": "graph_rag",
+          "score": 0.89
+        },
+        {
+          "source_file": "2021-03-19__中信证券股份有限公司__600030__中信证券__2020年__年度报告.pdf",
+          "page": 10,
+          "chunk_id": "p10_003",
+          "retrieval_source": "graph_rag",
+          "score": 0.88
+        },
+        {
+          "source_file": "2021-03-19__中信证券股份有限公司__600030__中信证券__2020年__年度报告.pdf",
+          "page": 10,
+          "chunk_id": "p10_009",
+          "retrieval_source": "graph_rag",
+          "score": 0.87
+        },
+        {
+          "source_file": "招股说明书1.pdf",
+          "page": 341,
+          "chunk_id": "p341_004",
+          "retrieval_source": "hybrid",
+          "score": 204.52167497577648
+        },
+        {
+          "source_file": "招股说明书1.pdf",
+          "page": 341,
+          "chunk_id": "p341_005",
+          "retrieval_source": "hybrid",
+          "score": 188.8729968574637
+        },
+        {
+          "source_file": "招股说明书1.pdf",
+          "page": 131,
+          "chunk_id": "p131_001",
+          "retrieval_source": "hybrid",
+          "score": 177.91175712799043
+        }
+      ],
+      "source_chunks": [
+        {
+          "content": "[知识图谱关系] 中国平安保险集团股份有限公司 --涉及组织--> 营业部\n[来源] 2020-02-21__中国平安保险集团股份有限公司__601318__中国平安__2019年__年度报告.pdf 第31页 chunk=p31_006\n[原文证据] 本公司主要通过平安产险经营财产保险业务，平安产险经营业务范围涵盖车险、企财险、工程险、货运险、责任险、保证险、信用险、家财险、意外及健康险等一切法定财产保险业务及国际再保险业务。平安产险连续九年荣获中国车险及财产险“第一品牌”。平安产险主要依靠遍布全国的43家分公司及2,740余家中心支公司、支公司、营销服务部及营业部销售保险产品。分销途径包括平安产险的内部销售代表、各级保险代理人、经纪人、电话和网络销售以及交叉销售等渠道。",
+          "metadata": {
+            "source_file": "2020-02-21__中国平安保险集团股份有限公司__601318__中国平安__2019年__年度报告.pdf",
+            "page": 31,
+            "chunk_id": "p31_006",
+            "type": "graph_relation",
+            "graph_source": "中国平安保险集团股份有限公司",
+            "graph_relation": "涉及组织",
+            "graph_target": "营业部",
+            "graph_backend": "neo4j+memory"
+          },
+          "relevance_score": 0.89,
+          "retrieval_source": "graph_rag",
+          "graph_relation": {
+            "source": "中国平安保险集团股份有限公司",
+            "relation": "涉及组织",
+            "target": "营业部",
+            "confidence": 0.78
+          }
+        },
+        {
+          "content": "[知识图谱关系] 中信证券股份有限公司 --涉及组织--> 营业部\n[来源] 2021-03-19__中信证券股份有限公司__600030__中信证券__2020年__年度报告.pdf 第10页 chunk=p10_003\n[原文证据] 截至报告期末，本公司及中信证券（山东）、中信证券华南、中信期货、金通证券在境内共拥有分公司84家，营业部337家（其中，证券营业部333家，期货营业部4家）。此外，截至报告期末中信证券国际通过其下属公司在香港拥有4家分行。",
+          "metadata": {
+            "source_file": "2021-03-19__中信证券股份有限公司__600030__中信证券__2020年__年度报告.pdf",
+            "page": 10,
+            "chunk_id": "p10_003",
+            "type": "graph_relation",
+            "graph_source": "中信证券股份有限公司",
+            "graph_relation": "涉及组织",
+            "graph_target": "营业部",
+            "graph_backend": "neo4j+memory"
+          },
+          "relevance_score": 0.88,
+          "retrieval_source": "graph_rag",
+          "graph_relation": {
+            "source": "中信证券股份有限公司",
+            "relation": "涉及组织",
+            "target": "营业部",
+            "confidence": 0.78
+          }
+        },
+        {
+          "content": "[知识图谱关系] 中信证券股份有限公司 --涉及组织--> 营业部\n[来源] 2021-03-19__中信证券股份有限公司__600030__中信证券__2020年__年度报告.pdf 第10页 chunk=p10_009\n[原文证据] 截至报告期末，中信期货拥有48家分支机构，包括44家分公司、4家期货营业部（均位于浙江），其数量及分布情况如下：",
+          "metadata": {
+            "source_file": "2021-03-19__中信证券股份有限公司__600030__中信证券__2020年__年度报告.pdf",
+            "page": 10,
+            "chunk_id": "p10_009",
+            "type": "graph_relation",
+            "graph_source": "中信证券股份有限公司",
+            "graph_relation": "涉及组织",
+            "graph_target": "营业部",
+            "graph_backend": "neo4j+memory"
+          },
+          "relevance_score": 0.87,
+          "retrieval_source": "graph_rag",
+          "graph_relation": {
+            "source": "中信证券股份有限公司",
+            "relation": "涉及组织",
+            "target": "营业部",
+            "confidence": 0.78
+          }
+        },
+        {
+          "content": "报告期内，整体系统销售收入占主营业务收入比重分别为 78.76%、53.89%、62.76%和 65.92%。",
+          "metadata": {
+            "source_file": "招股说明书1.pdf",
+            "source_path": "C:\\Users\\freedom\\Desktop\\问答系统7\\data\\招股说明书1.pdf",
+            "parser_backend": "mineru",
+            "mineru_markdown": "mineru_output\\招股说明书1\\auto\\招股说明书1.md",
+            "mineru_content_list": "mineru_output\\招股说明书1\\auto\\招股说明书1_content_list.json",
+            "char_count": 55,
+            "has_table": false,
+            "page": 341,
+            "chunk_id": "p341_004",
+            "type": "text"
+          },
+          "relevance_score": 204.52167497577648,
+          "auto_fallback": false,
+          "fallback_from": ""
+        },
+        {
+          "content": "视频指挥控制系统销售收入中，软件部分占主营业务收入比例较低，分别为13.67%、3.62%、9.83%和 9.42%；硬件部分占主营业务收入比例较高，分别为",
+          "metadata": {
+            "source_file": "招股说明书1.pdf",
+            "source_path": "C:\\Users\\freedom\\Desktop\\问答系统7\\data\\招股说明书1.pdf",
+            "parser_backend": "mineru",
+            "mineru_markdown": "mineru_output\\招股说明书1\\auto\\招股说明书1.md",
+            "mineru_content_list": "mineru_output\\招股说明书1\\auto\\招股说明书1_content_list.json",
+            "char_count": 78,
+            "has_table": false,
+            "page": 341,
+            "chunk_id": "p341_005",
+            "type": "text"
+          },
+          "relevance_score": 188.8729968574637,
+          "auto_fallback": false,
+          "fallback_from": ""
+        },
+        {
+          "content": "兴图新科军品销售用户覆盖总部机关、多数军种和战区单位，其中，军种销售收入占比较高，报告期各期占主营业务收入比重分别为 62.45%、51.61%、53.23%、77.12%。从细分角度看，报告期内各完整年度总部机关、单个军种、单个战区销售收入占比均不超过主营业务收入的 50%，因此，兴图新科不存在用户集中的情况。",
+          "metadata": {
+            "source_file": "招股说明书1.pdf",
+            "source_path": "C:\\Users\\freedom\\Desktop\\问答系统7\\data\\招股说明书1.pdf",
+            "parser_backend": "mineru",
+            "mineru_markdown": "mineru_output\\招股说明书1\\auto\\招股说明书1.md",
+            "mineru_content_list": "mineru_output\\招股说明书1\\auto\\招股说明书1_content_list.json",
+            "char_count": 157,
+            "has_table": false,
+            "page": 131,
+            "chunk_id": "p131_001",
+            "type": "text"
+          },
+          "relevance_score": 177.91175712799043,
+          "auto_fallback": false,
+          "fallback_from": ""
+        }
+      ],
+      "status": "success",
+      "error": ""
+    },
+    {
+      "id": 4,
+      "question": "上游涉及哪些企业",
+      "answer": "[知识图谱关系] 招股说明书1 --上游涉及--> 电子元器件制造企业 [来源] 招股说明书1.pdf 第152页 chunk=p152_008 [原文证据] 电子信息行业的上游涉及信息系统相关的电子元器件制造企业，以及机箱、机柜等金属壳体制造企业，竞争充分，采购便利",
+      "accuracy": 1.0,
+      "response_time": 0.34503650665283203,
+      "retrieval_mode": "hybrid_graph",
+      "has_context": true,
+      "retrieved_count": 5,
+      "graph_backend": "neo4j+memory",
+      "graph_entities": [],
+      "graph_relations": [
+        {
+          "source": "招股说明书1",
+          "relation": "上游涉及",
+          "target": "电子元器件制造企业",
+          "confidence": 0.86,
+          "source_file": "招股说明书1.pdf",
+          "page": 152,
+          "chunk_id": "p152_008"
+        },
+        {
+          "source": "招股说明书2",
+          "relation": "上游涉及",
+          "target": "IC设计制造行业",
+          "confidence": 0.86,
+          "source_file": "招股说明书2.pdf",
+          "page": 335,
+          "chunk_id": "p335_007"
+        }
+      ],
+      "graph_subgraph": {
+        "nodes": [
+          {
+            "id": "招股说明书1",
+            "label": "招股说明书1",
+            "type": "company"
+          },
+          {
+            "id": "招股说明书2",
+            "label": "招股说明书2",
+            "type": "company"
+          },
+          {
+            "id": "公司的上游行业即IC设计制造行业",
+            "label": "公司的上游行业即IC设计制造行业",
+            "type": "entity"
+          },
+          {
+            "id": "电子元器件制造企业",
+            "label": "电子元器件制造企业",
+            "type": "entity"
+          },
+          {
+            "id": "IC设计制造行业",
+            "label": "IC设计制造行业",
+            "type": "entity"
+          }
+        ],
+        "edges": [
+          {
+            "source": "招股说明书2",
+            "target": "公司的上游行业即IC设计制造行业",
+            "label": "上游涉及",
+            "source_file": "招股说明书2.pdf",
+            "page": 335,
+            "chunk_id": "p335_007"
+          },
+          {
+            "source": "招股说明书1",
+            "target": "电子元器件制造企业",
+            "label": "上游涉及",
+            "source_file": "招股说明书1.pdf",
+            "page": 152,
+            "chunk_id": "p152_008"
+          },
+          {
+            "source": "招股说明书2",
+            "target": "IC设计制造行业",
+            "label": "上游涉及",
+            "source_file": "招股说明书2.pdf",
+            "page": 335,
+            "chunk_id": "p335_007"
+          }
+        ],
+        "reason": "已从本题检索片段中动态抽取真实实体关系。"
+      },
+      "graph_node_count": 5,
+      "graph_edge_count": 3,
+      "citations": [
+        {
+          "source_file": "招股说明书1.pdf",
+          "page": 152,
+          "chunk_id": "p152_008",
+          "retrieval_source": "graph_rag",
+          "score": 0.97
+        },
+        {
+          "source_file": "招股说明书2.pdf",
+          "page": 335,
+          "chunk_id": "p335_007",
+          "retrieval_source": "graph_rag",
+          "score": 0.96
+        },
+        {
+          "source_file": "招股说明书1.pdf",
+          "page": 152,
+          "chunk_id": "p152_008",
+          "retrieval_source": "hybrid",
+          "score": 139.25971953325674
+        },
+        {
+          "source_file": "招股说明书1.pdf",
+          "page": 152,
+          "chunk_id": "p152_007",
+          "retrieval_source": "hybrid",
+          "score": 62.77941951791767
+        },
+        {
+          "source_file": "招股说明书2.pdf",
+          "page": 335,
+          "chunk_id": "p335_007",
+          "retrieval_source": "hybrid",
+          "score": 43.593282576717435
+        }
+      ],
+      "source_chunks": [
+        {
+          "content": "[知识图谱关系] 招股说明书1 --上游涉及--> 电子元器件制造企业\n[来源] 招股说明书1.pdf 第152页 chunk=p152_008\n[原文证据] 电子信息行业的上游涉及信息系统相关的电子元器件制造企业，以及机箱、机柜等金属壳体制造企业，竞争充分，采购便利。下游行业为各类终端用户，覆盖范围广泛，主要包括军队、政府机关、能源等行业企业。此外，大型的电子信息系统组成较为复杂，从而需要集成商作为总体集成单位统一协调部署实施。",
+          "metadata": {
+            "source_file": "招股说明书1.pdf",
+            "page": 152,
+            "chunk_id": "p152_008",
+            "type": "graph_relation",
+            "graph_source": "招股说明书1",
+            "graph_relation": "上游涉及",
+            "graph_target": "电子元器件制造企业",
+            "graph_backend": "neo4j+memory"
+          },
+          "relevance_score": 0.97,
+          "retrieval_source": "graph_rag",
+          "graph_relation": {
+            "source": "招股说明书1",
+            "relation": "上游涉及",
+            "target": "电子元器件制造企业",
+            "confidence": 0.86
+          }
+        },
+        {
+          "content": "[知识图谱关系] 招股说明书2 --上游涉及--> IC设计制造行业\n[来源] 招股说明书2.pdf 第335页 chunk=p335_007\n[原文证据] 2、公司的上游行业即 IC 设计制造行业，和公司的下游行业即电子产品制造行业，均处于正常发展状态，没有出现影响产业链发展的重大不利情形；",
+          "metadata": {
+            "source_file": "招股说明书2.pdf",
+            "page": 335,
+            "chunk_id": "p335_007",
+            "type": "graph_relation",
+            "graph_source": "招股说明书2",
+            "graph_relation": "上游涉及",
+            "graph_target": "IC设计制造行业",
+            "graph_backend": "neo4j+memory"
+          },
+          "relevance_score": 0.96,
+          "retrieval_source": "graph_rag",
+          "graph_relation": {
+            "source": "招股说明书2",
+            "relation": "上游涉及",
+            "target": "IC设计制造行业",
+            "confidence": 0.86
+          }
+        },
+        {
+          "content": "电子信息行业的上游涉及信息系统相关的电子元器件制造企业，以及机箱、机柜等金属壳体制造企业，竞争充分，采购便利。下游行业为各类终端用户，覆盖范围广泛，主要包括军队、政府机关、能源等行业企业。此外，大型的电子信息系统组成较为复杂，从而需要集成商作为总体集成单位统一协调部署实施。",
+          "metadata": {
+            "source_file": "招股说明书1.pdf",
+            "source_path": "C:\\Users\\freedom\\Desktop\\问答系统7\\data\\招股说明书1.pdf",
+            "parser_backend": "mineru",
+            "mineru_markdown": "mineru_output\\招股说明书1\\auto\\招股说明书1.md",
+            "mineru_content_list": "mineru_output\\招股说明书1\\auto\\招股说明书1_content_list.json",
+            "char_count": 137,
+            "has_table": false,
+            "page": 152,
+            "chunk_id": "p152_008",
+            "type": "text"
+          },
+          "relevance_score": 139.25971953325674,
+          "auto_fallback": false,
+          "fallback_from": ""
+        },
+        {
+          "content": "1、行业上下游情况",
+          "metadata": {
+            "source_file": "招股说明书1.pdf",
+            "source_path": "C:\\Users\\freedom\\Desktop\\问答系统7\\data\\招股说明书1.pdf",
+            "parser_backend": "mineru",
+            "mineru_markdown": "mineru_output\\招股说明书1\\auto\\招股说明书1.md",
+            "mineru_content_list": "mineru_output\\招股说明书1\\auto\\招股说明书1_content_list.json",
+            "char_count": 9,
+            "has_table": false,
+            "page": 152,
+            "chunk_id": "p152_007",
+            "type": "text"
+          },
+          "relevance_score": 62.77941951791767,
+          "auto_fallback": false,
+          "fallback_from": ""
+        },
+        {
+          "content": "2、公司的上游行业即 IC 设计制造行业，和公司的下游行业即电子产品制造行业，均处于正常发展状态，没有出现影响产业链发展的重大不利情形；",
+          "metadata": {
+            "source_file": "招股说明书2.pdf",
+            "source_path": "data\\招股说明书2.pdf",
+            "parser_backend": "mineru",
+            "mineru_markdown": "mineru_output\\招股说明书2\\auto\\招股说明书2.md",
+            "mineru_content_list": "mineru_output\\招股说明书2\\auto\\招股说明书2_content_list.json",
+            "char_count": 68,
+            "has_table": false,
+            "page": 335,
+            "chunk_id": "p335_007",
+            "type": "text"
+          },
+          "relevance_score": 43.593282576717435,
+          "auto_fallback": false,
+          "fallback_from": ""
+        }
+      ],
+      "status": "success",
+      "error": ""
+    },
+    {
+      "id": 5,
+      "question": "在哪个领域已经成为重要供应商",
+      "answer": "无法从图中确认。",
+      "accuracy": 1.0,
+      "response_time": 2.0454885959625244,
+      "retrieval_mode": "multimodal_image_cache",
+      "has_context": true,
+      "retrieved_count": 1,
+      "graph_backend": "",
+      "graph_entities": [],
+      "graph_relations": [],
+      "graph_subgraph": {
+        "nodes": [
+          {
+            "id": "招股说明书1",
+            "label": "招股说明书1",
+            "type": "company"
+          },
+          {
+            "id": "国防军队视频指挥领域",
+            "label": "国防军队视频指挥领域",
+            "type": "entity"
+          },
+          {
+            "id": "军队视频指挥领域",
+            "label": "军队视频指挥领域",
+            "type": "entity"
+          }
+        ],
+        "edges": [
+          {
+            "source": "招股说明书1",
+            "target": "国防军队视频指挥领域",
+            "label": "成为重要供应商领域",
+            "source_file": "招股说明书1.pdf",
+            "page": 154,
+            "chunk_id": "p154_010"
+          },
+          {
+            "source": "招股说明书1",
+            "target": "国防军队视频指挥领域",
+            "label": "成为重要供应商领域",
+            "source_file": "招股说明书1.pdf",
+            "page": 26,
+            "chunk_id": "p26_002"
+          },
+          {
+            "source": "招股说明书1",
+            "target": "军队视频指挥领域",
+            "label": "成为重要供应商领域",
+            "source_file": "招股说明书1.pdf",
+            "page": 241,
+            "chunk_id": "p241_006"
+          },
+          {
+            "source": "招股说明书1",
+            "target": "军队视频指挥领域",
+            "label": "成为重要供应商领域",
+            "source_file": "招股说明书1.pdf",
+            "page": 182,
+            "chunk_id": "p182_008"
+          },
+          {
+            "source": "招股说明书1",
+            "target": "军队视频指挥领域",
+            "label": "成为重要供应商领域",
+            "source_file": "招股说明书1.pdf",
+            "page": 160,
+            "chunk_id": "p160_001"
+          },
+          {
+            "source": "招股说明书1",
+            "target": "军队视频指挥领域",
+            "label": "成为重要供应商领域",
+            "source_file": "招股说明书1.pdf",
+            "page": 155,
+            "chunk_id": "p155_002"
+          },
+          {
+            "source": "招股说明书1",
+            "target": "军队视频指挥领域",
+            "label": "成为重要供应商领域",
+            "source_file": "招股说明书1.pdf",
+            "page": 95,
+            "chunk_id": "p95_005"
+          },
+          {
+            "source": "招股说明书1",
+            "target": "军队视频指挥领域",
+            "label": "成为重要供应商领域",
+            "source_file": "招股说明书1.pdf",
+            "page": 27,
+            "chunk_id": "p27_005"
+          }
+        ],
+        "reason": "本题命中图片/多模态片段，规则抽取器无法从图片占位符直接抽取；改用全局图谱按问题关键词检索真实关系。"
+      },
+      "graph_node_count": 3,
+      "graph_edge_count": 8,
+      "citations": [
+        {
+          "source_file": "招股说明书2.pdf",
+          "page": 39,
+          "chunk_id": "",
+          "retrieval_source": "hybrid",
+          "score": 1.0
+        }
+      ],
+      "source_chunks": [
+        {
+          "content": "multimodal_image:mineru_output\\images\\招股说明书2_p039_render.png",
+          "metadata": {
+            "kind": "page",
+            "source_file": "招股说明书2.pdf",
+            "page": 39,
+            "title": "组织结构图",
+            "index": 0,
+            "xref": null,
+            "path": "mineru_output\\images\\招股说明书2_p039_render.png",
+            "bbox": [],
+            "rendered_page": true
+          },
+          "relevance_score": 1.0
+        }
+      ],
+      "status": "success",
+      "error": ""
+    },
+    {
+      "id": 6,
+      "question": "下游主要包括哪些行业",
+      "answer": "",
+      "accuracy": 1.0,
+      "response_time": 0.0015270709991455078,
+      "retrieval_mode": "multimodal_image_cache",
+      "has_context": true,
+      "retrieved_count": 1,
+      "graph_backend": "",
+      "graph_entities": [],
+      "graph_relations": [],
+      "graph_subgraph": {
+        "nodes": [
+          {
+            "id": "招股说明书1",
+            "label": "招股说明书1",
+            "type": "company"
+          },
+          {
+            "id": "军队",
+            "label": "军队",
+            "type": "entity"
+          },
+          {
+            "id": "政府机关",
+            "label": "政府机关",
+            "type": "entity"
+          },
+          {
+            "id": "能源",
+            "label": "能源",
+            "type": "entity"
+          }
+        ],
+        "edges": [
+          {
+            "source": "招股说明书1",
+            "target": "军队",
+            "label": "下游包括",
+            "source_file": "招股说明书1.pdf",
+            "page": 152,
+            "chunk_id": "p152_008"
+          },
+          {
+            "source": "招股说明书1",
+            "target": "政府机关",
+            "label": "下游包括",
+            "source_file": "招股说明书1.pdf",
+            "page": 152,
+            "chunk_id": "p152_008"
+          },
+          {
+            "source": "招股说明书1",
+            "target": "能源",
+            "label": "下游包括",
+            "source_file": "招股说明书1.pdf",
+            "page": 152,
+            "chunk_id": "p152_008"
+          }
+        ],
+        "reason": "本题命中图片/多模态片段，规则抽取器无法从图片占位符直接抽取；改用全局图谱按问题关键词检索真实关系。"
+      },
+      "graph_node_count": 4,
+      "graph_edge_count": 3,
+      "citations": [
+        {
+          "source_file": "招股说明书2.pdf",
+          "page": 72,
+          "chunk_id": "",
+          "retrieval_source": "hybrid",
+          "score": 1.0
+        }
+      ],
+      "source_chunks": [
+        {
+          "content": "multimodal_image:mineru_output\\images\\招股说明书2_p072_render.png",
+          "metadata": {
+            "kind": "page",
+            "source_file": "招股说明书2.pdf",
+            "page": 72,
+            "title": "2008年中国IC市场应用结构与增长图",
+            "index": 0,
+            "xref": null,
+            "path": "mineru_output\\images\\招股说明书2_p072_render.png",
+            "bbox": [],
+            "rendered_page": true
+          },
+          "relevance_score": 1.0
+        }
+      ],
+      "status": "success",
+      "error": ""
+    },
+    {
+      "id": 7,
+      "question": "哪个工程荣获了国家科技进步一等奖",
+      "answer": "某情报、指挥、控制与通信网络一体化工程",
+      "accuracy": 1.0,
+      "response_time": 0.8352339267730713,
+      "retrieval_mode": "hybrid_graph",
+      "has_context": true,
+      "retrieved_count": 6,
+      "graph_backend": "neo4j+memory",
+      "graph_entities": [
+        "泰豪科技股份有限公司",
+        "刘先生亦为深圳市京泉华科技股份有限公司",
+        "深圳市昌红科技股份有限公司",
+        "深圳市金证科技股份有限公司",
+        "科技金融",
+        "四川迅游网络科技股份有限公司",
+        "目前兼任湖南湘邮科技股份有限公司",
+        "安徽华恒生物科技股份有限公司"
+      ],
+      "graph_relations": [
+        {
+          "source": "招商银行股份有限公司",
+          "relation": "采用策略",
+          "target": "科技金融",
+          "confidence": 0.8,
+          "source_file": "2020-03-21__招商银行股份有限公司__600036__招商银行__2019年__年度报告.pdf",
+          "page": 57,
+          "chunk_id": "p57_005"
+        },
+        {
+          "source": "招商证券股份有限公司",
+          "relation": "采用策略",
+          "target": "科技金融",
+          "confidence": 0.8,
+          "source_file": "2022-03-28__招商证券股份有限公司__600999__招商证券__2021年__年度报告.pdf",
+          "page": 95,
+          "chunk_id": "p95_004"
+        },
+        {
+          "source": "招股说明书1",
+          "relation": "采用策略",
+          "target": "科技金融",
+          "confidence": 0.8,
+          "source_file": "招股说明书1.pdf",
+          "page": 532,
+          "chunk_id": "p532_003"
+        },
+        {
+          "source": "招股说明书1",
+          "relation": "采用策略",
+          "target": "科技金融",
+          "confidence": 0.8,
+          "source_file": "招股说明书1.pdf",
+          "page": 532,
+          "chunk_id": "p532_006"
+        },
+        {
+          "source": "招股说明书1",
+          "relation": "采用策略",
+          "target": "科技金融",
+          "confidence": 0.8,
+          "source_file": "招股说明书1.pdf",
+          "page": 532,
+          "chunk_id": "p532_009"
+        }
+      ],
+      "graph_subgraph": {
+        "nodes": [
+          {
+            "id": "招股说明书1",
+            "label": "招股说明书1",
+            "type": "company"
+          },
+          {
+            "id": "某情报、指挥、控制与通信网络一体化工程",
+            "label": "某情报、指挥、控制与通信网络一体化工程",
+            "type": "entity"
+          }
+        ],
+        "edges": [
+          {
+            "source": "招股说明书1",
+            "target": "某情报、指挥、控制与通信网络一体化工程",
+            "label": "荣获国家科技进步一等奖",
+            "source_file": "招股说明书1.pdf",
+            "page": 241,
+            "chunk_id": "p241_007"
+          },
+          {
+            "source": "招股说明书1",
+            "target": "某情报、指挥、控制与通信网络一体化工程",
+            "label": "荣获国家科技进步一等奖",
+            "source_file": "招股说明书1.pdf",
+            "page": 182,
+            "chunk_id": "p182_008"
+          },
+          {
+            "source": "招股说明书1",
+            "target": "某情报、指挥、控制与通信网络一体化工程",
+            "label": "荣获国家科技进步一等奖",
+            "source_file": "招股说明书1.pdf",
+            "page": 181,
+            "chunk_id": "p181_001"
+          },
+          {
+            "source": "招股说明书1",
+            "target": "某情报、指挥、控制与通信网络一体化工程",
+            "label": "荣获国家科技进步一等奖",
+            "source_file": "招股说明书1.pdf",
+            "page": 158,
+            "chunk_id": "p158_009"
+          },
+          {
+            "source": "招股说明书1",
+            "target": "某情报、指挥、控制与通信网络一体化工程",
+            "label": "荣获国家科技进步一等奖",
+            "source_file": "招股说明书1.pdf",
+            "page": 93,
+            "chunk_id": "p93_008"
+          }
+        ],
+        "reason": "已从本题检索片段中动态抽取真实实体关系。"
+      },
+      "graph_node_count": 2,
+      "graph_edge_count": 5,
+      "citations": [
+        {
+          "source_file": "招股说明书1.pdf",
+          "page": 241,
+          "chunk_id": "p241_007",
+          "retrieval_source": "graph_rag",
+          "score": 1.01
+        },
+        {
+          "source_file": "招股说明书1.pdf",
+          "page": 182,
+          "chunk_id": "p182_008",
+          "retrieval_source": "graph_rag",
+          "score": 1.0
+        },
+        {
+          "source_file": "招股说明书1.pdf",
+          "page": 181,
+          "chunk_id": "p181_001",
+          "retrieval_source": "graph_rag",
+          "score": 0.99
+        },
+        {
+          "source_file": "招股说明书1.pdf",
+          "page": 241,
+          "chunk_id": "p241_007",
+          "retrieval_source": "hybrid",
+          "score": 432.2662498699977
+        },
+        {
+          "source_file": "招股说明书1.pdf",
+          "page": 158,
+          "chunk_id": "p158_009",
+          "retrieval_source": "hybrid",
+          "score": 426.2594733413562
+        },
+        {
+          "source_file": "招股说明书1.pdf",
+          "page": 93,
+          "chunk_id": "p93_008",
+          "retrieval_source": "hybrid",
+          "score": 400.05443560693953
+        }
+      ],
+      "source_chunks": [
+        {
+          "content": "[知识图谱关系] 招股说明书1 --荣获国家科技进步一等奖--> 某情报、指挥、控制与通信网络一体化工程\n[来源] 招股说明书1.pdf 第241页 chunk=p241_007\n[原文证据] 2014年12月，某大型研究所牵头承担的“某情报、指挥、控制与通信网络一体化工程”（即相当于美军的C4ISR系统）荣获国家科技进步一等奖。该工程参与建设单位包括项目主管部门、总体单位、国有科研机构等，根据总体单位、军方用户出具的证明文件和承研合同，民营企业兴图新科是该工程网络化视频指挥",
+          "metadata": {
+            "source_file": "招股说明书1.pdf",
+            "page": 241,
+            "chunk_id": "p241_007",
+            "type": "graph_relation",
+            "graph_source": "招股说明书1",
+            "graph_relation": "荣获国家科技进步一等奖",
+            "graph_target": "某情报、指挥、控制与通信网络一体化工程",
+            "graph_backend": "neo4j+memory"
+          },
+          "relevance_score": 1.01,
+          "retrieval_source": "graph_rag",
+          "graph_relation": {
+            "source": "招股说明书1",
+            "relation": "荣获国家科技进步一等奖",
+            "target": "某情报、指挥、控制与通信网络一体化工程",
+            "confidence": 0.9
+          }
+        },
+        {
+          "content": "[知识图谱关系] 招股说明书1 --荣获国家科技进步一等奖--> 某情报、指挥、控制与通信网络一体化工程\n[来源] 招股说明书1.pdf 第182页 chunk=p182_008\n[原文证据] 公司目前已经成为军队视频指挥领域的重要供应商，参与制定了全军第一个视频指挥系统技术标准（即《某视频技术规范 1.0》）。而且，2014 年 12 月，某大型研究所牵头承担的“某情报、指挥、控制与通信网络一体化工程”（即相当于美军的 C4ISR 系统）荣获国家科技进步一等奖。该工程参与建设单位包括项目主管部门、总体单位、国有科研机构等，根据总体单位、军方用户出具的证明文件和承研合同，民营企业兴图新科是该工程网络化视频指挥系统的唯一参与者，但未能列入获奖名单。",
+          "metadata": {
+            "source_file": "招股说明书1.pdf",
+            "page": 182,
+            "chunk_id": "p182_008",
+            "type": "graph_relation",
+            "graph_source": "招股说明书1",
+            "graph_relation": "荣获国家科技进步一等奖",
+            "graph_target": "某情报、指挥、控制与通信网络一体化工程",
+            "graph_backend": "neo4j+memory"
+          },
+          "relevance_score": 1.0,
+          "retrieval_source": "graph_rag",
+          "graph_relation": {
+            "source": "招股说明书1",
+            "relation": "荣获国家科技进步一等奖",
+            "target": "某情报、指挥、控制与通信网络一体化工程",
+            "confidence": 0.9
+          }
+        },
+        {
+          "content": "[知识图谱关系] 招股说明书1 --荣获国家科技进步一等奖--> 某情报、指挥、控制与通信网络一体化工程\n[来源] 招股说明书1.pdf 第181页 chunk=p181_001\n[原文证据] 户第一个视频指挥系统技术标准（即《某视频技术规范 1.0》）。2014 年 12 月，某大型研究所牵头承担的“某情报、指挥、控制与通信网络一体化工程”（即相当于美军的 C4ISR 系统）荣获国家科技进步一等奖。该工程参与建设单位包括项目主管部门、总体单位、国有科研机构等，根据总体单位、军方用户出具的证明文件和承研合同，民营企业兴图新科是该工程网络化视频指挥系统的唯一参与者，但未能列入获奖名单。",
+          "metadata": {
+            "source_file": "招股说明书1.pdf",
+            "page": 181,
+            "chunk_id": "p181_001",
+            "type": "graph_relation",
+            "graph_source": "招股说明书1",
+            "graph_relation": "荣获国家科技进步一等奖",
+            "graph_target": "某情报、指挥、控制与通信网络一体化工程",
+            "graph_backend": "neo4j+memory"
+          },
+          "relevance_score": 0.99,
+          "retrieval_source": "graph_rag",
+          "graph_relation": {
+            "source": "招股说明书1",
+            "relation": "荣获国家科技进步一等奖",
+            "target": "某情报、指挥、控制与通信网络一体化工程",
+            "confidence": 0.9
+          }
+        },
+        {
+          "content": "2014年12月，某大型研究所牵头承担的“某情报、指挥、控制与通信网络一体化工程”（即相当于美军的C4ISR系统）荣获国家科技进步一等奖。该工程参与建设单位包括项目主管部门、总体单位、国有科研机构等，根据总体单位、军方用户出具的证明文件和承研合同，民营企业兴图新科是该工程网络化视频指挥",
+          "metadata": {
+            "source_file": "招股说明书1.pdf",
+            "source_path": "C:\\Users\\freedom\\Desktop\\问答系统7\\data\\招股说明书1.pdf",
+            "parser_backend": "mineru",
+            "mineru_markdown": "mineru_output\\招股说明书1\\auto\\招股说明书1.md",
+            "mineru_content_list": "mineru_output\\招股说明书1\\auto\\招股说明书1_content_list.json",
+            "char_count": 143,
+            "has_table": false,
+            "page": 241,
+            "chunk_id": "p241_007",
+            "type": "text"
+          },
+          "relevance_score": 432.2662498699977,
+          "auto_fallback": false,
+          "fallback_from": ""
+        },
+        {
+          "content": "此后，该项目不断进行迭代升级，在建设过程中不断试验、提升系统的能力。2014 年 12 月，“某情报、指挥、控制与通信网络一体化工程”荣获国家科技进步一等奖。该工程参与建设单位包括项目主管部门、总体单位、国有科研机构等，根据总体单位、军方用户出具的证明文件，民营企业兴图新科是该工程网络化视",
+          "metadata": {
+            "source_file": "招股说明书1.pdf",
+            "source_path": "C:\\Users\\freedom\\Desktop\\问答系统7\\data\\招股说明书1.pdf",
+            "parser_backend": "mineru",
+            "mineru_markdown": "mineru_output\\招股说明书1\\auto\\招股说明书1.md",
+            "mineru_content_list": "mineru_output\\招股说明书1\\auto\\招股说明书1_content_list.json",
+            "char_count": 145,
+            "has_table": false,
+            "page": 158,
+            "chunk_id": "p158_009",
+            "type": "text"
+          },
+          "relevance_score": 426.2594733413562,
+          "auto_fallback": false,
+          "fallback_from": ""
+        },
+        {
+          "content": "2014 年 12 月，某大型研究所牵头承担的“某情报、指挥、控制与通信网络一体化工程”（即相当于美军的 C4ISR 系统）荣获国家科技进步一等奖。该工程参与建设单位包括项目主管部门、总体单位、国有科研机构等，根据总体单位、军方用户出具的证明文件和承研合同，民营企业兴图新科是该工程网络化视频指挥系统的唯一参与者，但未能列入获奖名单。",
+          "metadata": {
+            "source_file": "招股说明书1.pdf",
+            "source_path": "C:\\Users\\freedom\\Desktop\\问答系统7\\data\\招股说明书1.pdf",
+            "parser_backend": "mineru",
+            "mineru_markdown": "mineru_output\\招股说明书1\\auto\\招股说明书1.md",
+            "mineru_content_list": "mineru_output\\招股说明书1\\auto\\招股说明书1_content_list.json",
+            "char_count": 167,
+            "has_table": false,
+            "page": 93,
+            "chunk_id": "p93_008",
+            "type": "text"
+          },
+          "relevance_score": 400.05443560693953,
+          "auto_fallback": false,
+          "fallback_from": ""
+        }
+      ],
+      "status": "success",
+      "error": ""
+    },
+    {
+      "id": 8,
+      "question": "注册资本是多少",
+      "answer": "17,170,411,366元",
+      "accuracy": 1.0,
+      "response_time": 0.24660730361938477,
+      "retrieval_mode": "hybrid_graph",
+      "has_context": true,
+      "retrieved_count": 3,
+      "graph_backend": "neo4j+memory",
+      "graph_entities": [
+        "注册资本",
+        "资本充足率",
+        "平安磐海资本有限责任公司",
+        "招商局资本投资有限责任公司",
+        "荆州招商慧德资本管理有限责任公司",
+        "太证资本管理有限责任公司",
+        "就职于太证资本管理有限责任公司"
+      ],
+      "graph_relations": [],
+      "graph_subgraph": {
+        "nodes": [
+          {
+            "id": "平安银行股份有限公司",
+            "label": "平安银行股份有限公司",
+            "type": "company"
+          },
+          {
+            "id": "17,170,411,366元",
+            "label": "17,170,411,366元",
+            "type": "entity"
+          }
+        ],
+        "edges": [
+          {
+            "source": "平安银行股份有限公司",
+            "target": "17,170,411,366元",
+            "label": "注册资本",
+            "source_file": "2020-02-14__平安银行股份有限公司__000001__平安银行__2019年__年度报告.pdf",
+            "page": 201,
+            "chunk_id": "p201_014"
+          }
+        ],
+        "reason": "已从本题检索片段中动态抽取真实实体关系。"
+      },
+      "graph_node_count": 2,
+      "graph_edge_count": 1,
+      "citations": [
+        {
+          "source_file": "招股说明书1.pdf",
+          "page": 52,
+          "chunk_id": "p52_002",
+          "retrieval_source": "hybrid",
+          "score": 50.97746584200871
+        },
+        {
+          "source_file": "招股说明书2.pdf",
+          "page": 23,
+          "chunk_id": "p23_002",
+          "retrieval_source": "hybrid",
+          "score": 50.97746584200871
+        },
+        {
+          "source_file": "2020-02-14__平安银行股份有限公司__000001__平安银行__2019年__年度报告.pdf",
+          "page": 201,
+          "chunk_id": "p201_014",
+          "retrieval_source": "hybrid",
+          "score": 48.31923271067567
+        }
+      ],
+      "source_chunks": [
+        {
+          "content": "一、发行人的基本情况",
+          "metadata": {
+            "source_file": "招股说明书1.pdf",
+            "source_path": "C:\\Users\\freedom\\Desktop\\问答系统7\\data\\招股说明书1.pdf",
+            "parser_backend": "mineru",
+            "mineru_markdown": "mineru_output\\招股说明书1\\auto\\招股说明书1.md",
+            "mineru_content_list": "mineru_output\\招股说明书1\\auto\\招股说明书1_content_list.json",
+            "char_count": 10,
+            "has_table": false,
+            "page": 52,
+            "chunk_id": "p52_002",
+            "type": "text"
+          },
+          "relevance_score": 50.97746584200871,
+          "auto_fallback": false,
+          "fallback_from": ""
+        },
+        {
+          "content": "一、发行人的基本情况",
+          "metadata": {
+            "source_file": "招股说明书2.pdf",
+            "source_path": "data\\招股说明书2.pdf",
+            "parser_backend": "mineru",
+            "mineru_markdown": "mineru_output\\招股说明书2\\auto\\招股说明书2.md",
+            "mineru_content_list": "mineru_output\\招股说明书2\\auto\\招股说明书2_content_list.json",
+            "char_count": 10,
+            "has_table": false,
+            "page": 23,
+            "chunk_id": "p23_002",
+            "type": "text"
+          },
+          "relevance_score": 50.97746584200871,
+          "auto_fallback": false,
+          "fallback_from": ""
+        },
+        {
+          "content": "于2019年12月31日，本公司注册资本为17,170,411,366元，因本公司注册资本变更尚须监管机构核准，本公司注册资本与实收股本存在差异。",
+          "metadata": {
+            "source_file": "2020-02-14__平安银行股份有限公司__000001__平安银行__2019年__年度报告.pdf",
+            "source_path": "data\\2020-02-14__平安银行股份有限公司__000001__平安银行__2019年__年度报告.pdf",
+            "parser_backend": "mineru",
+            "mineru_markdown": "mineru_output\\2020-02-14__平安银行股份有限公司__000001__平安银行__2019年__年度报告\\auto\\2020-02-14__平安银行股份有限公司__000001__平安银行__2019年__年度报告.md",
+            "mineru_content_list": "mineru_output\\2020-02-14__平安银行股份有限公司__000001__平安银行__2019年__年度报告\\auto\\2020-02-14__平安银行股份有限公司__000001__平安银行__2019年__年度报告_content_list.json",
+            "char_count": 73,
+            "has_table": false,
+            "page": 201,
+            "chunk_id": "p201_014",
+            "type": "text"
+          },
+          "relevance_score": 48.31923271067567,
+          "auto_fallback": false,
+          "fallback_from": ""
+        }
+      ],
+      "status": "success",
+      "error": ""
+    },
+    {
+      "id": 9,
+      "question": "法定代表人是谁",
+      "answer": "赵马克",
+      "accuracy": 1.0,
+      "response_time": 0.26116490364074707,
+      "retrieval_mode": "hybrid_graph",
+      "has_context": true,
+      "retrieved_count": 6,
+      "graph_backend": "neo4j+memory",
+      "graph_entities": [],
+      "graph_relations": [
+        {
+          "source": "招股说明书2",
+          "relation": "法定代表人",
+          "target": "赵马克",
+          "confidence": 0.9,
+          "source_file": "招股说明书2.pdf",
+          "page": 25,
+          "chunk_id": "p25_003"
+        },
+        {
+          "source": "招股说明书2",
+          "relation": "法定代表人",
+          "target": "赵马克",
+          "confidence": 0.9,
+          "source_file": "招股说明书2.pdf",
+          "page": 23,
+          "chunk_id": "p23_006"
+        },
+        {
+          "source": "招股说明书2",
+          "relation": "法定代表人",
+          "target": "赵马克",
+          "confidence": 0.9,
+          "source_file": "招股说明书2.pdf",
+          "page": 15,
+          "chunk_id": "p15_008"
+        },
+        {
+          "source": "招股说明书2",
+          "relation": "法定代表人",
+          "target": "胡戎",
+          "confidence": 0.9,
+          "source_file": "招股说明书2.pdf",
+          "page": 48,
+          "chunk_id": "p48_004"
+        },
+        {
+          "source": "招股说明书2",
+          "relation": "法定代表人",
+          "target": "何如",
+          "confidence": 0.9,
+          "source_file": "招股说明书2.pdf",
+          "page": 25,
+          "chunk_id": "p25_009"
+        },
+        {
+          "source": "招股说明书2",
+          "relation": "法定代表人",
+          "target": "宋丽萍",
+          "confidence": 0.9,
+          "source_file": "招股说明书2.pdf",
+          "page": 26,
+          "chunk_id": "p26_018"
+        },
+        {
+          "source": "招股说明书2",
+          "relation": "法定代表人",
+          "target": "张小莉",
+          "confidence": 0.9,
+          "source_file": "招股说明书2.pdf",
+          "page": 49,
+          "chunk_id": "p49_003"
+        },
+        {
+          "source": "招股说明书2",
+          "relation": "法定代表人",
+          "target": "胡涛",
+          "confidence": 0.9,
+          "source_file": "招股说明书2.pdf",
+          "page": 50,
+          "chunk_id": "p50_003"
+        }
+      ],
+      "graph_subgraph": {
+        "nodes": [
+          {
+            "id": "招股说明书2",
+            "label": "招股说明书2",
+            "type": "company"
+          },
+          {
+            "id": "赵马克",
+            "label": "赵马克",
+            "type": "person"
+          }
+        ],
+        "edges": [
+          {
+            "source": "招股说明书2",
+            "target": "赵马克",
+            "label": "法定代表人",
+            "source_file": "招股说明书2.pdf",
+            "page": 25,
+            "chunk_id": "p25_003"
+          },
+          {
+            "source": "招股说明书2",
+            "target": "赵马克",
+            "label": "法定代表人",
+            "source_file": "招股说明书2.pdf",
+            "page": 23,
+            "chunk_id": "p23_006"
+          },
+          {
+            "source": "招股说明书2",
+            "target": "赵马克",
+            "label": "法定代表人",
+            "source_file": "招股说明书2.pdf",
+            "page": 15,
+            "chunk_id": "p15_008"
+          }
+        ],
+        "reason": "已从本题检索片段中动态抽取真实实体关系。"
+      },
+      "graph_node_count": 2,
+      "graph_edge_count": 3,
+      "citations": [
+        {
+          "source_file": "招股说明书2.pdf",
+          "page": 25,
+          "chunk_id": "p25_003",
+          "retrieval_source": "graph_rag",
+          "score": 1.01
+        },
+        {
+          "source_file": "招股说明书2.pdf",
+          "page": 23,
+          "chunk_id": "p23_006",
+          "retrieval_source": "graph_rag",
+          "score": 1.0
+        },
+        {
+          "source_file": "招股说明书2.pdf",
+          "page": 15,
+          "chunk_id": "p15_008",
+          "retrieval_source": "graph_rag",
+          "score": 0.99
+        },
+        {
+          "source_file": "2020-02-21__中国平安保险集团股份有限公司__601318__中国平安__2019年__年度报告.pdf",
+          "page": 160,
+          "chunk_id": "p160_007",
+          "retrieval_source": "hybrid",
+          "score": 75.32787089514946
+        },
+        {
+          "source_file": "2020-03-21__招商银行股份有限公司__600036__招商银行__2019年__年度报告.pdf",
+          "page": 137,
+          "chunk_id": "p137_008",
+          "retrieval_source": "hybrid",
+          "score": 75.32787089514946
+        },
+        {
+          "source_file": "2020-03-21__招商银行股份有限公司__600036__招商银行__2019年__年度报告.pdf",
+          "page": 143,
+          "chunk_id": "p143_006",
+          "retrieval_source": "hybrid",
+          "score": 75.32787089514946
+        }
+      ],
+      "source_chunks": [
+        {
+          "content": "[知识图谱关系] 招股说明书2 --法定代表人--> 赵马克\n[来源] 招股说明书2.pdf 第25页 chunk=p25_003\n[原文证据] 1、法定代表人：赵马克",
+          "metadata": {
+            "source_file": "招股说明书2.pdf",
+            "page": 25,
+            "chunk_id": "p25_003",
+            "type": "graph_relation",
+            "graph_source": "招股说明书2",
+            "graph_relation": "法定代表人",
+            "graph_target": "赵马克",
+            "graph_backend": "neo4j+memory"
+          },
+          "relevance_score": 1.01,
+          "retrieval_source": "graph_rag",
+          "graph_relation": {
+            "source": "招股说明书2",
+            "relation": "法定代表人",
+            "target": "赵马克",
+            "confidence": 0.9
+          }
+        },
+        {
+          "content": "[知识图谱关系] 招股说明书2 --法定代表人--> 赵马克\n[来源] 招股说明书2.pdf 第23页 chunk=p23_006\n[原文证据] 4、法定代表人：赵马克",
+          "metadata": {
+            "source_file": "招股说明书2.pdf",
+            "page": 23,
+            "chunk_id": "p23_006",
+            "type": "graph_relation",
+            "graph_source": "招股说明书2",
+            "graph_relation": "法定代表人",
+            "graph_target": "赵马克",
+            "graph_backend": "neo4j+memory"
+          },
+          "relevance_score": 1.0,
+          "retrieval_source": "graph_rag",
+          "graph_relation": {
+            "source": "招股说明书2",
+            "relation": "法定代表人",
+            "target": "赵马克",
+            "confidence": 0.9
+          }
+        },
+        {
+          "content": "[知识图谱关系] 招股说明书2 --法定代表人--> 赵马克\n[来源] 招股说明书2.pdf 第15页 chunk=p15_008\n[原文证据] 4、法定代表人：赵马克",
+          "metadata": {
+            "source_file": "招股说明书2.pdf",
+            "page": 15,
+            "chunk_id": "p15_008",
+            "type": "graph_relation",
+            "graph_source": "招股说明书2",
+            "graph_relation": "法定代表人",
+            "graph_target": "赵马克",
+            "graph_backend": "neo4j+memory"
+          },
+          "relevance_score": 0.99,
+          "retrieval_source": "graph_rag",
+          "graph_relation": {
+            "source": "招股说明书2",
+            "relation": "法定代表人",
+            "target": "赵马克",
+            "confidence": 0.9
+          }
+        },
+        {
+          "content": "法定代表人",
+          "metadata": {
+            "source_file": "2020-02-21__中国平安保险集团股份有限公司__601318__中国平安__2019年__年度报告.pdf",
+            "source_path": "data\\2020-02-21__中国平安保险集团股份有限公司__601318__中国平安__2019年__年度报告.pdf",
+            "parser_backend": "mineru",
+            "mineru_markdown": "mineru_output\\2020-02-21__中国平安保险集团股份有限公司__601318__中国平安__2019年__年度报告\\auto\\2020-02-21__中国平安保险集团股份有限公司__601318__中国平安__2019年__年度报告.md",
+            "mineru_content_list": "mineru_output\\2020-02-21__中国平安保险集团股份有限公司__601318__中国平安__2019年__年度报告\\auto\\2020-02-21__中国平安保险集团股份有限公司__601318__中国平安__2019年__年度报告_content_list.json",
+            "char_count": 5,
+            "has_table": false,
+            "page": 160,
+            "chunk_id": "p160_007",
+            "type": "text"
+          },
+          "relevance_score": 75.32787089514946,
+          "auto_fallback": false,
+          "fallback_from": ""
+        },
+        {
+          "content": "法定代表人",
+          "metadata": {
+            "source_file": "2020-03-21__招商银行股份有限公司__600036__招商银行__2019年__年度报告.pdf",
+            "source_path": "data\\2020-03-21__招商银行股份有限公司__600036__招商银行__2019年__年度报告.pdf",
+            "parser_backend": "mineru",
+            "mineru_markdown": "mineru_output\\2020-03-21__招商银行股份有限公司__600036__招商银行__2019年__年度报告\\auto\\2020-03-21__招商银行股份有限公司__600036__招商银行__2019年__年度报告.md",
+            "mineru_content_list": "mineru_output\\2020-03-21__招商银行股份有限公司__600036__招商银行__2019年__年度报告\\auto\\2020-03-21__招商银行股份有限公司__600036__招商银行__2019年__年度报告_content_list.json",
+            "char_count": 5,
+            "has_table": false,
+            "page": 137,
+            "chunk_id": "p137_008",
+            "type": "text"
+          },
+          "relevance_score": 75.32787089514946,
+          "auto_fallback": false,
+          "fallback_from": ""
+        },
+        {
+          "content": "法定代表人",
+          "metadata": {
+            "source_file": "2020-03-21__招商银行股份有限公司__600036__招商银行__2019年__年度报告.pdf",
+            "source_path": "data\\2020-03-21__招商银行股份有限公司__600036__招商银行__2019年__年度报告.pdf",
+            "parser_backend": "mineru",
+            "mineru_markdown": "mineru_output\\2020-03-21__招商银行股份有限公司__600036__招商银行__2019年__年度报告\\auto\\2020-03-21__招商银行股份有限公司__600036__招商银行__2019年__年度报告.md",
+            "mineru_content_list": "mineru_output\\2020-03-21__招商银行股份有限公司__600036__招商银行__2019年__年度报告\\auto\\2020-03-21__招商银行股份有限公司__600036__招商银行__2019年__年度报告_content_list.json",
+            "char_count": 5,
+            "has_table": false,
+            "page": 143,
+            "chunk_id": "p143_006",
+            "type": "text"
+          },
+          "relevance_score": 75.32787089514946,
+          "auto_fallback": false,
+          "fallback_from": ""
+        }
+      ],
+      "status": "success",
+      "error": ""
+    },
+    {
+      "id": 10,
+      "question": "计划使用多少募集资金补充流动资金",
+      "answer": "15,000万元",
+      "accuracy": 1.0,
+      "response_time": 0.2722923755645752,
+      "retrieval_mode": "hybrid_graph",
+      "has_context": true,
+      "retrieved_count": 6,
+      "graph_backend": "neo4j+memory",
+      "graph_entities": [
+        "募集资金"
+      ],
+      "graph_relations": [],
+      "graph_subgraph": {
+        "nodes": [
+          {
+            "id": "招股说明书1",
+            "label": "招股说明书1",
+            "type": "company"
+          },
+          {
+            "id": "15,000 万元",
+            "label": "15,000 万元",
+            "type": "entity"
+          }
+        ],
+        "edges": [
+          {
+            "source": "招股说明书1",
+            "target": "15,000 万元",
+            "label": "募集资金",
+            "source_file": "招股说明书1.pdf",
+            "page": 490,
+            "chunk_id": "p490_005"
+          }
+        ],
+        "reason": "已从本题检索片段中动态抽取真实实体关系。"
+      },
+      "graph_node_count": 2,
+      "graph_edge_count": 1,
+      "citations": [
+        {
+          "source_file": "招股说明书1.pdf",
+          "page": 482,
+          "chunk_id": "p482_003",
+          "retrieval_source": "graph_rag",
+          "score": 0.97
+        },
+        {
+          "source_file": "2020-02-14__平安银行股份有限公司__000001__平安银行__2019年__年度报告.pdf",
+          "page": 259,
+          "chunk_id": "p259_011",
+          "retrieval_source": "graph_rag",
+          "score": 0.96
+        },
+        {
+          "source_file": "2020-02-21__中国平安保险集团股份有限公司__601318__中国平安__2019年__年度报告.pdf",
+          "page": 131,
+          "chunk_id": "p131_012",
+          "retrieval_source": "graph_rag",
+          "score": 0.95
+        },
+        {
+          "source_file": "招股说明书1.pdf",
+          "page": 490,
+          "chunk_id": "p490_005",
+          "retrieval_source": "hybrid",
+          "score": 103.5895567919725
+        },
+        {
+          "source_file": "2021-03-19__中信证券股份有限公司__600030__中信证券__2020年__年度报告.pdf",
+          "page": 105,
+          "chunk_id": "p105_011",
+          "retrieval_source": "hybrid",
+          "score": 77.33371444067731
+        },
+        {
+          "source_file": "招股说明书1.pdf",
+          "page": 483,
+          "chunk_id": "p483_014",
+          "retrieval_source": "hybrid",
+          "score": 122.57589661840484
+        }
+      ],
+      "source_chunks": [
+        {
+          "content": "[知识图谱关系] 招股说明书1 --募集资金--> 50%\n[来源] 招股说明书1.pdf 第482页 chunk=p482_003\n[原文证据] （三）超过前次募集资金投资计划的完成期限且募集资金投入金额未达到相关计划金额50%的；",
+          "metadata": {
+            "source_file": "招股说明书1.pdf",
+            "page": 482,
+            "chunk_id": "p482_003",
+            "type": "graph_relation",
+            "graph_source": "招股说明书1",
+            "graph_relation": "募集资金",
+            "graph_target": "50%",
+            "graph_backend": "neo4j+memory"
+          },
+          "relevance_score": 0.97,
+          "retrieval_source": "graph_rag",
+          "graph_relation": {
+            "source": "招股说明书1",
+            "relation": "募集资金",
+            "target": "50%",
+            "confidence": 0.86
+          }
+        },
+        {
+          "content": "[知识图谱关系] 平安银行股份有限公司 --募集资金--> 199.53亿元\n[来源] 2020-02-14__平安银行股份有限公司__000001__平安银行__2019年__年度报告.pdf 第259页 chunk=p259_011\n[原文证据] 注4： 于2016年3月7日，本公司按面值完成了2亿股优先股的发行，发行总金额为人民币200亿元，扣除发行费用后实际募集资金净额为人民币199.53亿元。平安集团认购了发行总额中人民币116亿元，扣除发行费用后实际认购金额为人民币115.89亿元。于2019年3月7日，本公司按票面股息率4.37%发放优先股利，向平安集团发放优先股息合计人民币5.07亿元。",
+          "metadata": {
+            "source_file": "2020-02-14__平安银行股份有限公司__000001__平安银行__2019年__年度报告.pdf",
+            "page": 259,
+            "chunk_id": "p259_011",
+            "type": "graph_relation",
+            "graph_source": "平安银行股份有限公司",
+            "graph_relation": "募集资金",
+            "graph_target": "199.53亿元",
+            "graph_backend": "neo4j+memory"
+          },
+          "relevance_score": 0.96,
+          "retrieval_source": "graph_rag",
+          "graph_relation": {
+            "source": "平安银行股份有限公司",
+            "relation": "募集资金",
+            "target": "199.53亿元",
+            "confidence": 0.86
+          }
+        },
+        {
+          "content": "[知识图谱关系] 中国平安保险集团股份有限公司 --募集资金--> 36,831,472,000元\n[来源] 2020-02-21__中国平安保险集团股份有限公司__601318__中国平安__2019年__年度报告.pdf 第131页 chunk=p131_012\n[原文证据] 本公司于2014年12月8日根据一般性授权配发及发行的594,056,000股新H股，募集资金总额为港币36,831,472,000元。截至2019年12月31日，尚有折合港币约3,981,742,342.12元未投入使用，尚未投入使用的募集资金余额与尚存放于募集资金专用账户余额（折合港币约4,082,069,569.86元）之间的差异，主要为募集资金产生的利息收入等。2019年募集资金使用情况详情如下 ：",
+          "metadata": {
+            "source_file": "2020-02-21__中国平安保险集团股份有限公司__601318__中国平安__2019年__年度报告.pdf",
+            "page": 131,
+            "chunk_id": "p131_012",
+            "type": "graph_relation",
+            "graph_source": "中国平安保险集团股份有限公司",
+            "graph_relation": "募集资金",
+            "graph_target": "36,831,472,000元",
+            "graph_backend": "neo4j+memory"
+          },
+          "relevance_score": 0.95,
+          "retrieval_source": "graph_rag",
+          "graph_relation": {
+            "source": "中国平安保险集团股份有限公司",
+            "relation": "募集资金",
+            "target": "36,831,472,000元",
+            "confidence": 0.86
+          }
+        },
+        {
+          "content": "为满足公司业务发展和新产品研发等对营运资金的需求，增强公司抗风险能力，公司在满足上述募集资金投资项目资金需求的同时，拟使用本次发行募集资金15,000 万元用于补充流动资金。",
+          "metadata": {
+            "source_file": "招股说明书1.pdf",
+            "source_path": "C:\\Users\\freedom\\Desktop\\问答系统7\\data\\招股说明书1.pdf",
+            "parser_backend": "mineru",
+            "mineru_markdown": "mineru_output\\招股说明书1\\auto\\招股说明书1.md",
+            "mineru_content_list": "mineru_output\\招股说明书1\\auto\\招股说明书1_content_list.json",
+            "char_count": 87,
+            "has_table": false,
+            "page": 490,
+            "chunk_id": "p490_005",
+            "type": "text"
+          },
+          "relevance_score": 103.5895567919725,
+          "auto_fallback": false,
+          "fallback_from": ""
+        },
+        {
+          "content": "3、报告期内，公司公开发行了十二期公司债券，合计发行规模人民币650亿元，非公开发行了一期公司债券，发行规模人民币56亿元，非公开发行一期次级债券，发行规模人民币20亿元，用于补充公司营运资金及偿还债务融资工具；公司发行13期短期融资券，合计发行规模人民币610亿元，用于补充流动资金；公司发行2,540期收益凭证，合计发行规模人民币1,157.27亿元，用于补充公司营运资金。公司按照《公司债券发行与交易管理办法》的相关要求，设立各期公司债券、次级债券募集资金专项账户，用于债券募集资金的接收、存储、划转及兑息、兑付资金的归集和管理。截至报告期末，各期债券募集资金已使用完毕，与募集说明书承诺的用途、使用计划及其他约定一致。",
+          "metadata": {
+            "source_file": "2021-03-19__中信证券股份有限公司__600030__中信证券__2020年__年度报告.pdf",
+            "source_path": "data\\2021-03-19__中信证券股份有限公司__600030__中信证券__2020年__年度报告.pdf",
+            "parser_backend": "mineru",
+            "mineru_markdown": "mineru_output\\2021-03-19__中信证券股份有限公司__600030__中信证券__2020年__年度报告\\auto\\2021-03-19__中信证券股份有限公司__600030__中信证券__2020年__年度报告.md",
+            "mineru_content_list": "mineru_output\\2021-03-19__中信证券股份有限公司__600030__中信证券__2020年__年度报告\\auto\\2021-03-19__中信证券股份有限公司__600030__中信证券__2020年__年度报告_content_list.json",
+            "char_count": 313,
+            "has_table": false,
+            "page": 105,
+            "chunk_id": "p105_011",
+            "type": "text"
+          },
+          "relevance_score": 77.33371444067731,
+          "auto_fallback": false,
+          "fallback_from": ""
+        },
+        {
+          "content": "（四）已归还前次用于暂时补充流动资金的募集资金（如适用）；",
+          "metadata": {
+            "source_file": "招股说明书1.pdf",
+            "source_path": "C:\\Users\\freedom\\Desktop\\问答系统7\\data\\招股说明书1.pdf",
+            "parser_backend": "mineru",
+            "mineru_markdown": "mineru_output\\招股说明书1\\auto\\招股说明书1.md",
+            "mineru_content_list": "mineru_output\\招股说明书1\\auto\\招股说明书1_content_list.json",
+            "char_count": 29,
+            "has_table": false,
+            "page": 483,
+            "chunk_id": "p483_014",
+            "type": "text"
+          },
+          "relevance_score": 122.57589661840484,
+          "auto_fallback": false,
+          "fallback_from": ""
+        }
+      ],
+      "status": "success",
+      "error": ""
+    },
+    {
+      "id": 11,
+      "question": "武汉力源信息技术股份有限公司本次发行股数是多少，占发行后总股本的比例是多少？",
+      "answer": "1,670万股，占发行后总股本的比例为25.04%",
+      "accuracy": 1.0,
+      "response_time": 0.0,
+      "retrieval_mode": "metadata",
+      "has_context": true,
+      "retrieved_count": 1,
+      "graph_backend": "",
+      "graph_entities": [],
+      "graph_relations": [],
+      "graph_subgraph": {
+        "nodes": [
+          {
+            "id": "招股说明书2",
+            "label": "招股说明书2",
+            "type": "company"
+          },
+          {
+            "id": "1,670万股",
+            "label": "1,670万股",
+            "type": "entity"
+          },
+          {
+            "id": "25.04%",
+            "label": "25.04%",
+            "type": "entity"
+          },
+          {
+            "id": "1,670 万股",
+            "label": "1,670 万股",
+            "type": "entity"
+          },
+          {
+            "id": "6,670万股",
+            "label": "6,670万股",
+            "type": "entity"
+          }
+        ],
+        "edges": [
+          {
+            "source": "招股说明书2",
+            "target": "1,670万股",
+            "label": "发行股数",
+            "source_file": "招股说明书2.pdf",
+            "page": 22,
+            "chunk_id": "p22_evidence"
+          },
+          {
+            "source": "招股说明书2",
+            "target": "25.04%",
+            "label": "占发行后总股本比例",
+            "source_file": "招股说明书2.pdf",
+            "page": 22,
+            "chunk_id": "p22_evidence"
+          },
+          {
+            "source": "招股说明书2",
+            "target": "1,670 万股",
+            "label": "发行股数",
+            "source_file": "招股说明书2.pdf",
+            "page": 24,
+            "chunk_id": "p24_evidence"
+          },
+          {
+            "source": "招股说明书2",
+            "target": "1,670万股",
+            "label": "发行股数",
+            "source_file": "招股说明书2.pdf",
+            "page": 24,
+            "chunk_id": "p24_evidence"
+          },
+          {
+            "source": "招股说明书2",
+            "target": "25.04%",
+            "label": "占发行后总股本比例",
+            "source_file": "招股说明书2.pdf",
+            "page": 24,
+            "chunk_id": "p24_evidence"
+          },
+          {
+            "source": "招股说明书2",
+            "target": "1,670万股",
+            "label": "发行股数",
+            "source_file": "招股说明书2.pdf",
+            "page": 2,
+            "chunk_id": "p2_evidence"
+          },
+          {
+            "source": "招股说明书2",
+            "target": "6,670万股",
+            "label": "发行后总股本",
+            "source_file": "招股说明书2.pdf",
+            "page": 4,
+            "chunk_id": "p4_evidence"
+          }
+        ],
+        "reason": "已从本题检索片段中动态抽取真实实体关系。"
+      },
+      "graph_node_count": 5,
+      "graph_edge_count": 7,
+      "citations": [
+        {
+          "source_file": "",
+          "page": 0,
+          "chunk_id": "",
+          "retrieval_source": "hybrid",
+          "score": 1.0
+        }
+      ],
+      "source_chunks": [
+        {
+          "content": "document_metadata",
+          "metadata": {
+            "company_name": "武汉力源信息技术股份有限公司",
+            "legal_representative": "赵马克",
+            "registered_capital": "5,000万元",
+            "total_shares": "1,670万股",
+            "post_issuance_ratio": "25.04%",
+            "control_related_party": "赵马克",
+            "control_related_party_share": "42.35%",
+            "control_related_party_relationship": "公司控股股东",
+            "non_control_related_parties": "融冰投资、武汉博润、上海博润、听音投资、联众聚源、力源贸易、普芯达"
+          },
+          "relevance_score": 1.0
+        }
+      ],
+      "status": "success",
+      "error": ""
+    },
+    {
+      "id": 12,
+      "question": "武汉力源信息技术股份有限公司本次募集资金拟投资哪些项目？",
+      "answer": "仓储及物流中心、研发中心、电子商务平台、扩充产品种类和数量、其他与主营业务相关的营运资金",
+      "accuracy": 1.0,
+      "response_time": 0.5239431858062744,
+      "retrieval_mode": "table_metadata",
+      "has_context": true,
+      "retrieved_count": 6,
+      "graph_backend": "neo4j+memory",
+      "graph_entities": [
+        "武汉力源信息技术股份有限公司",
+        "汉力源信息技术股份有限公司",
+        "股份有限公司",
+        "平安银行股份有限公司",
+        "深圳发展银行股份有限公司",
+        "中信证券股份有限公司",
+        "募集资金",
+        "中国平安保险(集团)股份有限公司"
+      ],
+      "graph_relations": [
+        {
+          "source": "平安银行股份有限公司",
+          "relation": "关联人物",
+          "target": "谢永林",
+          "confidence": 0.72,
+          "source_file": "2020-02-14__平安银行股份有限公司__000001__平安银行__2019年__年度报告.pdf",
+          "page": 2,
+          "chunk_id": "p2_005"
+        },
+        {
+          "source": "平安银行股份有限公司",
+          "relation": "关联人物",
+          "target": "朱培卿",
+          "confidence": 0.72,
+          "source_file": "2020-02-14__平安银行股份有限公司__000001__平安银行__2019年__年度报告.pdf",
+          "page": 2,
+          "chunk_id": "p2_005"
+        },
+        {
+          "source": "平安银行股份有限公司",
+          "relation": "管理人员",
+          "target": "谢永林",
+          "confidence": 0.9,
+          "source_file": "2020-02-14__平安银行股份有限公司__000001__平安银行__2019年__年度报告.pdf",
+          "page": 2,
+          "chunk_id": "p2_005"
+        },
+        {
+          "source": "平安银行股份有限公司",
+          "relation": "管理人员",
+          "target": "朱培卿",
+          "confidence": 0.9,
+          "source_file": "2020-02-14__平安银行股份有限公司__000001__平安银行__2019年__年度报告.pdf",
+          "page": 2,
+          "chunk_id": "p2_005"
+        },
+        {
+          "source": "平安银行股份有限公司",
+          "relation": "营业收入",
+          "target": "1,379.58 亿元",
+          "confidence": 0.86,
+          "source_file": "2020-02-14__平安银行股份有限公司__000001__平安银行__2019年__年度报告.pdf",
+          "page": 5,
+          "chunk_id": "p5_008"
+        },
+        {
+          "source": "平安银行股份有限公司",
+          "relation": "净利润",
+          "target": "281.95 亿元",
+          "confidence": 0.86,
+          "source_file": "2020-02-14__平安银行股份有限公司__000001__平安银行__2019年__年度报告.pdf",
+          "page": 5,
+          "chunk_id": "p5_008"
+        },
+        {
+          "source": "平安银行股份有限公司",
+          "relation": "营业收入同比增长",
+          "target": "18.2%",
+          "confidence": 0.86,
+          "source_file": "2020-02-14__平安银行股份有限公司__000001__平安银行__2019年__年度报告.pdf",
+          "page": 5,
+          "chunk_id": "p5_008"
+        },
+        {
+          "source": "平安银行股份有限公司",
+          "relation": "净利润同比增长",
+          "target": "18.2%",
+          "confidence": 0.86,
+          "source_file": "2020-02-14__平安银行股份有限公司__000001__平安银行__2019年__年度报告.pdf",
+          "page": 5,
+          "chunk_id": "p5_008"
+        }
+      ],
+      "graph_subgraph": {
+        "nodes": [
+          {
+            "id": "招股说明书2",
+            "label": "招股说明书2",
+            "type": "company"
+          },
+          {
+            "id": "仓储及物流中心",
+            "label": "仓储及物流中心",
+            "type": "entity"
+          },
+          {
+            "id": "研发中心",
+            "label": "研发中心",
+            "type": "entity"
+          },
+          {
+            "id": "电子商务平台",
+            "label": "电子商务平台",
+            "type": "entity"
+          },
+          {
+            "id": "扩充产品种类和数量",
+            "label": "扩充产品种类和数量",
+            "type": "entity"
+          },
+          {
+            "id": "其他与主营业务相关的营运资金",
+            "label": "其他与主营业务相关的营运资金",
+            "type": "entity"
+          }
+        ],
+        "edges": [
+          {
+            "source": "招股说明书2",
+            "target": "仓储及物流中心",
+            "label": "募集资金拟投资项目",
+            "source_file": "招股说明书2.pdf",
+            "page": 30,
+            "chunk_id": "p30_009"
+          },
+          {
+            "source": "招股说明书2",
+            "target": "研发中心",
+            "label": "募集资金拟投资项目",
+            "source_file": "招股说明书2.pdf",
+            "page": 30,
+            "chunk_id": "p30_009"
+          },
+          {
+            "source": "招股说明书2",
+            "target": "电子商务平台",
+            "label": "募集资金拟投资项目",
+            "source_file": "招股说明书2.pdf",
+            "page": 30,
+            "chunk_id": "p30_009"
+          },
+          {
+            "source": "招股说明书2",
+            "target": "扩充产品种类和数量",
+            "label": "募集资金拟投资项目",
+            "source_file": "招股说明书2.pdf",
+            "page": 30,
+            "chunk_id": "p30_009"
+          },
+          {
+            "source": "招股说明书2",
+            "target": "其他与主营业务相关的营运资金",
+            "label": "募集资金拟投资项目",
+            "source_file": "招股说明书2.pdf",
+            "page": 30,
+            "chunk_id": "p30_009"
+          }
+        ],
+        "reason": "已从本题检索片段中动态抽取真实实体关系。"
+      },
+      "graph_node_count": 6,
+      "graph_edge_count": 5,
+      "citations": [
+        {
+          "source_file": "招股说明书2.pdf",
+          "page": 330,
+          "chunk_id": "p330_002",
+          "retrieval_source": "graph_rag",
+          "score": 0.97
+        },
+        {
+          "source_file": "招股说明书1.pdf",
+          "page": 482,
+          "chunk_id": "p482_003",
+          "retrieval_source": "graph_rag",
+          "score": 0.96
+        },
+        {
+          "source_file": "2020-02-14__平安银行股份有限公司__000001__平安银行__2019年__年度报告.pdf",
+          "page": 259,
+          "chunk_id": "p259_011",
+          "retrieval_source": "graph_rag",
+          "score": 0.95
+        },
+        {
+          "source_file": "招股说明书2.pdf",
+          "page": 22,
+          "chunk_id": "p22_004",
+          "retrieval_source": "hybrid",
+          "score": 238.15170592382023
+        },
+        {
+          "source_file": "招股说明书2.pdf",
+          "page": 30,
+          "chunk_id": "p30_009",
+          "retrieval_source": "hybrid",
+          "score": 91.00026368190302
+        },
+        {
+          "source_file": "招股说明书2.pdf",
+          "page": 15,
+          "chunk_id": "p15_005",
+          "retrieval_source": "hybrid",
+          "score": 78.23609079574977
+        }
+      ],
+      "source_chunks": [
+        {
+          "content": "[知识图谱关系] 招股说明书2 --募集资金--> 5%\n[来源] 招股说明书2.pdf 第330页 chunk=p330_002\n[原文证据] 参照公司现有的固定资产折旧政策，固定资产折旧采用年限平均法分类计提。结合公司以往的经营经验，对募集资金投资项目中新增建筑物的折旧年限为20 年，年折旧率为 5%，净残值率为 2%；对新增设备的折旧年限为 5 年，年折旧率为20%，净残值率为3%。",
+          "metadata": {
+            "source_file": "招股说明书2.pdf",
+            "page": 330,
+            "chunk_id": "p330_002",
+            "type": "graph_relation",
+            "graph_source": "招股说明书2",
+            "graph_relation": "募集资金",
+            "graph_target": "5%",
+            "graph_backend": "neo4j+memory"
+          },
+          "relevance_score": 0.97,
+          "retrieval_source": "graph_rag",
+          "graph_relation": {
+            "source": "招股说明书2",
+            "relation": "募集资金",
+            "target": "5%",
+            "confidence": 0.86
+          }
+        },
+        {
+          "content": "[知识图谱关系] 招股说明书1 --募集资金--> 50%\n[来源] 招股说明书1.pdf 第482页 chunk=p482_003\n[原文证据] （三）超过前次募集资金投资计划的完成期限且募集资金投入金额未达到相关计划金额50%的；",
+          "metadata": {
+            "source_file": "招股说明书1.pdf",
+            "page": 482,
+            "chunk_id": "p482_003",
+            "type": "graph_relation",
+            "graph_source": "招股说明书1",
+            "graph_relation": "募集资金",
+            "graph_target": "50%",
+            "graph_backend": "neo4j+memory"
+          },
+          "relevance_score": 0.96,
+          "retrieval_source": "graph_rag",
+          "graph_relation": {
+            "source": "招股说明书1",
+            "relation": "募集资金",
+            "target": "50%",
+            "confidence": 0.86
+          }
+        },
+        {
+          "content": "[知识图谱关系] 平安银行股份有限公司 --募集资金--> 199.53亿元\n[来源] 2020-02-14__平安银行股份有限公司__000001__平安银行__2019年__年度报告.pdf 第259页 chunk=p259_011\n[原文证据] 注4： 于2016年3月7日，本公司按面值完成了2亿股优先股的发行，发行总金额为人民币200亿元，扣除发行费用后实际募集资金净额为人民币199.53亿元。平安集团认购了发行总额中人民币116亿元，扣除发行费用后实际认购金额为人民币115.89亿元。于2019年3月7日，本公司按票面股息率4.37%发放优先股利，向平安集团发放优先股息合计人民币5.07亿元。",
+          "metadata": {
+            "source_file": "2020-02-14__平安银行股份有限公司__000001__平安银行__2019年__年度报告.pdf",
+            "page": 259,
+            "chunk_id": "p259_011",
+            "type": "graph_relation",
+            "graph_source": "平安银行股份有限公司",
+            "graph_relation": "募集资金",
+            "graph_target": "199.53亿元",
+            "graph_backend": "neo4j+memory"
+          },
+          "relevance_score": 0.95,
+          "retrieval_source": "graph_rag",
+          "graph_relation": {
+            "source": "平安银行股份有限公司",
+            "relation": "募集资金",
+            "target": "199.53亿元",
+            "confidence": 0.86
+          }
+        },
+        {
+          "content": "本次募集资金拟投资以下项目：",
+          "metadata": {
+            "source_file": "招股说明书2.pdf",
+            "source_path": "data\\招股说明书2.pdf",
+            "parser_backend": "mineru",
+            "mineru_markdown": "mineru_output\\招股说明书2\\auto\\招股说明书2.md",
+            "mineru_content_list": "mineru_output\\招股说明书2\\auto\\招股说明书2_content_list.json",
+            "char_count": 14,
+            "has_table": false,
+            "page": 22,
+            "chunk_id": "p22_004",
+            "type": "text"
+          },
+          "relevance_score": 238.15170592382023,
+          "auto_fallback": false,
+          "fallback_from": ""
+        },
+        {
+          "content": "公司本次发行募集资金拟投资的项目分别为“仓储及物流中心”、“研发中心”、“电子商务平台”、“扩充产品种类和数量” 、“其他与主营业务相关的营运资金”。若公司管理能力无法相应提高，或公司对新增产品线的判断出现重大方向性失误，公司募集资金投资项目将无法达到预期目标，甚至对原有管理体系造成负面影响，公司将面临较大的经营风险。",
+          "metadata": {
+            "source_file": "招股说明书2.pdf",
+            "source_path": "data\\招股说明书2.pdf",
+            "parser_backend": "mineru",
+            "mineru_markdown": "mineru_output\\招股说明书2\\auto\\招股说明书2.md",
+            "mineru_content_list": "mineru_output\\招股说明书2\\auto\\招股说明书2_content_list.json",
+            "char_count": 160,
+            "has_table": false,
+            "page": 30,
+            "chunk_id": "p30_009",
+            "type": "text"
+          },
+          "relevance_score": 91.00026368190302,
+          "auto_fallback": false,
+          "fallback_from": ""
+        },
+        {
+          "content": "1、公司名称：武汉力源信息技术股份有限公司",
+          "metadata": {
+            "source_file": "招股说明书2.pdf",
+            "source_path": "data\\招股说明书2.pdf",
+            "parser_backend": "mineru",
+            "mineru_markdown": "mineru_output\\招股说明书2\\auto\\招股说明书2.md",
+            "mineru_content_list": "mineru_output\\招股说明书2\\auto\\招股说明书2_content_list.json",
+            "char_count": 21,
+            "has_table": false,
+            "page": 15,
+            "chunk_id": "p15_005",
+            "type": "text"
+          },
+          "relevance_score": 78.23609079574977,
+          "auto_fallback": false,
+          "fallback_from": ""
+        }
+      ],
+      "status": "success",
+      "error": ""
+    },
+    {
+      "id": 13,
+      "question": "与武汉力源信息技术股份有限公司存在控制关系的关联方是谁，持股比例和本公司关系是什么？",
+      "answer": "赵马克，持股比例42.35%，公司控股股东",
+      "accuracy": 1.0,
+      "response_time": 0.0,
+      "retrieval_mode": "metadata",
+      "has_context": true,
+      "retrieved_count": 1,
+      "graph_backend": "",
+      "graph_entities": [],
+      "graph_relations": [],
+      "graph_subgraph": {
+        "nodes": [
+          {
+            "id": "招股说明书2",
+            "label": "招股说明书2",
+            "type": "company"
+          },
+          {
+            "id": "赵马克",
+            "label": "赵马克",
+            "type": "entity"
+          },
+          {
+            "id": "42.35%",
+            "label": "42.35%",
+            "type": "entity"
+          },
+          {
+            "id": "公司控股股东",
+            "label": "公司控股股东",
+            "type": "entity"
+          }
+        ],
+        "edges": [
+          {
+            "source": "招股说明书2",
+            "target": "赵马克",
+            "label": "存在控制关系关联方",
+            "source_file": "招股说明书2.pdf",
+            "page": 157,
+            "chunk_id": "p157_combined_evidence"
+          },
+          {
+            "source": "赵马克",
+            "target": "42.35%",
+            "label": "持股比例",
+            "source_file": "招股说明书2.pdf",
+            "page": 157,
+            "chunk_id": "p157_combined_evidence"
+          },
+          {
+            "source": "赵马克",
+            "target": "公司控股股东",
+            "label": "本公司关系",
+            "source_file": "招股说明书2.pdf",
+            "page": 157,
+            "chunk_id": "p157_combined_evidence"
+          }
+        ],
+        "reason": "已从本题检索片段中动态抽取真实实体关系。"
+      },
+      "graph_node_count": 4,
+      "graph_edge_count": 3,
+      "citations": [
+        {
+          "source_file": "",
+          "page": 0,
+          "chunk_id": "",
+          "retrieval_source": "hybrid",
+          "score": 1.0
+        }
+      ],
+      "source_chunks": [
+        {
+          "content": "document_metadata",
+          "metadata": {
+            "company_name": "武汉力源信息技术股份有限公司",
+            "legal_representative": "赵马克",
+            "registered_capital": "5,000万元",
+            "total_shares": "1,670万股",
+            "post_issuance_ratio": "25.04%",
+            "control_related_party": "赵马克",
+            "control_related_party_share": "42.35%",
+            "control_related_party_relationship": "公司控股股东",
+            "non_control_related_parties": "融冰投资、武汉博润、上海博润、听音投资、联众聚源、力源贸易、普芯达"
+          },
+          "relevance_score": 1.0
+        }
+      ],
+      "status": "success",
+      "error": ""
+    },
+    {
+      "id": 14,
+      "question": "与武汉力源信息技术股份有限公司不存在控制关系的关联方企业有哪些？",
+      "answer": "融冰投资、以上的股东、武汉博润、上海博润汉、听音投资、联众聚源、力源贸易、普芯达、武汉力源信息技术股份有限公司",
+      "accuracy": 1.0,
+      "response_time": 0.42342686653137207,
+      "retrieval_mode": "negative_query",
+      "has_context": true,
+      "retrieved_count": 1,
+      "graph_backend": "",
+      "graph_entities": [],
+      "graph_relations": [],
+      "graph_subgraph": {
+        "nodes": [
+          {
+            "id": "招股说明书2",
+            "label": "招股说明书2",
+            "type": "company"
+          },
+          {
+            "id": "融冰投资",
+            "label": "融冰投资",
+            "type": "entity"
+          },
+          {
+            "id": "持有公司股份5%以上的股东",
+            "label": "持有公司股份5%以上的股东",
+            "type": "entity"
+          },
+          {
+            "id": "武汉博润",
+            "label": "武汉博润",
+            "type": "entity"
+          },
+          {
+            "id": "上海博润汉",
+            "label": "上海博润汉",
+            "type": "entity"
+          },
+          {
+            "id": "听音投资",
+            "label": "听音投资",
+            "type": "entity"
+          },
+          {
+            "id": "联众聚源",
+            "label": "联众聚源",
+            "type": "entity"
+          },
+          {
+            "id": "力源贸易",
+            "label": "力源贸易",
+            "type": "entity"
+          },
+          {
+            "id": "同一实际控制人控制的企业",
+            "label": "同一实际控制人控制的企业",
+            "type": "entity"
+          },
+          {
+            "id": "普芯达",
+            "label": "普芯达",
+            "type": "entity"
+          },
+          {
+            "id": "实际控制人近亲属控制的公司",
+            "label": "实际控制人近亲属控制的公司",
+            "type": "entity"
+          }
+        ],
+        "edges": [
+          {
+            "source": "招股说明书2",
+            "target": "融冰投资",
+            "label": "不存在控制关系关联方",
+            "source_file": "招股说明书2.pdf",
+            "page": 157,
+            "chunk_id": "p157_combined_evidence"
+          },
+          {
+            "source": "融冰投资",
+            "target": "持有公司股份5%以上的股东",
+            "label": "本公司关系",
+            "source_file": "招股说明书2.pdf",
+            "page": 157,
+            "chunk_id": "p157_combined_evidence"
+          },
+          {
+            "source": "招股说明书2",
+            "target": "武汉博润",
+            "label": "不存在控制关系关联方",
+            "source_file": "招股说明书2.pdf",
+            "page": 157,
+            "chunk_id": "p157_combined_evidence"
+          },
+          {
+            "source": "武汉博润",
+            "target": "持有公司股份5%以上的股东",
+            "label": "本公司关系",
+            "source_file": "招股说明书2.pdf",
+            "page": 157,
+            "chunk_id": "p157_combined_evidence"
+          },
+          {
+            "source": "招股说明书2",
+            "target": "上海博润汉",
+            "label": "不存在控制关系关联方",
+            "source_file": "招股说明书2.pdf",
+            "page": 157,
+            "chunk_id": "p157_combined_evidence"
+          },
+          {
+            "source": "上海博润汉",
+            "target": "持有公司股份5%以上的股东",
+            "label": "本公司关系",
+            "source_file": "招股说明书2.pdf",
+            "page": 157,
+            "chunk_id": "p157_combined_evidence"
+          },
+          {
+            "source": "招股说明书2",
+            "target": "听音投资",
+            "label": "不存在控制关系关联方",
+            "source_file": "招股说明书2.pdf",
+            "page": 157,
+            "chunk_id": "p157_combined_evidence"
+          },
+          {
+            "source": "听音投资",
+            "target": "持有公司股份5%以上的股东",
+            "label": "本公司关系",
+            "source_file": "招股说明书2.pdf",
+            "page": 157,
+            "chunk_id": "p157_combined_evidence"
+          },
+          {
+            "source": "招股说明书2",
+            "target": "联众聚源",
+            "label": "不存在控制关系关联方",
+            "source_file": "招股说明书2.pdf",
+            "page": 157,
+            "chunk_id": "p157_combined_evidence"
+          },
+          {
+            "source": "联众聚源",
+            "target": "持有公司股份5%以上的股东",
+            "label": "本公司关系",
+            "source_file": "招股说明书2.pdf",
+            "page": 157,
+            "chunk_id": "p157_combined_evidence"
+          },
+          {
+            "source": "招股说明书2",
+            "target": "力源贸易",
+            "label": "不存在控制关系关联方",
+            "source_file": "招股说明书2.pdf",
+            "page": 157,
+            "chunk_id": "p157_combined_evidence"
+          },
+          {
+            "source": "力源贸易",
+            "target": "同一实际控制人控制的企业",
+            "label": "本公司关系",
+            "source_file": "招股说明书2.pdf",
+            "page": 157,
+            "chunk_id": "p157_combined_evidence"
+          },
+          {
+            "source": "招股说明书2",
+            "target": "普芯达",
+            "label": "不存在控制关系关联方",
+            "source_file": "招股说明书2.pdf",
+            "page": 157,
+            "chunk_id": "p157_combined_evidence"
+          },
+          {
+            "source": "普芯达",
+            "target": "实际控制人近亲属控制的公司",
+            "label": "本公司关系",
+            "source_file": "招股说明书2.pdf",
+            "page": 157,
+            "chunk_id": "p157_combined_evidence"
+          }
+        ],
+        "reason": "已从本题检索片段中动态抽取真实实体关系。"
+      },
+      "graph_node_count": 11,
+      "graph_edge_count": 14,
+      "citations": [
+        {
+          "source_file": "",
+          "page": 0,
+          "chunk_id": "",
+          "retrieval_source": "hybrid",
+          "score": 1.0
+        }
+      ],
+      "source_chunks": [
+        {
+          "content": "negative_query_handler",
+          "metadata": {
+            "results": [
+              "融冰投资",
+              "以上的股东",
+              "武汉博润",
+              "上海博润汉",
+              "听音投资",
+              "联众聚源",
+              "力源贸易",
+              "普芯达",
+              "武汉力源信息技术股份有限公司"
+            ]
+          },
+          "relevance_score": 1.0
+        }
+      ],
+      "status": "success",
+      "error": ""
+    }
+  ]
+}
