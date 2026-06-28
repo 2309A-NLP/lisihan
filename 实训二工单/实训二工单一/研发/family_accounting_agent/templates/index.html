@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>家庭记账助手</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <body>
+    <main class="shell">
+      <aside class="summary">
+        <div class="brand">
+          <div class="brand-mark">¥</div>
+          <div>
+            <h1>家庭记账</h1>
+            <p>预算、账目、额度都在这儿</p>
+          </div>
+        </div>
+
+        <div class="metrics">
+          <section class="metric">
+            <span>本月支出</span>
+            <strong id="monthExpense">¥0</strong>
+          </section>
+          <section class="metric income">
+            <span>本月收入</span>
+            <strong id="monthIncome">¥0</strong>
+          </section>
+          <section class="metric">
+            <span>剩余额度</span>
+            <strong id="remainingBudget">未设置</strong>
+          </section>
+        </div>
+
+        <section class="panel">
+          <h2>成员支出</h2>
+          <div id="memberBars" class="bars"></div>
+        </section>
+
+        <section class="panel">
+          <h2>最近记录</h2>
+          <div id="recentRecords" class="records"></div>
+        </section>
+      </aside>
+
+      <section class="chat">
+        <header class="chat-header">
+          <div>
+            <p>AI 记账员</p>
+            <h2>请告诉我你的账目需求吧</h2>
+          </div>
+          <button id="helpBtn" type="button" title="查看示例">?</button>
+        </header>
+
+        <div id="messages" class="messages" aria-live="polite"></div>
+
+        <div class="quick-actions">
+          <button type="button" data-message="设置本月预算5000元">设置预算</button>
+          <button type="button" data-message="剩余额度是多少">剩余额度</button>
+          <button type="button" data-message="今天女儿买了双登山鞋499元">记登山鞋</button>
+          <button type="button" data-message="看下这个月家里花钱明细">本月明细</button>
+        </div>
+
+        <form id="chatForm" class="composer">
+          <input id="messageInput" type="text" autocomplete="off" placeholder="例如：今天女儿买了双登山鞋499元" />
+          <div class="composer-actions">
+            <button id="voiceBtn" type="button" class="voice-btn" title="语音输入">🎤</button>
+            <button type="submit">发送</button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <script>
+      const opening = "您好，欢迎使用咱们小家专属记账本！请按照“x年x月x日，谁做什么事收入/支出多少钱”的格式来输入。请告诉我你的账目需求吧。";
+      const messagesEl = document.querySelector("#messages");
+      const form = document.querySelector("#chatForm");
+      const input = document.querySelector("#messageInput");
+      const monthExpenseEl = document.querySelector("#monthExpense");
+      const monthIncomeEl = document.querySelector("#monthIncome");
+      const remainingBudgetEl = document.querySelector("#remainingBudget");
+      const memberBarsEl = document.querySelector("#memberBars");
+      const recentRecordsEl = document.querySelector("#recentRecords");
+
+      function money(value) {
+        const number = Math.abs(Number(value || 0));
+        return `¥${Number.isInteger(number) ? number : number.toFixed(2)}`;
+      }
+
+      function addMessage(role, text) {
+        const item = document.createElement("div");
+        item.className = `message ${role}`;
+        item.textContent = text;
+        messagesEl.appendChild(item);
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+      }
+
+      async function sendMessage(text) {
+        const message = text.trim();
+        if (!message) return;
+        addMessage("user", message);
+        input.value = "";
+        input.disabled = true;
+        try {
+          const response = await fetch("/api/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message }),
+          });
+          const data = await response.json();
+          addMessage("bot", data.reply || "处理失败。还需要其他帮助吗？");
+          if (data.summary) renderSummary(data.summary);
+        } catch (error) {
+          addMessage("bot", "服务暂时不可用，请确认 Flask 和 MySQL 正在运行。还需要其他帮助吗？");
+        } finally {
+          input.disabled = false;
+          input.focus();
+        }
+      }
+
+      function renderSummary(summary) {
+        monthExpenseEl.textContent = money(summary.month_total);
+        monthIncomeEl.textContent = money(summary.month_income);
+        if (summary.budget) {
+          remainingBudgetEl.textContent = summary.budget.remaining >= 0 ? money(summary.budget.remaining) : `超支${money(summary.budget.remaining)}`;
+        } else {
+          remainingBudgetEl.textContent = "未设置";
+        }
+
+        const max = Math.max(...(summary.by_member || []).map((row) => row.total), 1);
+        memberBarsEl.innerHTML = "";
+        if (!summary.by_member || summary.by_member.length === 0) {
+          memberBarsEl.innerHTML = '<p class="empty">本月还没有成员支出。</p>';
+        } else {
+          summary.by_member.forEach((row) => {
+            const item = document.createElement("div");
+            item.className = "bar-row";
+            item.innerHTML = `<div><span>${row.member}</span><strong>${money(row.total)}</strong></div><i style="width:${Math.max(8, (row.total / max) * 100)}%"></i>`;
+            memberBarsEl.appendChild(item);
+          });
+        }
+
+        recentRecordsEl.innerHTML = "";
+        if (!summary.recent || summary.recent.length === 0) {
+          recentRecordsEl.innerHTML = '<p class="empty">暂无记录。</p>';
+        } else {
+          summary.recent.forEach((row) => {
+            const item = document.createElement("div");
+            item.className = `record ${row.type === "收入" ? "income" : ""}`;
+            const signed = row.type === "收入" ? "+" : "";
+            item.innerHTML = `<strong>#${row.id} ${row.item} ${signed}${money(row.amount)}</strong><span>${row.date} · ${row.member} · ${row.type}</span>`;
+            recentRecordsEl.appendChild(item);
+          });
+        }
+      }
+
+      async function loadSummary() {
+        try {
+          const response = await fetch("/api/summary");
+          renderSummary(await response.json());
+        } catch (error) {
+          memberBarsEl.innerHTML = '<p class="empty">无法读取统计。</p>';
+        }
+      }
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        sendMessage(input.value);
+      });
+
+      document.querySelectorAll("[data-message]").forEach((button) => {
+        button.addEventListener("click", () => sendMessage(button.dataset.message));
+      });
+
+      document.querySelector("#helpBtn").addEventListener("click", () => sendMessage("帮助"));
+
+      addMessage("bot", opening);
+      loadSummary();
+
+      // ─── 语音输入 ─────────────────────────
+      const voiceBtn = document.querySelector("#voiceBtn");
+      let recognition = null;
+      let isListening = false;
+
+      function initRecognition() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+          voiceBtn.disabled = true;
+          voiceBtn.title = "当前浏览器不支持语音输入";
+          voiceBtn.style.opacity = "0.4";
+          return null;
+        }
+        const r = new SpeechRecognition();
+        r.lang = "zh-CN";
+        r.continuous = false;
+        r.interimResults = true;
+        r.maxAlternatives = 1;
+
+        r.onresult = (event) => {
+          let transcript = "";
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            transcript += event.results[i][0].transcript;
+            if (event.results[i].isFinal) {
+              input.value = transcript;
+              voiceBtn.textContent = "🎤";
+              voiceBtn.classList.remove("listening");
+              voiceBtn.title = "语音输入";
+              isListening = false;
+              sendMessage(transcript);
+            } else {
+              input.value = transcript;
+            }
+          }
+        };
+
+        r.onerror = (event) => {
+          console.warn("语音识别错误:", event.error);
+          voiceBtn.textContent = "🎤";
+          voiceBtn.classList.remove("listening");
+          voiceBtn.title = "语音输入";
+          isListening = false;
+          if (event.error !== "aborted" && event.error !== "no-speech") {
+            addMessage("bot", "语音识别失败，请检查麦克风权限或重试。");
+          }
+        };
+
+        r.onend = () => {
+          voiceBtn.textContent = "🎤";
+          voiceBtn.classList.remove("listening");
+          voiceBtn.title = "语音输入";
+          isListening = false;
+        };
+
+        return r;
+      }
+
+      voiceBtn.addEventListener("click", () => {
+        if (isListening) {
+          if (recognition) {
+            recognition.abort();
+          }
+          voiceBtn.textContent = "🎤";
+          voiceBtn.classList.remove("listening");
+          voiceBtn.title = "语音输入";
+          isListening = false;
+          return;
+        }
+
+        if (!recognition) {
+          recognition = initRecognition();
+          if (!recognition) return;
+        }
+
+        try {
+          recognition.start();
+          voiceBtn.textContent = "🔴";
+          voiceBtn.classList.add("listening");
+          voiceBtn.title = "点击停止录音";
+          isListening = true;
+        } catch (e) {
+          // 如果已经启动，忽略
+        }
+      });
+    </script>
+  </body>
+</html>

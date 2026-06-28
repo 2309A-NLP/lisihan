@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>家庭记账助手 — 思维导图</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0f172a;
+    font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px;
+  }
+  .header {
+    color: #e2e8f0;
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .header h1 { font-size: 26px; color: #38bdf8; margin-bottom: 6px; }
+  .header p { font-size: 14px; color: #94a3b8; }
+  .mindmap {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    max-width: 1400px;
+  }
+  svg { width: 100%; height: auto; }
+  .footer {
+    margin-top: 20px;
+    color: #475569;
+    font-size: 12px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>🧠 家庭记账助手 — 系统思维导图</h1>
+  <p>实训二工单一 · Python + Flask + MySQL · 智能体架构</p>
+</div>
+<div class="mindmap">
+<svg viewBox="0 0 1280 1680" xmlns="http://www.w3.org/2000/svg" style="background:#0f172a;border-radius:16px;">
+  <defs>
+    <filter id="shadow" x="-4%" y="-4%" width="108%" height="108%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.25"/>
+    </filter>
+    <linearGradient id="gRoot" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#818cf8"/>
+    </linearGradient>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#34d399"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#fbbf24"/>
+    </linearGradient>
+    <linearGradient id="g3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ef4444"/><stop offset="100%" stop-color="#f87171"/>
+    </linearGradient>
+    <linearGradient id="g4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8b5cf6"/><stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+    <linearGradient id="g5" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#06b6d4"/><stop offset="100%" stop-color="#22d3ee"/>
+    </linearGradient>
+    <linearGradient id="g6" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ec4899"/><stop offset="100%" stop-color="#f472b6"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Lines -->
+  <g stroke="#334155" stroke-width="1.8" fill="none">
+    <!-- Level 0 → Level 1 -->
+    <path d="M 640 80 Q 640 120, 220 170" stroke-dasharray="4 3"/>
+    <path d="M 640 80 Q 640 120, 640 170"/>
+    <path d="M 640 80 Q 640 120, 1060 170"/>
+    <!-- Level 1 → Level 2 -->
+    <path d="M 220 210 Q 220 250, 120 300"/>
+    <path d="M 220 210 Q 220 250, 220 300"/>
+    <path d="M 220 210 Q 220 250, 320 300"/>
+    <path d="M 640 210 Q 640 250, 500 310"/>
+    <path d="M 640 210 Q 640 250, 640 310"/>
+    <path d="M 640 210 Q 640 250, 780 310"/>
+    <path d="M 1060 210 Q 1060 250, 960 300"/>
+    <path d="M 1060 210 Q 1060 250, 1060 300"/>
+    <path d="M 1060 210 Q 1060 250, 1160 300"/>
+    <!-- Level 2 → Level 3 -->
+    <!-- Web layer leaf lines -->
+    <path d="M 120 340 Q 120 370, 60 410"/><path d="M 120 340 Q 120 370, 120 410"/><path d="M 120 340 Q 120 370, 180 410"/>
+    <path d="M 220 340 Q 220 370, 220 410"/><path d="M 220 340 Q 220 370, 280 410"/>
+    <path d="M 320 340 Q 320 370, 320 410"/><path d="M 320 340 Q 320 370, 380 410"/>
+    <!-- NLP leaf lines -->
+    <path d="M 500 350 Q 500 390, 420 440"/><path d="M 500 350 Q 500 390, 500 440"/><path d="M 500 350 Q 500 390, 580 440"/><path d="M 500 350 Q 500 390, 500 510"/><path d="M 500 350 Q 500 390, 500 580"/><path d="M 500 350 Q 500 390, 500 650"/>
+    <!-- Flow leaf lines -->
+    <path d="M 640 350 Q 640 390, 640 440"/><path d="M 640 350 Q 640 390, 640 510"/><path d="M 640 350 Q 640 390, 640 580"/><path d="M 640 350 Q 640 390, 640 650"/>
+    <!-- DB leaf lines -->
+    <path d="M 780 350 Q 780 390, 780 440"/><path d="M 780 350 Q 780 390, 780 510"/><path d="M 780 350 Q 780 390, 780 580"/><path d="M 780 350 Q 780 390, 780 650"/>
+    <!-- Constants leaf -->
+    <path d="M 960 340 Q 960 370, 960 410"/><path d="M 960 340 Q 960 370, 1020 410"/>
+    <!-- Formatter leaf -->
+    <path d="M 1060 340 Q 1060 370, 1060 410"/><path d="M 1060 340 Q 1060 370, 1120 410"/>
+    <!-- Budget leaf -->
+    <path d="M 1160 340 Q 1160 370, 1160 410"/><path d="M 1160 340 Q 1160 370, 1220 410"/>
+    <!-- Deeper detail lines -->
+    <path d="M 420 480 Q 420 510, 370 550"/><path d="M 420 480 Q 420 510, 420 550"/><path d="M 420 480 Q 420 510, 470 550"/><path d="M 420 480 Q 420 510, 420 620"/><path d="M 420 480 Q 420 510, 420 690"/><path d="M 420 480 Q 420 510, 420 760"/>
+    <path d="M 500 480 Q 500 510, 500 550"/>
+    <path d="M 580 480 Q 580 510, 580 550"/>
+    <path d="M 640 480 Q 640 520, 550 580"/><path d="M 640 480 Q 640 520, 640 580"/><path d="M 640 480 Q 640 520, 730 580"/>
+    <!-- Add flow details -->
+    <path d="M 550 620 Q 550 660, 510 700"/><path d="M 550 620 Q 550 660, 550 700"/><path d="M 550 620 Q 550 660, 590 700"/><path d="M 550 620 Q 550 660, 550 770"/>
+    <!-- Query flow details -->
+    <path d="M 640 620 Q 640 660, 640 700"/><path d="M 640 620 Q 640 660, 700 700"/>
+    <!-- Mutation flow details -->
+    <path d="M 730 620 Q 730 660, 700 700"/><path d="M 730 620 Q 730 660, 730 700"/><path d="M 730 620 Q 730 660, 760 700"/><path d="M 730 620 Q 730 660, 730 770"/><path d="M 730 620 Q 730 660, 730 840"/>
+    <!-- DB details -->
+    <path d="M 780 480 Q 780 520, 730 570"/><path d="M 780 480 Q 780 520, 780 570"/><path d="M 780 480 Q 780 520, 830 570"/>
+  </g>
+
+  <!-- Root -->
+  <rect x="505" y="20" width="270" height="60" rx="30" fill="url(#gRoot)" filter="url(#shadow)"/>
+  <text x="640" y="57" text-anchor="middle" fill="#fff" font-size="20" font-weight="700">家庭记账助手</text>
+
+  <!-- Level 1 - 4 major modules -->
+  <!-- Web 入口层 -->
+  <rect x="100" y="150" width="240" height="60" rx="14" fill="url(#g1)" filter="url(#shadow)"/>
+  <text x="220" y="187" text-anchor="middle" fill="#fff" font-size="17" font-weight="600">🌐 Web 入口层</text>
+
+  <!-- Agent 调度 -->
+  <rect x="520" y="150" width="240" height="60" rx="14" fill="url(#g2)" filter="url(#shadow)"/>
+  <text x="640" y="187" text-anchor="middle" fill="#fff" font-size="17" font-weight="600">🤖 Agent 智能体调度</text>
+
+  <!-- 数据库 -->
+  <rect x="940" y="150" width="240" height="60" rx="14" fill="url(#g3)" filter="url(#shadow)"/>
+  <text x="1060" y="187" text-anchor="middle" fill="#fff" font-size="17" font-weight="600">🗄️ 数据库层</text>
+
+  <!-- Level 2 -->
+  <!-- Web sub -->
+  <rect x="60" y="290" width="120" height="50" rx="10" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+  <text x="120" y="322" text-anchor="middle" fill="#34d399" font-size="13" font-weight="600">app.py</text>
+  <rect x="160" y="290" width="120" height="50" rx="10" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+  <text x="220" y="322" text-anchor="middle" fill="#34d399" font-size="13" font-weight="600">main.py</text>
+  <rect x="260" y="290" width="120" height="50" rx="10" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+  <text x="320" y="322" text-anchor="middle" fill="#34d399" font-size="13" font-weight="600">前端页面</text>
+
+  <!-- NLP -->
+  <rect x="420" y="310" width="160" height="40" rx="10" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="500" y="336" text-anchor="middle" fill="#fbbf24" font-size="14" font-weight="600">📝 nlp.py</text>
+
+  <!-- Flow nodes -->
+  <rect x="570" y="310" width="140" height="40" rx="10" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="640" y="336" text-anchor="middle" fill="#fbbf24" font-size="13" font-weight="600">🔄 业务流程</text>
+
+  <!-- DB sub -->
+  <rect x="720" y="310" width="140" height="40" rx="10" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="790" y="336" text-anchor="middle" fill="#fbbf24" font-size="13" font-weight="600">🗄️ db.py</text>
+
+  <!-- Constants -->
+  <rect x="900" y="290" width="120" height="50" rx="10" fill="#1e293b" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="960" y="322" text-anchor="middle" fill="#f87171" font-size="13" font-weight="600">constants.py</text>
+
+  <!-- Formatter -->
+  <rect x="1000" y="290" width="120" height="50" rx="10" fill="#1e293b" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="1060" y="322" text-anchor="middle" fill="#f87171" font-size="13" font-weight="600">formatters.py</text>
+
+  <!-- Budget flow -->
+  <rect x="1100" y="290" width="120" height="50" rx="10" fill="#1e293b" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="1160" y="322" text-anchor="middle" fill="#f87171" font-size="13" font-weight="600">budget_flow.py</text>
+
+  <!-- Level 3 - App detail -->
+  <rect x="20" y="400" width="100" height="36" rx="8" fill="#0f172a" stroke="#34d399" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="70" y="424" text-anchor="middle" fill="#6ee7b7" font-size="11">Flask 路由</text>
+  <rect x="80" y="400" width="100" height="36" rx="8" fill="#0f172a" stroke="#34d399" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="130" y="424" text-anchor="middle" fill="#6ee7b7" font-size="11">页面渲染</text>
+  <rect x="140" y="400" width="100" height="36" rx="8" fill="#0f172a" stroke="#34d399" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="190" y="424" text-anchor="middle" fill="#6ee7b7" font-size="11">健康检查</text>
+  <rect x="180" y="400" width="100" height="36" rx="8" fill="#0f172a" stroke="#34d399" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="230" y="424" text-anchor="middle" fill="#6ee7b7" font-size="11">启动入口</text>
+  <rect x="240" y="400" width="100" height="36" rx="8" fill="#0f172a" stroke="#34d399" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="290" y="424" text-anchor="middle" fill="#6ee7b7" font-size="11">聊天界面</text>
+  <rect x="300" y="400" width="100" height="36" rx="8" fill="#0f172a" stroke="#34d399" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="350" y="424" text-anchor="middle" fill="#6ee7b7" font-size="11">统计面板</text>
+
+  <!-- NLP details -->
+  <rect x="340" y="440" width="80" height="34" rx="7" fill="#0f172a" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="380" y="462" text-anchor="middle" fill="#fde047" font-size="11">日期解析</text>
+  <rect x="460" y="440" width="80" height="34" rx="7" fill="#0f172a" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="500" y="462" text-anchor="middle" fill="#fde047" font-size="11">成员识别</text>
+  <rect x="540" y="440" width="80" height="34" rx="7" fill="#0f172a" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="580" y="462" text-anchor="middle" fill="#fde047" font-size="11">金额解析</text>
+
+  <!-- Flow details -->
+  <rect x="590" y="440" width="100" height="34" rx="7" fill="#0f172a" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="640" y="462" text-anchor="middle" fill="#fde047" font-size="11">add_flow.py</text>
+  <rect x="460" y="580" width="100" height="34" rx="7" fill="#0f172a" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="510" y="602" text-anchor="middle" fill="#fde047" font-size="11">add_flow.py</text>
+  <rect x="590" y="580" width="100" height="34" rx="7" fill="#0f172a" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="640" y="602" text-anchor="middle" fill="#fde047" font-size="11">query_flow.py</text>
+  <rect x="680" y="580" width="100" height="34" rx="7" fill="#0f172a" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="730" y="602" text-anchor="middle" fill="#fde047" font-size="11">mutation_flow.py</text>
+
+  <!-- DB detail -->
+  <rect x="720" y="440" width="80" height="34" rx="7" fill="#0f172a" stroke="#f87171" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="760" y="462" text-anchor="middle" fill="#fca5a5" font-size="11">MySQL 连接</text>
+  <rect x="780" y="440" width="80" height="34" rx="7" fill="#0f172a" stroke="#f87171" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="820" y="462" text-anchor="middle" fill="#fca5a5" font-size="11">表初始化</text>
+
+  <!-- DB tables -->
+  <rect x="700" y="570" width="80" height="34" rx="7" fill="#0f172a" stroke="#f87171" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="740" y="592" text-anchor="middle" fill="#fca5a5" font-size="11">money_notes</text>
+  <rect x="760" y="570" width="80" height="34" rx="7" fill="#0f172a" stroke="#f87171" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="800" y="592" text-anchor="middle" fill="#fca5a5" font-size="11">budget_config</text>
+  <rect x="810" y="570" width="100" height="34" rx="7" fill="#0f172a" stroke="#f87171" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="860" y="592" text-anchor="middle" fill="#fca5a5" font-size="11">6 个数据函数</text>
+
+  <!-- Constants details -->
+  <rect x="920" y="400" width="100" height="36" rx="8" fill="#0f172a" stroke="#fca5a5" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="970" y="424" text-anchor="middle" fill="#fecaca" font-size="11">开场白 / 结束词</text>
+  <rect x="980" y="400" width="100" height="36" rx="8" fill="#0f172a" stroke="#fca5a5" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="1030" y="424" text-anchor="middle" fill="#fecaca" font-size="11">成员别名</text>
+
+  <!-- Formatter details -->
+  <rect x="1010" y="400" width="100" height="36" rx="8" fill="#0f172a" stroke="#fca5a5" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="1060" y="424" text-anchor="middle" fill="#fecaca" font-size="11">金额展示</text>
+  <rect x="1070" y="400" width="100" height="36" rx="8" fill="#0f172a" stroke="#fca5a5" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="1120" y="424" text-anchor="middle" fill="#fecaca" font-size="11">帮助文本</text>
+
+  <!-- Budget details -->
+  <rect x="1110" y="400" width="100" height="36" rx="8" fill="#0f172a" stroke="#fca5a5" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="1160" y="424" text-anchor="middle" fill="#fecaca" font-size="11">预算设置</text>
+  <rect x="1170" y="400" width="100" height="36" rx="8" fill="#0f172a" stroke="#fca5a5" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="1220" y="424" text-anchor="middle" fill="#fecaca" font-size="11">超支提醒</text>
+
+  <!-- Date parse details -->
+  <rect x="340" y="540" width="80" height="30" rx="6" fill="#1e293b" stroke="#fde047" stroke-width="1" stroke-dasharray="2 2"/>
+  <text x="380" y="560" text-anchor="middle" fill="#fde047" font-size="10">今天/昨天/前天</text>
+  <rect x="390" y="540" width="80" height="30" rx="6" fill="#1e293b" stroke="#fde047" stroke-width="1" stroke-dasharray="2 2"/>
+  <text x="430" y="560" text-anchor="middle" fill="#fde047" font-size="10">x月x日</text>
+  <rect x="440" y="540" width="80" height="30" rx="6" fill="#1e293b" stroke="#fde047" stroke-width="1" stroke-dasharray="2 2"/>
+  <text x="480" y="560" text-anchor="middle" fill="#fde047" font-size="10">上个月</text>
+  <rect x="390" y="610" width="80" height="30" rx="6" fill="#1e293b" stroke="#fde047" stroke-width="1" stroke-dasharray="2 2"/>
+  <text x="430" y="630" text-anchor="middle" fill="#fde047" font-size="10">yyyy年M月d日</text>
+  <rect x="390" y="680" width="80" height="30" rx="6" fill="#1e293b" stroke="#fde047" stroke-width="1" stroke-dasharray="2 2"/>
+  <text x="430" y="700" text-anchor="middle" fill="#fde047" font-size="10">成员别名表</text>
+  <rect x="390" y="750" width="80" height="30" rx="6" fill="#1e293b" stroke="#fde047" stroke-width="1" stroke-dasharray="2 2"/>
+  <text x="430" y="770" text-anchor="middle" fill="#fde047" font-size="10">数字 + 单位</text>
+
+  <!-- Member detail -->
+  <rect x="460" y="540" width="80" height="30" rx="6" fill="#1e293b" stroke="#fde047" stroke-width="1" stroke-dasharray="2 2"/>
+  <text x="500" y="560" text-anchor="middle" fill="#fde047" font-size="10">我/妈妈/爸爸</text>
+  <rect x="540" y="540" width="80" height="30" rx="6" fill="#1e293b" stroke="#fde047" stroke-width="1" stroke-dasharray="2 2"/>
+  <text x="580" y="560" text-anchor="middle" fill="#fde047" font-size="10">女儿/儿子</text>
+
+  <!-- Add flow details -->
+  <rect x="470" y="690" width="90" height="30" rx="6" fill="#1e293b" stroke="#6ee7b7" stroke-width="1" stroke-dasharray="2 2"/>
+  <text x="515" y="710" text-anchor="middle" fill="#6ee7b7" font-size="10">提取账目信息</text>
+  <rect x="510" y="690" width="90" height="30" rx="6" fill="#1e293b" stroke="#6ee7b7" stroke-width="1" stroke-dasharray="2 2"/>
+  <text x="555" y="710" text-anchor="middle" fill="#6ee7b7" font-size="10">缺字段追问</text>
+  <rect x="550" y="690" width="90" height="30" rx="6" fill="#1e293b" stroke="#6ee7b7" stroke-width="1" stroke-dasharray="2 2"/>
+  <text x="595" y="710" text-anchor="middle" fill="#6ee7b7" font-size="10">异常金额确认</text>
+  <rect x="510" y="760" width="90" height="30" rx="6" fill="#1e293b" stroke="#6ee7b7" stroke-width="1" stroke-dasharray="2 2"/>
+  <text x="555" y="780" text-anchor="middle" fill="#6ee7b7" font-size="10">保存前确认</text>
+
+  <!-- Query flow details -->
+  <rect x="610" y="690" width="80" height="30" rx="6" fill="#1e293b" stroke="#6ee7b7" stroke-width="1" stroke-dasharray="2 2"/>
+  <text x="650" y="710" text-anchor="middle" fill="#6ee7b7" font-size="10">按成员/关键词</text>
+  <rect x="660" y="690" width="80" height="30" rx="6" fill="#1e293b" stroke="#6ee7b7" stroke-width="1" stroke-dasharray="2 2"/>
+  <text x="700" y="710" text-anchor="middle" fill="#6ee7b7" font-size="10">按月份/类型</text>
+
+  <!-- Mutation flow details -->
+  <rect x="670" y="690" width="80" height="30" rx="6" fill="#1e293b" stroke="#6ee7b7" stroke-width="1" stroke-dasharray="2 2"/>
+  <text x="710" y="710" text-anchor="middle" fill="#6ee7b7" font-size="10">按编号定位</text>
+  <rect x="700" y="690" width="80" height="30" rx="6" fill="#1e293b" stroke="#6ee7b7" stroke-width="1" stroke-dasharray="2 2"/>
+  <text x="740" y="710" text-anchor="middle" fill="#6ee7b7" font-size="10">按事由定位</text>
+  <rect x="730" y="690" width="80" height="30" rx="6" fill="#1e293b" stroke="#6ee7b7" stroke-width="1" stroke-dasharray="2 2"/>
+  <text x="770" y="710" text-anchor="middle" fill="#6ee7b7" font-size="10">按金额定位</text>
+  <rect x="700" y="760" width="80" height="30" rx="6" fill="#1e293b" stroke="#6ee7b7" stroke-width="1" stroke-dasharray="2 2"/>
+  <text x="740" y="780" text-anchor="middle" fill="#6ee7b7" font-size="10">多条则指定编号</text>
+  <rect x="700" y="830" width="80" height="30" rx="6" fill="#1e293b" stroke="#6ee7b7" stroke-width="1" stroke-dasharray="2 2"/>
+  <text x="740" y="850" text-anchor="middle" fill="#6ee7b7" font-size="10">二次确认后执行</text>
+
+  <!-- Big category labels -->
+  <!-- TODO: add some legend-like areas -->
+
+  <!-- Section background bubbles -->
+  <rect x="10" y="270" width="380" height="520" rx="18" fill="none" stroke="#10b981" stroke-width="1" stroke-dasharray="6 4" opacity="0.2"/>
+  <rect x="400" y="270" width="380" height="620" rx="18" fill="none" stroke="#f59e0b" stroke-width="1" stroke-dasharray="6 4" opacity="0.2"/>
+  <rect x="810" y="270" width="440" height="520" rx="18" fill="none" stroke="#ef4444" stroke-width="1" stroke-dasharray="6 4" opacity="0.2"/>
+
+  <!-- Money notes schema detail -->
+  <rect x="60" y="510" width="160" height="110" rx="10" fill="#0f172a" stroke="#38bdf8" stroke-width="1.2"/>
+  <text x="140" y="533" text-anchor="middle" fill="#38bdf8" font-size="13" font-weight="600">📋 money_notes</text>
+  <text x="70" y="555" fill="#94a3b8" font-size="11">id (INT, PK, AUTO_INCREMENT)</text>
+  <text x="70" y="573" fill="#94a3b8" font-size="11">date (DATE, NOT NULL)</text>
+  <text x="70" y="591" fill="#94a3b8" font-size="11">member (VARCHAR 50)</text>
+  <text x="70" y="609" fill="#94a3b8" font-size="11">item (VARCHAR 200)</text>
+  <text x="70" y="627" fill="#94a3b8" font-size="11">amount (DECIMAL 10,2)</text>
+
+  <!-- Type ENUM + created_at -->
+  <text x="180" y="555" fill="#94a3b8" font-size="11">type (ENUM)</text>
+  <text x="180" y="573" fill="#94a3b8" font-size="11">created_at (TIMESTAMP)</text>
+
+  <!-- Acceptance criteria section -->
+  <rect x="200" y="660" width="180" height="110" rx="10" fill="#0f172a" stroke="#38bdf8" stroke-width="1.2"/>
+  <text x="290" y="683" text-anchor="middle" fill="#38bdf8" font-size="13" font-weight="600">✅ 验收标准</text>
+  <text x="210" y="705" fill="#94a3b8" font-size="11">开场白格式正确</text>
+  <text x="210" y="723" fill="#94a3b8" font-size="11">5 条测试用例通过</text>
+  <text x="210" y="741" fill="#94a3b8" font-size="11">100% 调用 MySQL</text>
+  <text x="210" y="759" fill="#94a3b8" font-size="11">增删改二次确认</text>
+
+  <!-- Rules section -->
+  <rect x="960" y="510" width="200" height="110" rx="10" fill="#0f172a" stroke="#38bdf8" stroke-width="1.2"/>
+  <text x="1060" y="533" text-anchor="middle" fill="#38bdf8" font-size="13" font-weight="600">⚖️ 强制规则</text>
+  <text x="970" y="555" fill="#94a3b8" font-size="11">所有操作读写 MySQL money_notes</text>
+  <text x="970" y="573" fill="#94a3b8" font-size="11">禁止模拟数据</text>
+  <text x="970" y="591" fill="#94a3b8" font-size="11">增删改前必须用户确认</text>
+  <text x="970" y="609" fill="#94a3b8" font-size="11">无法解析→引导格式</text>
+  <text x="970" y="627" fill="#94a3b8" font-size="11">操作后→还需要其他帮助吗</text>
+
+</svg>
+</div>
+<div class="footer">
+  家庭记账助手 · 实训二工单一 · Python + Flask + MySQL · 2026
+</div>
+</body>
+</html>

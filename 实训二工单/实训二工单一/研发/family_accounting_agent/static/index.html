@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>家庭记账助手</title>
+    <link rel="stylesheet" href="/app.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="workspace">
+        <aside class="summary-panel" aria-label="本月概览">
+          <div class="brand">
+            <div class="brand-mark">¥</div>
+            <div>
+              <h1>家庭记账</h1>
+              <p>小家账目，随口记清</p>
+            </div>
+          </div>
+
+          <div class="metric-grid">
+            <div class="metric">
+              <span>本月支出</span>
+              <strong id="monthTotal">¥0</strong>
+            </div>
+            <div class="metric">
+              <span>本月收入</span>
+              <strong id="monthIncome">¥0</strong>
+            </div>
+            <div class="metric">
+              <span>今日支出</span>
+              <strong id="todayTotal">¥0</strong>
+            </div>
+          </div>
+
+          <section class="block">
+            <h2>成员支出</h2>
+            <div id="personBars" class="bars"></div>
+          </section>
+
+          <section class="block">
+            <h2>最近明细</h2>
+            <div id="recentList" class="recent-list"></div>
+          </section>
+        </aside>
+
+        <section class="chat-card" aria-label="记账聊天">
+          <header class="chat-header">
+            <div>
+              <p class="eyebrow">AI 记账员</p>
+              <h2>请告诉我你的账目需求吧</h2>
+            </div>
+            <button id="helpBtn" class="icon-button" title="查看示例" aria-label="查看示例">?</button>
+          </header>
+
+          <div id="messages" class="messages" aria-live="polite"></div>
+
+          <div class="quick-actions" aria-label="快捷输入">
+            <button data-message="今天女儿买了双登山鞋499元">登山鞋 499元</button>
+            <button data-message="7月5日妈妈收到报销1000元">报销 1000元</button>
+            <button data-message="看下这个月家里花钱明细">本月明细</button>
+            <button data-message="这个月女儿花了多少钱">女儿本月支出</button>
+          </div>
+
+          <form id="chatForm" class="composer">
+            <input
+              id="messageInput"
+              type="text"
+              autocomplete="off"
+              placeholder="例如：今天女儿买了双登山鞋499元"
+              aria-label="输入记账内容"
+            />
+            <button type="submit">发送</button>
+          </form>
+        </section>
+      </section>
+    </main>
+    <script src="/app.js"></script>
+  </body>
+</html>
