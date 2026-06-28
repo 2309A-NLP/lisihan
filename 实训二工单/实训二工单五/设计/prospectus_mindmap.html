@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>招股书问答智能体 - 思维导图</title>
+<style>
+body { margin: 0; background: #ffffff; font-family: sans-serif; }
+.markmap { width: 100vw; height: 100vh; }
+.markmap svg text { fill: #1a1a2e !important; font-size: 13px !important; }
+.markmap svg .markmap-node { cursor: pointer; }
+.markmap svg .markmap-link { stroke: #4a6fa5 !important; stroke-width: 1.5px !important; }
+.markmap svg .markmap-foreign { color: #1a1a2e !important; }
+</style>
+</head>
+<body>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader"></script>
+<div class="markmap">
+
+# 招股书问答智能体
+
+## 双架构设计
+- **RAG管道** (rag_core.py)
+  - 80份TXT → 400字符分块 → BGE向量化 → FAISS索引(221MB)
+  - 检索Top-K → Qwen2.5-72B → 回答
+- **ReAct Agent** (react_agent.py)
+  - Thought → Action(search_prospectus) → Observation循环
+  - 最多10步推理, 多关键词搜索
+  - 搜索失败时凭LLM知识兜底
+
+## 核心组件
+- **build_index_resilient.py** — 建FAISS索引(10次重试+断点续跑)
+- **rag_core.py** — RAG引擎(加载→分块→embed→检索→回答)
+- **react_agent.py** — ReAct智能体(search_prospectus工具)
+- **app.py** — Flask Web服务(端口5003)
+- **batch_test.py** — 批量测试397题(每20题断点保存)
+- **classify_questions.py** — 问题分类(6层规则:招股书vs基金)
+- **templates/index.html** — 暗色Web UI
+
+## 数据规模
+- 80份招股书TXT文件
+- 221MB FAISS索引 (prospectus_index.faiss)
+- 61MB 文本块 (prospectus_chunks.json)
+- 397道测试问题 (data/招股书问题.jsonl)
+- 3GB SQLite数据库 (博金杯比赛数据.db)
+
+## 数据流
+- **离线**: PDF → TXT → 分块(400char,80overlap) → BGE embedding → FAISS IndexFlatIP
+- **在线**: 用户问题 → 问题分类 → ReAct Agent → search_prospectus → FAISS检索 → 上下文组装 → Qwen2.5-72B → 答案
+- **批量**: JSONL加载 → 逐一ReAct推理 → JSONL保存(每20题)
+
+## 技术栈
+- **编程语言**: Python 3.10
+- **Web框架**: Flask
+- **向量检索**: FAISS (IndexFlatIP)
+- **Embedding**: BAAI/bge-large-zh-v1.5
+- **LLM**: Qwen/Qwen2.5-72B-Instruct (SiliconFlow API)
+- **依赖**: requests, faiss-cpu, numpy
+
+## 已做优化(10项)
+- **FAISS向量索引**: 语义搜索替代关键词搜索
+- **双架构**: RAG直接回答 + ReAct多步推理互补
+- **Qwen2.5-72B**: 专为中文金融优化的LLM
+- **建索引断点续跑**: 10次重试+分段保存进度
+- **批量断点续跑**: 每20题自动保存
+- **问题精确分类**: 6层规则确保路由正确
+- **中文路径兼容**: numpy.frombuffer绕过faiss限制
+- **ReAct双模式**: 搜索优先,失败时知识兜底
+- **表格标记清理**: 正则清除<|TABLE_xxx|>
+- **UTF-8编码**: chcp 65001 + PYTHONUTF8=1
+
+## 待做优化(8项)
+- **高优先级**: 多向量搜索(HyDE) / Re-ranking精排 / 混合检索(BM25+向量) / Chunk策略优化
+- **中优先级**: 增量索引 / 异步API并发 / 多Provider降级
+- **低优先级**: Docker容器化 / 自动化评测
+
+</div>
+</body>
+</html>
