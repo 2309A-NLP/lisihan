@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>基金问答智能体 - 架构思维导图</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #ffffff;
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Microsoft YaHei', sans-serif;
+  }
+  #mindmap-container {
+    width: 100vw;
+    height: 100vh;
+  }
+  /* markmap overrides for white bg + dark text */
+  .markmap {
+    background: #ffffff !important;
+  }
+  .markmap-foreign {
+    color: #1a1a2e !important;
+  }
+  .markmap-foreign strong {
+    color: #0a0a23 !important;
+  }
+  /* override any potential dark theme from auto-detection */
+  .markmap-node rect {
+    fill: #f0f4ff !important;
+    stroke: #3a5a9f !important;
+    stroke-width: 1.5px !important;
+    rx: 6px !important;
+  }
+  .markmap-node.depth-0 rect {
+    fill: #1a3a6b !important;
+    stroke: #0f2a4a !important;
+  }
+  .markmap-node.depth-0 .markmap-foreign {
+    color: #ffffff !important;
+  }
+  .markmap-node.depth-0 .markmap-foreign strong {
+    color: #ffffff !important;
+  }
+  .markmap-link {
+    stroke: #4a7abf !important;
+    stroke-width: 2px !important;
+  }
+  /* tooltip / hover enhancement */
+  .markmap-node rect:hover {
+    fill: #dce6ff !important;
+    transition: fill 0.2s;
+  }
+  .markmap-node.depth-0 rect:hover {
+    fill: #2a5090 !important;
+  }
+</style>
+</head>
+<body>
+<div id="mindmap-container">
+<svg id="markmap-svg" style="width:100%;height:100%"></svg>
+</div>
+
+<!-- markmap CDN autoloader -->
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader"></script>
+
+<!-- mindmap data -->
+<script type="text/template" id="mindmap-data">
+# 基金问答智能体 (博金杯)
+
+## 系统架构
+### ReAct Agent 模式
+- 用户问题 → SiliconFlow LLM(DeepSeek-V3) → 生成SQL → SQLite查询 → 结果回答
+- temperature=0.01 | 最大8步推理
+- 双策略降级: ReAct Agent → 备用正则解析器 → 错误提示
+### Flask Web 服务
+- 端口 5002
+- answer_question() 双策略路由
+- parse_question 正则解析器
+- query_stock_count / query_stock_list
+### 批量测试
+- 603 题全覆盖
+- 两段式: 生成SQL → 执行 → 回答
+- 每50题自动保存 + 断点续跑
+- >500行结果自动重试
+
+## 核心代码文件
+### react_agent.py (398行)
+- System Prompt + DB Schema
+- call_llm() LLM调用
+- query_db() SQLite执行
+- extract_block() SQL提取
+### app.py (381行)
+- Flask 路由 + Web 入口
+- answer_question 主逻辑
+- parse_question 正则降级
+- 双策略容错
+### batch_test.py (289行)
+- 批量处理引擎
+- 中间保存/断点续跑
+- 自动重试机制
+### make_submit.py (30行)
+- 提取提交格式
+### templates/index.html
+- 暗色GitHub风格UI
+- 提示词展示 + 历史记录
+
+## 数据库 (SQLite 3GB)
+### 基金基本信息表
+### 股票持仓表
+### 债券持仓表
+### 日行情表
+### A股日行情表
+### 港股日行情表
+### 行业划分表
+### 规模变动表
+### 持有人结构表
+### 可转债持仓表
+
+## 问题类型 (603题)
+### 股票涨跌幅统计
+### 基金成立数量
+### 行业涨幅排行
+### 持仓变动分析
+### 规模/持有人变化
+### 可转债持仓查询
+### 多表联合分析
+
+## 技术栈
+### Python 3.10
+### SiliconFlow API (DeepSeek-V3)
+### SQLite3
+### Flask (<3.0)
+### requests
+
+## 部署与启动
+### 启动智能体.bat
+- pip install "flask<3.0"
+- 自动依赖安装
+- Flask服务启动
+</script>
+
+<script>
+(function() {
+  // Wait for markmap autoloader to be ready
+  function initMarkmap() {
+    if (typeof window.markmap === 'undefined' || !window.markmap.autoLoader) {
+      setTimeout(initMarkmap, 200);
+      return;
+    }
+    
+    const markdown = document.getElementById('mindmap-data').textContent;
+    const svg = document.getElementById('markmap-svg');
+    
+    // Parse H1/# as root, H2/## as children, etc.
+    const lines = markdown.split('\n');
+    let rootContent = '';
+    let depth = 0;
+    const tree = { name: '', children: [] };
+    const stack = [tree];
+    
+    for (const line of lines) {
+      if (line.startsWith('# ')) {
+        // root node
+        const name = line.replace(/^# /, '').trim();
+        tree.name = name;
+      } else if (line.startsWith('## ')) {
+        const name = line.replace(/^## /, '').trim();
+        const node = { name, children: [] };
+        tree.children.push(node);
+        stack[1] = node;
+        depth = 1;
+      } else if (line.startsWith('### ')) {
+        const name = line.replace(/^### /, '').trim();
+        const node = { name, children: [] };
+        stack[1].children.push(node);
+        stack[2] = node;
+        depth = 2;
+      } else if (line.startsWith('#### ')) {
+        const name = line.replace(/^#### /, '').trim();
+        const node = { name, children: [] };
+        const parent = stack[2] || stack[1];
+        parent.children.push(node);
+        stack[3] = node;
+        depth = 3;
+      } else if (line.match(/^- /)) {
+        const name = line.replace(/^- /, '').trim();
+        const node = { name };
+        // Find appropriate parent
+        let parent = stack[depth] || stack[depth-1] || tree;
+        if (!parent.children) parent.children = [];
+        parent.children.push(node);
+      } else if (line.match(/^  - /)) {
+        const name = line.replace(/^  - /, '').trim();
+        const node = { name };
+        const parent = stack[depth] || tree;
+        if (!parent.children) parent.children = [];
+        parent.children.push(node);
+      } else if (line.match(/^    - /)) {
+        const name = line.replace(/^    - /, '').trim();
+        const node = { name };
+        // Find last child of current parent
+        const parent = stack[depth] || tree;
+        if (parent.children && parent.children.length > 0) {
+          const lastChild = parent.children[parent.children.length - 1];
+          if (!lastChild.children) lastChild.children = [];
+          lastChild.children.push(node);
+        } else {
+          if (!parent.children) parent.children = [];
+          parent.children.push(node);
+        }
+      }
+    }
+    
+    // Render with markmap
+    try {
+      window.markmap.Markmap.create(svg, {
+        zoom: true,
+        pan: true,
+        fitRatio: 0.95,
+        duration: 500,
+        nodeMinHeight: 24,
+        maxWidth: 280,
+        spacingVertical: 10,
+        spacingHorizontal: 60,
+        paddingX: 14,
+        paddingY: 10,
+      }, tree);
+    } catch(e) {
+      // Fallback: let autoloader handle it
+      document.getElementById('mindmap-data').setAttribute('type', 'text/markdown');
+      document.getElementById('mindmap-data').removeAttribute('type');
+      document.getElementById('mindmap-data').textContent = markdown;
+    }
+  }
+  
+  initMarkmap();
+})();
+</script>
+</body>
+</html>

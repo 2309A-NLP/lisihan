@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>基金数据问答智能体</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#0d1117;color:#c9d1d9;min-height:100vh}
+.container{max-width:800px;margin:0 auto;padding:40px 20px}
+h1{text-align:center;font-size:28px;color:#58a6ff;margin-bottom:8px}
+.sub{text-align:center;color:#8b949e;font-size:14px;margin-bottom:30px}
+.box{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:20px;margin-bottom:20px}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.btns button{padding:6px 14px;border:1px solid #30363d;border-radius:20px;background:0 0;color:#8b949e;font-size:13px;cursor:pointer}
+.btns button:hover{border-color:#58a6ff;color:#58a6ff}
+textarea{width:100%;min-height:80px;padding:12px;border-radius:6px;border:1px solid #30363d;background:#0d1117;color:#c9d1d9;font-size:15px;resize:vertical;outline:0;font-family:inherit}
+textarea:focus{border-color:#58a6ff}
+.row{display:flex;gap:10px;margin-top:12px;align-items:center}
+.btn{padding:10px 24px;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer}
+.btn-go{background:#238636;color:#fff}
+.btn-go:hover{background:#2ea043}
+.btn-go:disabled{opacity:.5;cursor:not-allowed}
+.btn-clr{background:#21262d;color:#c9d1d9;border:1px solid #30363d}
+.btn-clr:hover{background:#30363d}
+.loader{display:inline-block;width:16px;height:16px;border:2px solid #30363d;border-top-color:#58a6ff;border-radius:50%;animation:spin .8s linear infinite;display:none;margin-left:8px}
+.loader.on{display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+#result{display:none;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:20px;margin-top:20px}
+#result.on{display:block}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
+.tag-db{background:#1f6feb22;color:#58a6ff;border:1px solid #1f6feb44}
+.tag-text{background:#23863622;color:#3fb950;border:1px solid #23863644}
+#answer{font-size:15px;line-height:1.7;margin-top:8px;white-space:pre-wrap}
+#sql{display:none;margin-top:12px;padding:10px;background:#0d1117;border-radius:6px;font-family:monospace;font-size:13px;color:#8b949e;white-space:pre-wrap}
+#sql.on{display:block}
+.hist{margin-top:20px}
+.hist-item{padding:12px 16px;border:1px solid #30363d;border-radius:6px;margin-bottom:8px;cursor:pointer}
+.hist-item:hover{border-color:#58a6ff}
+.hist-q{font-size:14px;margin-bottom:4px}
+.hist-a{font-size:13px;color:#8b949e;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hist-m{font-size:11px;color:#484f58;margin-top:4px}
+#status{font-size:13px;color:#8b949e;margin-left:auto}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>基金数据问答智能体</h1>
+  <div class="sub">基于 1.5GB 基金数据库 + 80 份招股说明书 · DeepSeek-V3 驱动</div>
+
+  <div class="btns">
+    <button onclick="qa('嘉实基金管理有限公司2019年成立了多少基金？')">嘉实基金数量</button>
+    <button onclick="qa('2021年A股综合行业涨幅最大的股票是哪只？')">综合行业涨幅</button>
+    <button onclick="qa('华达汽车科技股份有限公司的主营业务是什么？')">华达汽车业务</button>
+    <button onclick="qa('2020年收益率最高的股票型基金是哪只？')">最高收益基金</button>
+  </div>
+
+  <div class="box">
+    <textarea id="q" rows="3" placeholder="输入你的基金/股票/招股书问题..."></textarea>
+    <div class="row">
+      <button class="btn btn-go" onclick="go()" id="goBtn">提问</button>
+      <button class="btn btn-clr" onclick="clr()">清空</button>
+      <div class="loader" id="loader"></div>
+      <span id="status"></span>
+    </div>
+  </div>
+
+    <div id="result">
+    <div><span class="tag tag-db" id="tag">AI 智能体</span></div>
+    <div id="answer"></div>
+  </div>
+
+  <div class="hist" id="hist"></div>
+</div>
+
+<script>
+var hist = JSON.parse(localStorage.getItem('h')||'[]');
+render();
+
+document.getElementById('q').onkeydown = function(e) {
+  if (e.key=='Enter'&&!e.shiftKey) { e.preventDefault(); go(); }
+};
+
+function go() {
+  var q = document.getElementById('q').value.trim();
+  if (!q) return;
+  qa(q);
+}
+
+function qa(q) {
+  document.getElementById('q').value = q;
+  document.getElementById('result').className = '';
+  document.getElementById('goBtn').disabled = true;
+  document.getElementById('loader').className = 'loader on';
+  document.getElementById('status').textContent = '查询中...';
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/ask', true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onload = function() {
+    document.getElementById('loader').className = 'loader';
+    document.getElementById('goBtn').disabled = false;
+    document.getElementById('status').textContent = '';
+
+    if (xhr.status != 200) {
+      document.getElementById('answer').textContent = '请求失败: HTTP ' + xhr.status;
+      document.getElementById('answer').className = '';
+      document.getElementById('result').className = 'on';
+      return;
+    }
+
+    var data = JSON.parse(xhr.responseText);
+    document.getElementById('tag').className = 'tag tag-db';
+    document.getElementById('tag').textContent = 'AI 智能体';
+    document.getElementById('answer').textContent = data.answer || '无结果';
+    document.getElementById('answer').className = '';
+    document.getElementById('result').className = 'on';
+
+    hist.unshift({q:q, a:data.answer||'', t:'AI', time:new Date().toLocaleString()});
+    if (hist.length>20) hist.pop();
+    localStorage.setItem('h', JSON.stringify(hist));
+    render();
+  };
+  xhr.onerror = function() {
+    document.getElementById('loader').className = 'loader';
+    document.getElementById('goBtn').disabled = false;
+    document.getElementById('status').textContent = '';
+    document.getElementById('answer').textContent = '网络错误，请检查服务器是否运行';
+    document.getElementById('result').className = 'on';
+  };
+  xhr.send(JSON.stringify({question: q}));
+}
+
+function render() {
+  var el = document.getElementById('hist');
+  if (hist.length==0) { el.innerHTML=''; return; }
+  var h = '<h3 style="color:#8b949e;font-size:14px;margin-bottom:12px;">历史记录</h3>';
+  for (var i=0;i<hist.length;i++) {
+    var item = hist[i];
+    var qq = item.q.replace(/'/g,"\\'");
+    h += '<div class="hist-item" onclick="qa(\''+qq+'\')">' +
+         '<div class="hist-q">Q: '+item.q+'</div>' +
+         '<div class="hist-a">A: '+(item.a||'')+'</div>' +
+         '<div class="hist-m">'+item.time+' '+(item.t=='AI'?'智能体':'')+'</div></div>';
+  }
+  el.innerHTML = h;
+}
+
+function clr() {
+  document.getElementById('q').value = '';
+  document.getElementById('result').className = '';
+  document.getElementById('status').textContent = '';
+}
+</script>
+
+</body>
+</html>
