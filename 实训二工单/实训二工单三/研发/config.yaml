@@ -1,0 +1,68 @@
+# ============================================================
+# 文生图智能体 - 配置文件
+# 工单编号：人工智能 NLP-Agent 数字人项目-文生图智能体任务
+# ============================================================
+
+# ---------- 模型配置 ----------
+model:
+  # 基础模型：可选 "sd15" 或 "sdxl"
+  base: "sd15"
+  
+  # SD 1.5 模型
+  sd15:
+    base_model: "runwayml/stable-diffusion-v1-5"
+    ip_adapter: "h94/IP-Adapter"
+    ip_adapter_subfolder: "models"
+    ip_adapter_weight_name: "ip-adapter-plus-face_sd15.bin"
+    controlnet: "lllyasviel/control_v11p_sd15_openpose"
+
+  # SDXL 模型 (需要 8GB+ VRAM)
+  sdxl:
+    base_model: "stabilityai/stable-diffusion-xl-base-1.0"
+    ip_adapter: "h94/IP-Adapter-FaceID"
+    ip_adapter_subfolder: ""
+    ip_adapter_weight_name: "ip-adapter-plus-face_sdxl_vit-h.bin"
+
+# ---------- 生成参数 ----------
+generation:
+  # 人脸旋转
+  face_rotation:
+    num_inference_steps: 30
+    guidance_scale: 5.0
+    ip_adapter_scale: 0.7
+    negative_prompt: "ugly, blurry, low quality, distorted face, asymmetric, deformed, bad anatomy, disfigured"
+    seed: 42
+  
+  # 扩图 (outpainting)
+  outpainting:
+    num_inference_steps: 40
+    guidance_scale: 7.5
+    expand_pixels: 128    # 每边扩展像素数
+    overlap_pixels: 32    # 与原始图像重叠区域
+
+# ---------- 硬件配置 (CPU版本) ----------
+hardware:
+  device: "cpu"           # 改为 cpu
+  dtype: "fp32"           # CPU使用 fp32 (float32)，fp16 在 CPU 上无优势
+  enable_attention_slicing: true
+  enable_model_cpu_offload: false  # CPU 不需要显存优化
+  enable_vae_slicing: true
+  enable_vae_tiling: true
+
+# ---------- 模型下载镜像 ----------
+mirror:
+  # 国内用户可设置为 "modelscope" 以加速下载
+  type: "huggingface"   # "huggingface" 或 "modelscope"
+
+# ---------- API 配置（API模式） ----------
+api:
+  # 你的 SiliconFlow API Key
+  api_key: "sk-jozgtgkyvzxikozrtkzgyfuptcamffjnpofushlitmktwyst"
+  # 已迁移到火山引擎 Doubao-Seedream-4.5
+  # 通过环境变量 ARK_ENDPOINT_ID 设置 endpoint
+  model: "doubao-seedream-4-5-251128"
+  # API 基础地址 (已迁移到火山引擎)
+  # 环境变量: ARK_BASE_URL (默认: https://ark.cn-beijing.volces.com/api/v3)
+  base_url: "https://ark.cn-beijing.volces.com/api/v3"
+  # 生成图片尺寸 (512/768/1024，越大细节越多但速度越慢)
+  image_size: 1024

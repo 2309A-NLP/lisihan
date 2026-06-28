@@ -1,0 +1,14 @@
+文生图智能体 - 处理结果
+============================================================
+输入图像: None
+处理时间: 2026-06-19 15:46:05
+
+旋转结果:
+  right: C:\Users\freedom\Desktop\实训二工单三\output\rotated\right_20260619_154318.png
+  front: C:\Users\freedom\Desktop\实训二工单三\output\rotated\front_20260619_154318.png
+  left: C:\Users\freedom\Desktop\实训二工单三\output\rotated\left_20260619_154318.png
+
+扩图结果:
+  right: C:\Users\freedom\Desktop\实训二工单三\output\outpainted\right_outpainted_20260619_154318.png
+  front: C:\Users\freedom\Desktop\实训二工单三\output\outpainted\front_outpainted_20260619_154318.png
+  left: C:\Users\freedom\Desktop\实训二工单三\output\outpainted\left_outpainted_20260619_154318.png

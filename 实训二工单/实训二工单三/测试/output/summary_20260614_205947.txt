@@ -1,0 +1,9 @@
+文生图智能体 - 处理结果
+============================================================
+输入图像: input\屏幕截图 2026-06-04 193038.png
+处理时间: 2026-06-14 21:01:22
+
+旋转结果:
+  right: C:\Users\freedom\Desktop\wen_sheng_tu\output\rotated\right_20260614_205947.png
+  front: C:\Users\freedom\Desktop\wen_sheng_tu\output\rotated\front_20260614_205947.png
+  left: C:\Users\freedom\Desktop\wen_sheng_tu\output\rotated\left_20260614_205947.png

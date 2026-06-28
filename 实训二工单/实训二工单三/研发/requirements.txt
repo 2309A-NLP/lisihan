@@ -1,0 +1,19 @@
+# 文生图智能体 - 依赖
+# CPU版本（人脸旋转走SiliconFlow API，扩图走本地SD Inpainting）
+# 安装: D:\an1\python.exe -m pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+# 核心（扩图用 diffusers 在 CPU 上运行）
+diffusers[torch]>=0.27.0
+transformers>=4.36.0
+accelerate>=0.25.0
+safetensors>=0.4.0
+
+# 图像处理
+pillow>=10.0.0
+numpy<2.0
+
+# 配置
+pyyaml
+
+# 工具
+tqdm

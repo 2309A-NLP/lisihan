@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文生图智能体 - 思维导图</title>
+<style>
+body { margin: 0; background: #ffffff; font-family: sans-serif; }
+.markmap { width: 100vw; height: 100vh; }
+.markmap svg text { fill: #1a1a2e !important; font-size: 14px !important; }
+.markmap svg .markmap-node { cursor: pointer; }
+.markmap svg .markmap-link { stroke: #667eea !important; stroke-width: 2px !important; }
+.markmap svg .markmap-foreign { color: #1a1a2e !important; }
+</style>
+</head>
+<body>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader"></script>
+<div class="markmap">
+
+# 文生图智能体
+
+## 项目结构
+- **face_agent.py** — 核心智能体(协调工作流)
+  - FaceAgent: init / run / main
+- **pipelines/**
+  - **api_rotation.py** — 火山引擎Doubao API旋转(主方案)
+    - ApiRotationPipeline: rotate_face / generate_all_angles / outpaint_all
+  - **face_rotation.py** — IP-Adapter+SD本地旋转(备用CPU)
+    - FaceRotationPipeline: generate / generate_all_angles
+  - **face_3d_rotation.py** — 3D关键点旋转(备用)
+    - Face3DRotationPipeline: rotate_face / generate_all_angles
+  - **outpainting.py** — SD Inpainting扩图
+    - OutpaintingPipeline: outpaint / outpaint_all
+- **utils/face_utils.py** — 工具函数
+  - load_image / crop_face / detect_face / resize_to_multiple
+- **config.yaml** — 配置文件
+- **main.py** — 命令行入口
+- **webui.py** — 纯Python标准库WebUI(端口8642)
+- **app_gradio.py** — Gradio WebUI(端口7860)
+- **check_env.py** — 环境检查
+- **requirements.txt** — 依赖清单
+
+## 数据流
+- **输入** → input/面部图像
+- **步骤1** 加载图像 → face_agent.py
+- **步骤2** 图像预处理 → resize + 保存副本
+- **步骤3** 三角度生成 → api_rotation.py(Doubao)
+  - 主方案: API云端(无GPU需求)
+  - 降级1: face_rotation.py(本地SD CPU)
+  - 降级2: face_3d_rotation.py(3D关键点)
+- **步骤4** 扩图(可选) → outpainting
+  - API扩图(优先) → 本地Inpainting(降级)
+- **输出** → output/
+  - rotated/ right/front/left
+  - outpainted/ right/front/left
+  - summary_*.txt
+
+## 三重降级架构
+- **旋转管线**: Doubao API → SD+IP-Adapter → 3D关键点
+- **扩图管线**: API Outpainting → SD Inpainting
+- **UI层**: Gradio → 纯Python标准库WebUI
+
+## 技术栈
+- **深度学习**: PyTorch / diffusers / transformers / accelerate / safetensors
+- **计算机视觉**: OpenCV / insightface / Pillow / numpy
+- **云端推理**: 火山引擎 Doubao Seedream-4.5
+- **Web界面**: Gradio / Python http.server
+- **部署环境**: Windows 10/11 / Conda py310 / CPU(默认)+GPU可选
+- **工具**: PyYAML / tqdm
+
+## 已做优化
+- **API迁移**: SiliconFlow → 火山引擎Doubao
+- **三重降级**: API失败→本地SD→3D关键点
+- **CPU深度适配**: fp32 / 注意力切片(顺序修复) / VAE切片+平铺 / 多线程
+- **纯Python WebUI**: 零额外依赖
+- **Gradio重设计**: 暗色主题 / 三图布局 / 进度条
+- **配置环境变量化**: API Key/URL从代码分离到env
+- **镜像源支持**: huggingface ↔ modelscope
+- **错误处理**: 每层try/except降级 / 中文日志
+
+## 待做优化
+- **高优先级**: 批量处理 / GPU加速 / 模型缓存 / 异步API
+- **中优先级**: 视频帧 / 更多角度 / 质量评估 / Docker化 / WebUI增强
+- **低优先级**: ONNX量化 / 任务队列 / 身份一致性增强
+
+## 配置结构(config.yaml)
+- **model**: base(sd15/sdxl), sd15路径, sdxl路径
+- **generation**: face_rotation(num_steps/guidance_scale/ip_adapter_scale), outpainting(steps/expand_pixels)
+- **hardware**: device(cpu), dtype(fp32), attention_slicing, vae_slicing
+- **api**: 火山引擎 key/url/endpoint
+- **mirror**: huggingface / modelscope
+
+</div>
+</body>
+</html>
