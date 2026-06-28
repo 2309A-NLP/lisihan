@@ -1,0 +1,21 @@
+# @工单编号: 人工智能 NLP-Agent 数字人项目-日程提醒智能体任务
+# @作者: [AI生成]
+# @功能: systemd 服务模板，用于 Linux 服务器托管日程提醒守护进程
+
+[Unit]
+Description=Schedule Reminder Agent
+After=network.target mysql.service
+Wants=mysql.service
+
+[Service]
+Type=simple
+User=myuser
+WorkingDirectory=/path/to/daily_scheduler_agent
+ExecStart=/usr/bin/python3 /path/to/daily_scheduler_agent/scheduler_daemon.py
+Restart=always
+RestartSec=10
+StandardOutput=append:/var/log/scheduler_agent.log
+StandardError=append:/var/log/scheduler_agent.log
+
+[Install]
+WantedBy=multi-user.target

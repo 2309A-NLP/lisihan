@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<!--
+@工单编号: 人工智能 NLP-Agent 数字人项目-日程提醒智能体任务
+@作者: [AI生成]
+@功能: 日程提醒智能体 Web 聊天界面
+-->
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日程提醒智能体</title>
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+            background:
+                radial-gradient(circle at 12% 8%, rgba(255,255,255,.38), transparent 28%),
+                linear-gradient(135deg, #8b5cf6 0%, #2563eb 54%, #06b6d4 100%);
+            color: #1f2937;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .chat-shell {
+            width: min(1160px, 100%);
+            height: min(760px, calc(100vh - 48px));
+            min-height: 540px;
+            background: rgba(255,255,255,.94);
+            border: 1px solid rgba(255,255,255,.72);
+            border-radius: 30px;
+            box-shadow: 0 28px 80px rgba(15,23,42,.28);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            backdrop-filter: blur(18px);
+        }
+
+        .chat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 24px 28px;
+            border-bottom: 1px solid #e5e7eb;
+            background: rgba(255,255,255,.78);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+        }
+
+        .avatar {
+            width: 54px;
+            height: 54px;
+            border-radius: 18px;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            font-size: 20px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #7c3aed, #2563eb);
+            box-shadow: 0 10px 24px rgba(79,70,229,.3);
+            flex: 0 0 auto;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 26px;
+            line-height: 1.2;
+        }
+
+        .status {
+            margin-top: 4px;
+            font-size: 15px;
+            color: #64748b;
+        }
+
+        .header-btn,
+        .send-btn {
+            border: 0;
+            border-radius: 999px;
+            color: #fff;
+            background: linear-gradient(135deg, #8b5cf6, #2563eb);
+            box-shadow: 0 10px 22px rgba(79,70,229,.28);
+            cursor: pointer;
+            transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+            white-space: nowrap;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .header-btn {
+            padding: 14px 21px;
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .send-btn {
+            width: 96px;
+            min-width: 78px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .mic-btn {
+            width: 50px;
+            min-width: 50px;
+            height: 50px;
+            border: 0;
+            border-radius: 50%;
+            font-size: 22px;
+            cursor: pointer;
+            background: #f1f5f9;
+            color: #475569;
+            transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,.08);
+        }
+
+        .mic-btn:hover {
+            background: #e2e8f0;
+            transform: scale(1.05);
+        }
+
+        .mic-btn.listening {
+            background: #ef4444;
+            color: #fff;
+            box-shadow: 0 0 0 4px rgba(239,68,68,.25), 0 4px 14px rgba(239,68,68,.3);
+            animation: micPulse 1.2s ease-in-out infinite;
+        }
+
+        .mic-btn:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+            transform: none;
+            animation: none;
+        }
+
+        @keyframes micPulse {
+            0%, 100% { box-shadow: 0 0 0 4px rgba(239,68,68,.25), 0 4px 14px rgba(239,68,68,.3); }
+            50% { box-shadow: 0 0 0 8px rgba(239,68,68,.12), 0 4px 14px rgba(239,68,68,.2); }
+        }
+
+        .header-btn:hover,
+        .send-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 14px 28px rgba(79,70,229,.36);
+        }
+
+        .header-btn:disabled,
+        .send-btn:disabled {
+            opacity: .58;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .messages {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            background: linear-gradient(180deg, rgba(248,250,252,.78), rgba(255,255,255,.95));
+            scroll-behavior: smooth;
+        }
+
+        .message-row {
+            display: flex;
+            margin-bottom: 20px;
+            animation: riseIn .24s ease both;
+        }
+
+        .message-row.user { justify-content: flex-end; }
+        .message-row.assistant { justify-content: flex-start; }
+
+        .bubble {
+            max-width: min(72%, 720px);
+            padding: 14px 18px;
+            border-radius: 20px;
+            font-size: 18px;
+            line-height: 1.65;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .user .bubble {
+            color: #fff;
+            border-bottom-right-radius: 7px;
+            background: linear-gradient(135deg, #7c3aed, #2563eb);
+            box-shadow: 0 12px 26px rgba(79,70,229,.25);
+        }
+
+        .assistant .bubble {
+            color: #263244;
+            border-bottom-left-radius: 7px;
+            background: #fff;
+            box-shadow: 0 12px 30px rgba(15,23,42,.11);
+            border: 1px solid #eef2f7;
+        }
+
+        .assistant.reminder .bubble {
+            border-color: rgba(124,58,237,.24);
+            box-shadow: 0 14px 34px rgba(79,70,229,.16);
+        }
+
+        .skill-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 10px;
+            width: min(720px, 100%);
+        }
+
+        .skill-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 12px;
+            background: #f8fafc;
+        }
+
+        .skill-name {
+            font-weight: 800;
+            color: #1f2937;
+            margin-bottom: 6px;
+        }
+
+        .skill-meta {
+            font-size: 14px;
+            line-height: 1.55;
+            color: #475569;
+        }
+
+        .composer {
+            display: flex;
+            gap: 12px;
+            padding: 18px 22px;
+            border-top: 1px solid #e5e7eb;
+            background: rgba(255,255,255,.9);
+        }
+
+        .input {
+            flex: 1;
+            min-width: 0;
+            border: 1px solid #dbe3ef;
+            border-radius: 999px;
+            padding: 14px 18px;
+            font-size: 16px;
+            outline: none;
+            background: #f8fafc;
+            transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+        }
+
+        .input:focus {
+            border-color: #8b5cf6;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(139,92,246,.12);
+        }
+
+        .typing {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            min-width: 44px;
+        }
+
+        .typing span {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #94a3b8;
+            animation: typing 1s infinite ease-in-out;
+        }
+
+        .typing span:nth-child(2) { animation-delay: .15s; }
+        .typing span:nth-child(3) { animation-delay: .3s; }
+
+        @keyframes typing {
+            0%, 80%, 100% { transform: translateY(0); opacity: .45; }
+            40% { transform: translateY(-5px); opacity: 1; }
+        }
+
+        @keyframes riseIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 640px) {
+            body { padding: 0; }
+            .chat-shell { height: 100vh; min-height: 100vh; border-radius: 0; }
+            .chat-header { padding: 16px; }
+            .avatar { width: 44px; height: 44px; border-radius: 15px; font-size: 17px; }
+            h1 { font-size: 20px; }
+            .status { display: none; }
+            .header-actions { gap: 6px; }
+            .header-btn { padding: 10px 12px; font-size: 14px; }
+            .messages { padding: 18px 14px; }
+            .bubble { max-width: 86%; font-size: 15px; }
+            .composer { padding: 12px; gap: 8px; }
+            .send-btn { width: 74px; font-size: 14px; }
+            .mic-btn { width: 42px; min-width: 42px; height: 42px; font-size: 18px; }
+        }
+    </style>
+</head>
+<body>
+    <main class="chat-shell">
+        <header class="chat-header">
+            <div class="brand">
+                <div class="avatar">AI</div>
+                <div>
+                    <h1>日程提醒智能体</h1>
+                    <div class="status">在线 · 自然语言日程管理 · 自动提醒</div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="header-btn" id="todayBtn" type="button">今日日程</button>
+                <button class="header-btn" id="skillsBtn" type="button">技能列表</button>
+                <button class="header-btn" id="statusBtn" type="button">系统状态</button>
+                <button class="header-btn" id="notifyBtn" type="button">测试弹窗</button>
+            </div>
+        </header>
+
+        <section class="messages" id="messages" aria-live="polite">
+            <div class="message-row assistant">
+                <div class="bubble">你好，我是日程提醒智能体。你可以直接说“下午5点开会”或“明天上午9点提醒我交报告”。</div>
+            </div>
+        </section>
+
+        <form class="composer" id="chatForm">
+            <input class="input" id="messageInput" type="text" autocomplete="off" placeholder="输入日程，例如：今天10点08提醒我喝水" />
+            <button class="mic-btn" id="micBtn" type="button" title="语音输入" aria-label="语音输入">🎤</button>
+            <button class="send-btn" id="sendBtn" type="submit">发送</button>
+        </form>
+    </main>
+
+    <script>
+        const messages = document.getElementById("messages");
+        const form = document.getElementById("chatForm");
+        const input = document.getElementById("messageInput");
+        const sendBtn = document.getElementById("sendBtn");
+        const todayBtn = document.getElementById("todayBtn");
+        const skillsBtn = document.getElementById("skillsBtn");
+        const statusBtn = document.getElementById("statusBtn");
+        const notifyBtn = document.getElementById("notifyBtn");
+        const micBtn = document.getElementById("micBtn");
+        const headerButtons = [todayBtn, skillsBtn, statusBtn];
+        let reminderPolling = false;
+
+        function appendMessage(role, text, extraClass = "") {
+            const row = document.createElement("div");
+            row.className = `message-row ${role} ${extraClass}`.trim();
+            const bubble = document.createElement("div");
+            bubble.className = "bubble";
+            bubble.textContent = text;
+            row.appendChild(bubble);
+            messages.appendChild(row);
+            scrollToBottom();
+            return row;
+        }
+
+        function appendSkillCards(skills) {
+            const row = document.createElement("div");
+            row.className = "message-row assistant";
+            const bubble = document.createElement("div");
+            bubble.className = "bubble";
+            const grid = document.createElement("div");
+            grid.className = "skill-grid";
+
+            for (const skill of skills) {
+                const card = document.createElement("div");
+                card.className = "skill-card";
+                const name = document.createElement("div");
+                name.className = "skill-name";
+                name.textContent = skill.name;
+                const triggers = document.createElement("div");
+                triggers.className = "skill-meta";
+                triggers.textContent = `触发词：${(skill.triggers || []).join("、")}`;
+                const examples = document.createElement("div");
+                examples.className = "skill-meta";
+                examples.textContent = `示例：${(skill.examples || []).join("；")}`;
+                card.appendChild(name);
+                card.appendChild(triggers);
+                card.appendChild(examples);
+                grid.appendChild(card);
+            }
+
+            bubble.appendChild(grid);
+            row.appendChild(bubble);
+            messages.appendChild(row);
+            scrollToBottom();
+        }
+
+        function showTyping() {
+            const row = document.createElement("div");
+            row.className = "message-row assistant";
+            row.dataset.typing = "true";
+            row.innerHTML = '<div class="bubble"><span class="typing"><span></span><span></span><span></span></span></div>';
+            messages.appendChild(row);
+            scrollToBottom();
+            return row;
+        }
+
+        function setBusy(button, loadingText, busy) {
+            if (busy) {
+                button.dataset.originalText = button.textContent;
+                button.textContent = loadingText;
+            } else {
+                button.textContent = button.dataset.originalText || button.textContent;
+            }
+            sendBtn.disabled = busy;
+            for (const item of headerButtons) {
+                item.disabled = busy;
+            }
+        }
+
+        function scrollToBottom() {
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        async function postJson(url, body) {
+            const response = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.reply || "请求失败");
+            }
+            return data;
+        }
+
+        async function getJson(url) {
+            const response = await fetch(url);
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.reply || data.error || "请求失败");
+            }
+            return data;
+        }
+
+        async function sendMessage(text) {
+            appendMessage("user", text);
+            const typing = showTyping();
+            sendBtn.disabled = true;
+            for (const item of headerButtons) {
+                item.disabled = true;
+            }
+            try {
+                const data = await postJson("/chat", { message: text });
+                typing.remove();
+                appendMessage("assistant", data.reply);
+                pollReminders();
+            } catch (error) {
+                typing.remove();
+                appendMessage("assistant", error.message);
+            } finally {
+                sendBtn.disabled = false;
+                for (const item of headerButtons) {
+                    item.disabled = false;
+                }
+                input.focus();
+            }
+        }
+
+        async function pollReminders() {
+            if (reminderPolling) {
+                return;
+            }
+            reminderPolling = true;
+            try {
+                const response = await fetch("/reminders");
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.reply || "提醒轮询失败");
+                }
+                for (const item of data.reminders || []) {
+                    const text = `到点提醒：${item.message}`;
+                    appendMessage("assistant", text, "reminder");
+                    showBrowserNotification(text);
+                }
+            } catch (error) {
+                console.error(error);
+            } finally {
+                reminderPolling = false;
+            }
+        }
+
+        function formatTodaySchedules(data) {
+            // 工单编号: 人工智能 NLP-Agent 数字人项目-日程提醒智能体任务；今日日程按钮优先使用结构化列表渲染。
+            if (!Array.isArray(data.schedules) || data.schedules.length === 0) {
+                return data.reply;
+            }
+            const lines = data.schedules.map((item, index) => {
+                return `${index + 1}. #${item.id} ${item.time} ${item.content}`;
+            });
+            return `你今天的日程包括：\n${lines.join("\n")}`;
+        }
+
+        function formatStatus(data) {
+            const lines = [
+                `数据库连接状态：${data.connection}`,
+                `schedules 表记录数：${data.schedules_count}`,
+                `agent_execution_logs 表记录数：${data.agent_execution_logs_count}`,
+                `reminder_logs 表记录数：${data.reminder_logs_count}`
+            ];
+            if (data.error) {
+                lines.push(`错误信息：${data.error}`);
+            }
+            return lines.join("\n");
+        }
+
+        function showBrowserNotification(text) {
+            if (!("Notification" in window)) {
+                return;
+            }
+            if (Notification.permission === "granted") {
+                new Notification("日程提醒智能体", { body: text });
+            } else if (Notification.permission !== "denied") {
+                Notification.requestPermission().then((permission) => {
+                    if (permission === "granted") {
+                        new Notification("日程提醒智能体", { body: text });
+                    }
+                });
+            }
+        }
+
+        // ---- 语音输入 ----
+        let recognition = null;
+        let isListening = false;
+
+        function initSpeechRecognition() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                micBtn.style.display = "none";
+                return null;
+            }
+            const sr = new SpeechRecognition();
+            sr.lang = "zh-CN";
+            sr.continuous = false;
+            sr.interimResults = false;
+            sr.maxAlternatives = 1;
+            return sr;
+        }
+
+        micBtn.addEventListener("click", () => {
+            if (isListening) {
+                stopListening();
+                return;
+            }
+            if (!recognition) {
+                recognition = initSpeechRecognition();
+                if (!recognition) return;
+                recognition.onresult = (event) => {
+                    const text = event.results[0][0].transcript;
+                    input.value = "";
+                    micBtn.classList.remove("listening");
+                    isListening = false;
+                    micBtn.title = "语音输入";
+                    sendMessage(text);
+                };
+                recognition.onerror = (event) => {
+                    micBtn.classList.remove("listening");
+                    isListening = false;
+                    micBtn.title = "语音输入";
+                    if (event.error !== "no-speech" && event.error !== "aborted") {
+                        appendMessage("assistant", `语音识别失败：${event.error}`);
+                    }
+                };
+                recognition.onend = () => {
+                    micBtn.classList.remove("listening");
+                    isListening = false;
+                    micBtn.title = "语音输入";
+                };
+            }
+            startListening();
+        });
+
+        function startListening() {
+            try {
+                recognition.start();
+                isListening = true;
+                micBtn.classList.add("listening");
+                micBtn.title = "点击停止录音";
+            } catch (e) {
+                // ignore if already started
+            }
+        }
+
+        function stopListening() {
+            try {
+                recognition.stop();
+            } catch (e) {
+                // ignore
+            }
+            micBtn.classList.remove("listening");
+            isListening = false;
+            micBtn.title = "语音输入";
+        }
+
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const text = input.value.trim();
+            if (!text) {
+                return;
+            }
+            input.value = "";
+            sendMessage(text);
+        });
+
+        todayBtn.addEventListener("click", async () => {
+            const typing = showTyping();
+            setBusy(todayBtn, "加载中", true);
+            try {
+                const data = await getJson("/today");
+                typing.remove();
+                appendMessage("assistant", formatTodaySchedules(data));
+            } catch (error) {
+                typing.remove();
+                appendMessage("assistant", error.message);
+            } finally {
+                setBusy(todayBtn, "加载中", false);
+                input.focus();
+            }
+        });
+
+        skillsBtn.addEventListener("click", async () => {
+            const typing = showTyping();
+            setBusy(skillsBtn, "加载中", true);
+            try {
+                const data = await getJson("/skills");
+                typing.remove();
+                appendSkillCards(data.skills || []);
+            } catch (error) {
+                typing.remove();
+                appendMessage("assistant", error.message);
+            } finally {
+                setBusy(skillsBtn, "加载中", false);
+                input.focus();
+            }
+        });
+
+        statusBtn.addEventListener("click", async () => {
+            const typing = showTyping();
+            setBusy(statusBtn, "加载中", true);
+            try {
+                const data = await getJson("/status");
+                typing.remove();
+                appendMessage("assistant", formatStatus(data));
+            } catch (error) {
+                typing.remove();
+                appendMessage("assistant", error.message);
+            } finally {
+                setBusy(statusBtn, "加载中", false);
+                input.focus();
+            }
+        });
+
+        notifyBtn.addEventListener("click", async () => {
+            setBusy(notifyBtn, "发送中", true);
+            try {
+                const data = await getJson("/test_notification");
+                appendMessage("assistant", data.reply);
+            } catch (error) {
+                appendMessage("assistant", error.message);
+            } finally {
+                setBusy(notifyBtn, "发送中", false);
+                input.focus();
+            }
+        });
+
+        window.addEventListener("load", () => {
+            input.focus();
+            pollReminders();
+            setInterval(pollReminders, 10000);
+        });
+    </script>
+</body>
+</html>
