@@ -1,0 +1,42 @@
+# ============================================================
+# 智能体项目 - 全局配置
+# 工单编号：人工智能NLP-Agent数字人项目-智能体任务
+# ============================================================
+
+# ---------- Agent LLM 配置 ----------
+# 用于意图识别和工具选择的 LLM（需要 OpenAI 兼容接口）
+llm:
+  api_key: "sk-jozgtgkyvzxikozrtkzgyfuptcamffjnpofushlitmktwyst"                # ← 替换为你的 API Key
+  base_url: "https://api.siliconflow.cn/v1"      # SiliconFlow / OpenAI 等
+  model: "Qwen/Qwen2.5-7B-Instruct"              # 或 gpt-4o-mini 等
+  temperature: 0.1
+  max_tokens: 1024
+
+# ---------- 5 个后端工具服务地址 ----------
+tools:
+  ledger:
+    base_url: "http://127.0.0.1:8081"
+    chat_endpoint: "/api/chat"
+  schedule:
+    base_url: "http://127.0.0.1:5000"
+    chat_endpoint: "/chat"
+  image_gen:
+    base_url: "http://127.0.0.1:7860"
+    generate_endpoint: "/generate"
+  fund:
+    base_url: "http://127.0.0.1:5002"
+    chat_endpoint: "/ask"
+  prospectus:
+    base_url: "http://127.0.0.1:5003"
+    chat_endpoint: "/ask"
+
+# ---------- Web 服务配置 ----------
+server:
+  host: "127.0.0.1"
+  port: 6001
+
+# ---------- MCP 服务器配置 ----------
+mcp:
+  transport: "stdio"       # stdio（默认，由Agent自动拉起）
+  # transport: "sse"       # HTTP 模式（可选）
+  http_port: 8100

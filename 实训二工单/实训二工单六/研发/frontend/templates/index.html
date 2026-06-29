@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SmartAgent</title>
+<style>
+:root{--gold:#d4a017;--gold-light:#f5e6b8;--gold-bg:#fef9eb;--cream:#fffdf5;--text:#2d2416;--text-dim:#8a7a60;--border:rgba(200,180,140,0.15);--shadow:0 2px 12px rgba(150,120,70,0.06);--radius:14px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'PingFang SC','Helvetica Neue','Segoe UI',sans-serif;height:100vh;overflow:hidden;background:var(--gold-bg);color:var(--text);display:grid;grid-template-columns:220px 1fr}
+.sidebar{background:rgba(200,180,140,0.08);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:0;height:100vh}
+.sidebar .head{padding:20px 16px 12px;border-bottom:1px solid var(--border);background:rgba(200,180,140,0.05)}
+.sidebar .head .logo{font-size:20px;font-weight:700;display:flex;align-items:center;gap:8px}
+.sidebar .head .logo .badge{font-size:10px;background:linear-gradient(135deg,#d4a017,#e8b84b);color:#fff;padding:2px 8px;border-radius:10px;font-weight:500}
+.sidebar .nav{padding:8px;display:flex;flex-direction:column;gap:2px;overflow-y:auto;flex:1}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:none;background:none;cursor:pointer;transition:all .12s;font-size:13px;color:var(--text-dim);width:100%;text-align:left}
+.nav-item:hover{background:rgba(212,160,23,0.06);color:var(--text)}
+.nav-item.active{background:rgba(212,160,23,0.1);color:var(--gold);font-weight:600}
+.nav-item .ico{font-size:18px;width:24px;text-align:center}
+.nav-item .dot{width:6px;height:6px;border-radius:50%;margin-left:auto;background:#5a9e3e}
+.nav-item .dot.off{background:#c0392b}
+.sidebar .foot{padding:12px 16px;border-top:1px solid var(--border);font-size:11px;color:var(--text-dim);display:flex;align-items:center;gap:6px}
+.sidebar .foot .dot{width:6px;height:6px;border-radius:50%;background:#5a9e3e;display:inline-block}
+.main{display:flex;flex-direction:column;height:100vh;min-width:0}
+.top{padding:16px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--cream)}
+.top h2{font-size:16px;font-weight:600}
+.top .status{font-size:11px;color:var(--text-dim);display:flex;align-items:center;gap:6px}
+.top .status .p{width:6px;height:6px;border-radius:50%;background:#5a9e3e;display:inline-block}
+.chips{padding:10px 24px;border-bottom:1px solid var(--border);display:flex;gap:6px;overflow-x:auto;background:rgba(255,253,245,0.5)}
+.chips::-webkit-scrollbar{display:none}
+.chips .c{padding:5px 12px;border-radius:16px;border:1px solid var(--border);background:white;font-size:11px;color:var(--text-dim);white-space:nowrap;cursor:pointer;transition:all .15s;flex-shrink:0}
+.chips .c:hover,.chips .c.active{background:var(--gold);color:#fff;border-color:var(--gold)}
+.msgs{flex:1;overflow-y:auto;padding:16px 24px;scroll-behavior:smooth;background:var(--gold-bg);display:flex;flex-direction:column}
+.msgs::-webkit-scrollbar{width:4px}
+.msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.msg{margin-bottom:12px;opacity:0;animation:up .25s ease forwards}
+@keyframes up{to{opacity:1;transform:translateY(0)}}
+.msg.user{transform:translateY(8px);display:flex;justify-content:flex-end}
+.msg.assistant{transform:translateY(8px)}
+.msg .b{max-width:75%;padding:11px 15px;border-radius:14px;line-height:1.55;font-size:13.5px;white-space:pre-wrap;word-break:break-word}
+.msg.user .b{background:linear-gradient(135deg,#d4a017,#e8b84b);color:#fff;border-bottom-right-radius:4px}
+.msg.assistant .b{background:white;color:var(--text);border:1px solid var(--border);border-bottom-left-radius:4px;box-shadow:var(--shadow)}
+.msg .t{font-size:10px;color:var(--text-dim);margin-top:3px;padding:0 4px}
+.msg.user .t{text-align:right}
+.msg img{max-width:100%;border-radius:8px;margin-top:6px}
+.welcome{padding:20px;text-align:center}
+.welcome .ic{font-size:40px;margin-bottom:8px}
+.welcome h3{font-size:18px;font-weight:700;margin-bottom:4px}
+.welcome p{font-size:12px;color:var(--text-dim);margin-bottom:16px}
+.tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;max-width:580px;margin:0 auto}
+.tools .t{background:white;border-radius:12px;padding:14px 10px;border:1px solid var(--border);cursor:pointer;transition:all .15s;text-align:center}
+.tools .t:active{transform:scale(0.96)}
+.tools .t:hover{border-color:rgba(212,160,23,0.2);box-shadow:var(--shadow)}
+.tools .t .ti{font-size:26px;margin-bottom:4px}
+.tools .t .tn{font-size:12px;font-weight:600}
+.tools .t .td{font-size:10px;color:var(--text-dim);margin-top:2px}
+.inp{padding:12px 24px 16px;border-top:1px solid var(--border);background:var(--cream);flex-shrink:0}
+.inp-wrap{display:flex;gap:6px;align-items:flex-end;background:#f8f4ec;border-radius:20px;border:1px solid var(--border);padding:3px 3px 3px 14px;transition:border-color .15s}
+.inp-wrap:focus-within{border-color:rgba(212,160,23,0.25)}
+.inp-wrap textarea{flex:1;background:none;border:none;outline:none;color:var(--text);font-size:13.5px;font-family:inherit;padding:7px 0;resize:none;line-height:1.4;max-height:80px}
+.inp-wrap textarea::placeholder{color:var(--text-dim)}
+.inp-wrap .ab{width:30px;height:30px;border-radius:50%;border:none;background:transparent;color:var(--text-dim);font-size:14px;cursor:pointer;transition:all .12s;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.inp-wrap .ab:hover{background:rgba(212,160,23,0.08);color:var(--gold)}
+.inp-wrap .ab.rec{background:rgba(192,57,43,0.1);color:#c0392b;animation:mp 1s infinite}
+@keyframes mp{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.inp-wrap .sb{width:30px;height:30px;border-radius:50%;border:none;background:linear-gradient(135deg,#d4a017,#e8b84b);color:#fff;font-size:12px;cursor:pointer;transition:all .12s;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.inp-wrap .sb:active{transform:scale(0.9)}
+.inp-wrap .sb:disabled{opacity:0.25}
+.img-prev{display:none;padding:2px 24px 6px;gap:8px;align-items:center}
+.img-prev.show{display:flex}
+.img-prev img{height:36px;width:36px;border-radius:6px;object-fit:cover;border:1px solid var(--border)}
+.img-prev .in{font-size:11px;color:var(--text-dim);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.img-prev .ir{width:18px;height:18px;border-radius:50%;border:none;background:rgba(192,57,43,0.1);color:#c0392b;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+#toolPanel{display:none;flex-direction:column;flex:1;overflow:hidden;padding:0 16px}
+#toolPanel.show{display:flex}
+.tool-panel-header{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border)}
+.tool-panel-header .icon{font-size:20px}
+.tool-panel-header .title{font-size:14px;font-weight:600}
+.tool-panel-header .count{font-size:11px;color:var(--text-dim);margin-left:auto}
+.tool-panel-body{flex:1;overflow-y:auto;padding:8px 0}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="head">
+    <div class="logo">&#9670; 智能管家 <span class="badge">专业版</span></div>
+  </div>
+  <div class="nav" id="navSidebar">
+    <button class="nav-item active" onclick="switchView('home')"><span class="ico">&#9679;</span>首页<span class="dot" id="d-home"></span></button>
+    <button class="nav-item" onclick="switchView('ledger')"><span class="ico">&#128200;</span>记账本<span class="dot" id="d-ledger_query"></span></button>
+    <button class="nav-item" onclick="switchView('schedule')"><span class="ico">&#128197;</span>日程提醒<span class="dot" id="d-schedule_query"></span></button>
+    <button class="nav-item" onclick="switchView('image')"><span class="ico">&#127912;</span>文生图<span class="dot" id="d-image_generate"></span></button>
+    <button class="nav-item" onclick="switchView('fund')"><span class="ico">&#128176;</span>基金问答<span class="dot" id="d-fund_query"></span></button>
+    <button class="nav-item" onclick="switchView('prospectus')"><span class="ico">&#128214;</span>招股书<span class="dot" id="d-prospectus_query"></span></button>
+    <div style="margin-top:12px;padding:8px 4px;border-top:1px solid var(--border);font-size:11px;color:var(--text-dim);font-weight:600">最近记录</div>
+    <div id="historyList" style="flex:1;overflow-y:auto;padding:4px 0">
+      <div style="font-size:11px;color:var(--text-dim);padding:8px 12px">点击工具查看历史记录</div>
+    </div>
+  </div>
+  <div class="foot"><span class="dot"></span><span id="statusText">连接中...</span></div>
+</div>
+<div class="main">
+  <div class="top">
+    <h2 id="viewTitle">&#9733; 首页</h2>
+    <div class="status"><span class="p"></span> MCP: <span id="mcpStatus">connecting</span></div>
+  </div>
+  <div class="chips" id="chipBar">
+    <span class="c active" onclick="switchView('home')">&#9733; 全部</span>
+    <span class="c" onclick="switchView('ledger')">&#128200; 记账本</span>
+    <span class="c" onclick="switchView('schedule')">&#128197; 日程提醒</span>
+    <span class="c" onclick="switchView('image')">&#127912; 生图</span>
+    <span class="c" onclick="switchView('fund')">&#128176; Fund</span>
+    <span class="c" onclick="switchView('prospectus')">&#128214; 招股</span>
+  </div>
+  <div id="toolPanel" style="display:none;flex-direction:column;flex:1;overflow:hidden;padding:0 16px">
+    <div class="tool-panel-header"><span class="icon" id="toolPanelIcon"></span><span class="title" id="toolPanelTitle">工具记录</span><span class="count" id="toolPanelCount">0 条记录</span></div>
+    <div class="tool-panel-body" id="toolPanelContent"></div>
+  </div>
+  <div class="msgs" id="msgs">
+    <div class="welcome" id="welcome">
+      <div class="ic">&#9889;</div>
+      <h3>有什么可以帮你的？</h3>
+      <p>输入文字或点击下方工具直接使用</p>
+      <div class="tools">
+        <div class="t" onclick="q('记录今天午餐花了35元')"><div class="ti">&#128221;</div><div class="tn">记账本</div><div class="td">记账管理</div></div>
+        <div class="t" onclick="q('提醒我明天下午3点开会')"><div class="ti">&#128197;</div><div class="tn">日程提醒</div><div class="td">日程提醒</div></div>
+        <div class="t" onclick="q('画一只橘猫')"><div class="ti">&#127912;</div><div class="tn">文生图</div><div class="td">AI 图片</div></div>
+        <div class="t" onclick="q('查一下000001基金净值')"><div class="ti">&#128176;</div><div class="tn">基金问答</div><div class="td">基金查询</div></div>
+        <div class="t" onclick="q('招股书中的营收是多少')"><div class="ti">&#128214;</div><div class="tn">招股书</div><div class="td">招股书查询</div></div>
+      </div>
+    </div>
+    <div id="messages"></div>
+  </div>
+  <div class="inp">
+    <div class="img-prev" id="imgPreview">
+      <img id="previewImg"><span class="in" id="imgName"></span>
+      <button class="ir" onclick="clearImg()">&#10005;</button>
+    </div>
+    <div class="inp-wrap">
+      <textarea id="input" rows="1" placeholder="输入你的需求..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();send()}"></textarea>
+      <button class="ab" id="micBtn" title="语音">&#127908;</button>
+      <button class="ab" id="imgBtn" title="上传图片">&#128206;</button>
+      <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleImg(this)">
+      <button class="sb" id="sendBtn" onclick="send()">&#10148;</button>
+    </div>
+  </div>
+</div>
+<script>
+let currentView='home', uploadedImg=null, rec=null;
+
+function switchView(v){
+  currentView=v;
+  document.querySelectorAll('.c').forEach(c=>c.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const idx={home:0,ledger:1,schedule:2,image:3,fund:4,prospectus:5};
+  const chips=document.querySelectorAll('.c');
+  const navs=document.querySelectorAll('.nav-item');
+  if(chips[idx[v]])chips[idx[v]].classList.add('active');
+  if(navs[idx[v]])navs[idx[v]].classList.add('active');
+  const names={'home':'首页','ledger':'记账本','schedule':'日程提醒','image':'文生图','fund':'基金问答','prospectus':'招股书'};
+  const icons={'home':'','ledger':'\ud83d\udcc8','schedule':'\ud83d\udcc5','image':'\ud83c\udfa8','fund':'\ud83d\udcb0','prospectus':'\ud83d\udcd4'};
+  document.getElementById('viewTitle').innerHTML='&#9733; '+names[v];
+  document.getElementById('toolPanelIcon').textContent=icons[v]||'';
+  document.getElementById('toolPanelTitle').textContent=names[v]+' - 所有记录';
+  if(chips[idx[v]])chips[idx[v]].scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
+
+  const panel=document.getElementById('toolPanel');
+  const msgs=document.getElementById('msgs');
+  if(v==='home'){
+    panel.style.display='none';
+    msgs.style.display='flex';
+  } else {
+    panel.style.display='flex';
+    msgs.style.display='none';
+    fetch('/tool_records?view='+v).then(r=>r.json()).then(d=>{
+      const panel=document.getElementById('toolPanelContent');
+      const count=document.getElementById('toolPanelCount');
+      if(d.type==='ledger' && d.records){
+        count.textContent=d.records.length+' 条记录';
+        var html='';
+        if(d.summary){
+          html+='<div style="display:flex;gap:10px;margin-bottom:12px">';
+          html+='<div style="flex:1;background:white;border-radius:10px;padding:12px;border:1px solid var(--border);text-align:center"><div style="font-size:11px;color:var(--text-dim)">'+(d.summary.month||'本月')+' 收入</div><div style="font-size:18px;font-weight:700;color:#22c55e">'+parseFloat(d.summary.total_income||0).toFixed(2)+'</div></div>';
+          html+='<div style="flex:1;background:white;border-radius:10px;padding:12px;border:1px solid var(--border);text-align:center"><div style="font-size:11px;color:var(--text-dim)">'+(d.summary.month||'本月')+' 支出</div><div style="font-size:18px;font-weight:700;color:#ef4444">'+parseFloat(d.summary.total_expense||0).toFixed(2)+'</div></div>';
+          html+='</div>';
+        }
+        html+='<div style="display:grid;grid-template-columns:1fr 80px 80px;gap:2px;font-size:12px;font-weight:600;color:var(--text-dim);padding:6px 10px;border-bottom:2px solid var(--border)">';
+        html+='<div>用途/来源</div><div style="text-align:right;color:#22c55e">收入</div><div style="text-align:right;color:#ef4444">支出</div>';
+        html+='</div>';
+        d.records.slice(0,50).forEach(function(r){
+          var isIncome = r.type === '收入';
+          var isExpense = r.type === '支出';
+          var amt = Math.abs(parseFloat(r.amount||0)).toFixed(2);
+          html+='<div style="display:grid;grid-template-columns:1fr 80px 80px;gap:2px;align-items:center;padding:8px 10px;margin:2px 0;background:white;border-radius:6px;border:1px solid var(--border);font-size:13px">';
+          html+='<div><span style="font-weight:500">'+(r.item||'')+'</span><br><span style="font-size:10px;color:var(--text-dim)">'+(r.date||'')+' '+(r.member||'')+'</span></div>';
+          html+='<div style="text-align:right;font-weight:600;color:#22c55e">'+(isIncome?amt:'')+'</div>';
+          html+='<div style="text-align:right;font-weight:600;color:#ef4444">'+(isExpense?amt:'')+'</div>';
+          html+='</div>';
+        });
+        panel.innerHTML=html;
+      } else if(d.type==='schedule' && d.data){
+        count.textContent='今日日程';
+        var schedules=d.data.schedules||[];
+        panel.innerHTML=schedules.map(function(s){
+          return '<div style="padding:10px 12px;margin:3px 0;background:white;border-radius:8px;border:1px solid var(--border)"><div style="font-size:13px;font-weight:600">'+(s.title||s.event||'')+'</div><div style="font-size:11px;color:var(--text-dim)">'+(s.time||s.date||'')+'</div></div>';
+        }).join('')||'<div style="text-align:center;padding:30px;color:var(--text-dim);font-size:13px">今日暂无日程</div>';
+      } else if(d.type==='history' && d.items && d.items.length>0){
+        count.textContent=d.items.length+' 条记录';
+        panel.innerHTML=d.items.map(function(item){
+          return '<div style="padding:8px 10px;margin:3px 0;background:white;border-radius:8px;border:1px solid var(--border);font-size:12px">['+item.time+'] '+item.text+'</div>';
+        }).join('');
+      } else if(d.type==='error'){
+        count.textContent='服务不可用';
+        panel.innerHTML='<div style="text-align:center;padding:40px 0;color:var(--text-dim);font-size:13px">⚠️ '+d.message+'<br><span style="font-size:11px">请先启动后端服务</span></div>';
+      } else {
+        count.textContent='0 条记录';
+        panel.innerHTML='<div style="text-align:center;padding:40px 0;color:var(--text-dim);font-size:13px">暂无记录<br><span style="font-size:11px">在下方输入框添加记录</span></div>';
+      }
+    }).catch(function(){document.getElementById('toolPanelContent').innerHTML='<div style="text-align:center;padding:40px;color:var(--text-dim)">加载失败</div>'});
+  }
+}
+
+function q(t){document.getElementById('input').value=t;send()}
+document.getElementById('input').addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,80)+'px'});
+document.getElementById('imgBtn').onclick=()=>document.getElementById('fileInput').click();
+
+function handleImg(i){
+  const f=i.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=function(e){
+    const img=new Image();
+    img.onload=function(){
+      let w=img.width,h=img.height,m=1024;
+      if(w>m||h>m){if(w>h){w=m;h=Math.round(h*m/img.width)}else{h=m;w=Math.round(w*m/img.height)}}
+      const c=document.createElement('canvas');c.width=w;c.height=h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      const d=c.toDataURL('image/jpeg',0.85);
+      uploadedImg={data:d.split(',')[1],name:f.name,type:'image/jpeg'};
+      document.getElementById('previewImg').src=d;
+      document.getElementById('imgName').textContent=f.name+' ('+w+'x'+h+')';
+      document.getElementById('imgPreview').classList.add('show');
+    };
+    img.src=e.target.result;
+  };
+  r.readAsDataURL(f);
+}
+function clearImg(){uploadedImg=null;document.getElementById('imgPreview').classList.remove('show');document.getElementById('fileInput').value=''}
+
+document.getElementById('micBtn').onclick=function(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return addMsg('语音输入不支持','assistant');if(rec&&rec.running){rec.stop();return}rec=new SR();rec.lang='zh-CN';rec.continuous=false;rec.interimResults=false;rec.running=true;document.getElementById('micBtn').classList.add('rec');rec.onresult=function(e){document.getElementById('input').value=e.results[0][0].transcript;document.getElementById('micBtn').classList.remove('rec');send()};rec.onerror=function(){document.getElementById('micBtn').classList.remove('rec')};rec.onend=function(){document.getElementById('micBtn').classList.remove('rec');rec.running=false};rec.start()};
+
+async function send(){
+  const i=document.getElementById('input');let m=i.value.trim();
+  if(!m&&!uploadedImg)return;
+  i.value='';i.style.height='auto';
+  document.getElementById('sendBtn').disabled=true;
+  const w=document.getElementById('welcome');if(w)w.style.display='none';
+  addMsg(m||'[图片]','user');
+  try{
+    if(uploadedImg){
+      const fd=new FormData();
+      fd.append('message',m||'');
+      fd.append('view',currentView);
+      const bs=atob(uploadedImg.data);
+      const ba=new Uint8Array(bs.length);
+      for(let i=0;i<bs.length;i++)ba[i]=bs.charCodeAt(i);
+      const blob=new Blob([ba],{type:uploadedImg.type||'image/jpeg'});
+      fd.append('image_file',blob,uploadedImg.name||'photo.jpg');
+      fd.append('image_b64',uploadedImg.data);
+      const r=await fetch('/chat',{method:'POST',body:fd});
+      const d=await r.json();
+      addMsg(d.reply||'无响应','assistant');
+      if(currentView!=='home') switchView('home');
+      if(d.images && d.images.length>0){
+        const dv=document.createElement('div');
+        dv.style.display='flex';dv.style.gap='6px';dv.style.marginTop='6px';
+        d.images.forEach(function(b64){
+          const img=document.createElement('img');
+          img.src='data:image/png;base64,'+b64;
+          img.style.cssText='flex:1;max-width:33%;border-radius:8px;border:1px solid var(--border)';
+          dv.appendChild(img);
+        });
+        document.getElementById('msgs').lastChild.querySelector('.b').appendChild(dv);
+      } else if(d.image){
+        const dv=document.createElement('div');
+        dv.innerHTML='<img src="data:image/png;base64,'+d.image+'" style="max-width:100%;border-radius:8px;margin-top:6px">';
+        document.getElementById('msgs').lastChild.querySelector('.b').appendChild(dv);
+      }
+    } else {
+      const b={message:m,view:currentView};
+      if(uploadedImg){b.image=uploadedImg.data;b.image_name=uploadedImg.name}
+      const r=await fetch('/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)});
+      const d=await r.json();
+      addMsg(d.reply||'无响应','assistant');
+      if(currentView!=='home') switchView('home');
+      if(d.images && d.images.length>0){
+        const dv=document.createElement('div');
+        dv.style.display='flex';dv.style.gap='6px';dv.style.marginTop='6px';
+        d.images.forEach(function(b64){
+          const img=document.createElement('img');
+          img.src='data:image/png;base64,'+b64;
+          img.style.cssText='flex:1;max-width:33%;border-radius:8px;border:1px solid var(--border)';
+          dv.appendChild(img);
+        });
+        document.getElementById('msgs').lastChild.querySelector('.b').appendChild(dv);
+      } else if(d.image){
+        const dv=document.createElement('div');
+        dv.innerHTML='<img src="data:image/png;base64,'+d.image+'" style="max-width:100%;border-radius:8px;margin-top:6px">';
+        document.getElementById('msgs').lastChild.querySelector('.b').appendChild(dv);
+      }
+    }
+  }catch(e){addMsg('错误: '+e.message,'assistant')}
+  clearImg();document.getElementById('sendBtn').disabled=false;
+}
+
+function addMsg(t,r){
+  const d=document.createElement('div');d.className='msg '+r;
+  const b=document.createElement('div');b.className='b';b.textContent=t;d.appendChild(b);
+  const tm=document.createElement('div');tm.className='t';
+  const n=new Date();tm.textContent=n.getHours().toString().padStart(2,'0')+':'+n.getMinutes().toString().padStart(2,'0');
+  d.appendChild(tm);
+  document.getElementById('msgs').appendChild(d);
+  d.scrollIntoView({behavior:'smooth',block:'end'});
+}
+
+async function poll(){
+  try{
+    const r=await fetch('/health');const d=await r.json();
+    document.getElementById('statusText').textContent=d.mcp?'已连接':'待机';
+    document.getElementById('mcpStatus').textContent=d.mcp?'已连接':'待机';
+    const st=d.mcp?'#5a9e3e':'#c0392b';
+    document.querySelectorAll('.foot .dot,.top .p').forEach(e=>e.style.background=st);
+    if(d.mcp_tools)d.mcp_tools.forEach(t=>{const e=document.getElementById('d-'+t);if(e)e.className='dot'});
+  }catch(e){}
+}
+poll();setInterval(poll,3000);
+</script>
+</body>
+</html>
