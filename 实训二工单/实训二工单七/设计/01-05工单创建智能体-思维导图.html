@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>01-05 工单创建智能体 — 系统架构与工作流思维导图</title>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'dark',
+  themeVariables: {
+    fontFamily: '"Microsoft YaHei", "PingFang SC", sans-serif',
+    fontSize: '14px',
+    primaryColor: '#1e3a5f',
+    primaryTextColor: '#e0e0e0',
+    primaryBorderColor: '#4a90d9',
+    lineColor: '#5a8ec7',
+    secondaryColor: '#2d4a3e',
+    tertiaryColor: '#3a2a4a',
+    background: '#0d1117',
+    edgeLabelBackground: '#1a2332',
+    nodeBorder: '#30363d',
+  }
+});
+</script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0d1117;
+    color: #e6edf3;
+    font-family: 'Microsoft YaHei', 'PingFang SC', -apple-system, sans-serif;
+    padding: 20px;
+    min-height: 100vh;
+  }
+  .container { max-width: 1400px; margin: 0 auto; }
+  h1 {
+    font-size: 28px;
+    text-align: center;
+    padding: 30px 0 10px;
+    background: linear-gradient(135deg, #58a6ff, #3fb950, #d2a8ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .subtitle {
+    text-align: center;
+    color: #8b949e;
+    font-size: 14px;
+    margin-bottom: 30px;
+  }
+  .section {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+  .section-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #30363d;
+    color: #58a6ff;
+  }
+  .section-title .num {
+    display: inline-block;
+    background: #1f6feb;
+    color: #fff;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 28px;
+    font-size: 14px;
+    margin-right: 10px;
+    -webkit-text-fill-color: #fff;
+  }
+  .mermaid-container {
+    background: #0d1117;
+    border-radius: 8px;
+    padding: 20px;
+    overflow-x: auto;
+    min-height: 100px;
+    display: flex;
+    justify-content: center;
+  }
+  .mermaid-container svg { max-width: 100%; height: auto; }
+  .legend {
+    margin-top: 20px;
+    padding: 15px;
+    background: #0d1117;
+    border-radius: 8px;
+    border: 1px solid #21262d;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #8b949e;
+  }
+  .legend-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    display: inline-block;
+  }
+  .dot-user { background: #79c0ff; }
+  .dot-dify { background: #d2a8ff; }
+  .dot-llm { background: #ffa657; }
+  .dot-service { background: #3fb950; }
+  .dot-response { background: #ff7b72; }
+  .dot-decision { background: #d29922; }
+  .footer {
+    text-align: center;
+    color: #484f58;
+    font-size: 12px;
+    padding: 20px 0;
+  }
+  @media print {
+    body { background: #fff; color: #000; }
+    .section { background: #f6f8fa; border-color: #d0d7de; }
+    .mermaid-container { background: #fff; }
+    .section-title { color: #0969da; }
+    h1 { -webkit-text-fill-color: initial; color: #0969da; background: none; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>🏗️ 01-05 工单创建智能体</h1>
+<p class="subtitle">SmartAgent Pro — 系统架构 · 工作流 · 部署拓扑</p>
+
+<div class="legend">
+  <span class="legend-item"><span class="legend-dot dot-user"></span> 用户</span>
+  <span class="legend-item"><span class="legend-dot dot-dify"></span> Dify 平台</span>
+  <span class="legend-item"><span class="legend-dot dot-llm"></span> LLM 节点</span>
+  <span class="legend-item"><span class="legend-dot dot-service"></span> 后端服务</span>
+  <span class="legend-item"><span class="legend-dot dot-response"></span> 回复节点</span>
+  <span class="legend-item"><span class="legend-dot dot-decision"></span> 条件分支</span>
+</div>
+
+<!-- ====== 一、工作流流程 ====== -->
+<div class="section">
+  <div class="section-title"><span class="num">1</span>工作流流程 — Flowchart</div>
+  <div class="mermaid-container">
+    <div class="mermaid">
+flowchart TD
+    A["👤 用户输入"] --> B["🌐 Dify Web UI"]
+    B --> C["⚙️ Dify Backend API\n:5001"]
+    C --> D["🔄 Workflow Engine"]
+    D --> E["▶️ Start 节点"]
+    E --> F["🧠 LLM 意图分类\nDeepSeek V4 Flash"]
+    F --> G{"🔀 条件分支1\n是否含 'tool'?"}
+    G -- "❌ 否" --> H["💬 直接回复用户"]
+    H --> I["✅ 结束"]
+    G -- "✅ 是" --> J{"🔀 条件分支2\n路由到哪个工具?"}
+    J -- "📊 a. 记账本" --> K1["📡 host.docker.internal:8081\n记账本服务"]
+    K1 --> L1["🧠 LLM2 格式化"]
+    L1 --> M1["💬 回复用户"]
+    J -- "📅 b. 日程提醒" --> K2["📡 host.docker.internal:5000\n日程提醒服务"]
+    K2 --> L2["🧠 LLM3 格式化"]
+    L2 --> M2["💬 回复用户"]
+    J -- "🎨 c. 文生图" --> K3["📡 host.docker.internal:7860\nStable Diffusion"]
+    K3 --> L3["🧠 LLM4 格式化\nMarkdown表格+Base64"]
+    L3 --> M3["💬 回复用户"]
+    J -- "💰 d. 基金查询" --> K4["📡 host.docker.internal:5004\n基金数据服务"]
+    K4 --> L4["🧠 LLM5 格式化"]
+    L4 --> M4["💬 回复用户"]
+    J -- "📄 e. 招股书查询" --> K5["📡 host.docker.internal:5005\n招股书服务"]
+    K5 --> L5["🧠 LLM6 格式化"]
+    L5 --> M5["💬 回复用户"]
+
+    classDef user fill:#1a3d5c,stroke:#58a6ff,stroke-width:2px,color:#e6edf3
+    classDef dify fill:#2a1a4a,stroke:#bc8cff,stroke-width:2px,color:#e6edf3
+    classDef llm fill:#3a2a1a,stroke:#ffa657,stroke-width:2px,color:#e6edf3
+    classDef service fill:#1a3a2a,stroke:#3fb950,stroke-width:2px,color:#e6edf3
+    classDef response fill:#3a1a1a,stroke:#ff7b72,stroke-width:2px,color:#e6edf3
+    classDef decision fill:#3a3a1a,stroke:#d29922,stroke-width:2px,color:#e6edf3
+    class A user
+    class B,C,D dify
+    class F,L1,L2,L3,L4,L5 llm
+    class K1,K2,K3,K4,K5 service
+    class H,M1,M2,M3,M4,M5 response
+    class G,J decision
+    </div>
+  </div>
+</div>
+
+<!-- ====== 二、系统分层架构 ====== -->
+<div class="section">
+  <div class="section-title"><span class="num">2</span>系统分层架构 — Mindmap</div>
+  <div class="mermaid-container">
+    <div class="mermaid">
+mindmap
+  root(("🏗️ 工单创建智能体\n系统架构"))
+    (("👤 用户层"))
+      [用户输入]
+      [对话界面]
+
+    (("🌐 应用层 — Dify"))
+      [Dify Web UI]
+      [Dify Backend API\n端口 5001]
+      [Workflow Engine]
+      [LLM 意图分类\nDeepSeek V4 Flash]
+      (条件分支1: 是否含tool?)
+        [否 → 直接回复]
+        (是 → 条件分支2: 路由选择)
+          [a: 记账本 → host:8081]
+          [b: 日程提醒 → host:5000]
+          [c: 文生图 → host:7860]
+          [d: 基金查询 → host:5004]
+          [e: 招股书 → host:5005]
+
+    (("🧠 LLM 服务层"))
+      [LLM1 — 意图分类\nDeepSeek V4 Flash]
+      [LLM2 — 记账本格式化]
+      [LLM3 — 日程格式化]
+      [LLM4 — 文生图格式化\nMarkdown表格+Base64]
+      [LLM5 — 基金格式化]
+      [LLM6 — 招股书格式化]
+
+    (("💻 基础设施层"))
+      (Windows 宿主 OS)
+        [Docker Desktop]
+        (Dify 容器)
+          [web :3000]
+          [api :5001]
+          [worker]
+          [plugin-daemon :5002/5003]
+          [db — PostgreSQL]
+          [redis]
+          [weaviate]
+          [sandbox]
+          [beat]
+      (Windows 后端服务)
+        [📊 记账本 — 端口 8081]
+        [📅 日程提醒 — 端口 5000]
+        [🎨 文生图(SD) — 端口 7860]
+        [💰 基金数据 — 端口 5004]
+        [📄 招股书 — 端口 5005]
+
+    (("🔗 数据流"))
+      [HTTP API 调用]
+      [LLM Token 推理]
+      [数据库读写\nPostgreSQL/Redis/Weaviate]
+      [Base64 图片传输]
+
+    (("⚡ 优化要点"))
+      [端口冲突: 5002→5004/5003→5005]
+      [LLM提示词平衡: 5路由各2-3示例]
+      [条件分支: contains+or 多关键词]
+      [Body参数统一: query]
+      [后处理LLM Prompt修正]
+      [API草稿Hash校验]
+      [容器挂载路径修复]
+      [管理员密码修复]
+    </div>
+  </div>
+</div>
+
+<!-- ====== 三、部署拓扑 ====== -->
+<div class="section">
+  <div class="section-title"><span class="num">3</span>部署拓扑图 — Topology</div>
+  <div class="mermaid-container">
+    <div class="mermaid">
+flowchart LR
+    subgraph Windows_Host["🪟 Windows 宿主"]
+        direction TB
+        subgraph Docker["🐳 Docker Desktop"]
+            direction TB
+            W["web :3000"] --> A1["api :5001"]
+            A1 --> WK["worker"]
+            A1 --> PD["plugin-daemon\n:5002 / :5003"]
+            A1 --> DB[("PostgreSQL")]
+            A1 --> RD[("redis")]
+            A1 --> WV[("weaviate")]
+            A1 --> SB["sandbox"]
+            A1 --> BT["beat"]
+        end
+        subgraph WinServices["⚙️ Windows 本地服务"]
+            ACC["📊 记账本\n:8081"]
+            CAL["📅 日程提醒\n:5000"]
+            SD["🎨 文生图(SD)\n:7860"]
+            FUND["💰 基金数据\n:5004"]
+            PRO["📄 招股书\n:5005"]
+        end
+    end
+
+    subgraph LLM_Layer["🧠 LLM 服务"]
+        DS["DeepSeek V4 Flash"]
+    end
+
+    USER["👤 用户"] --> DIFY_UI["Dify Web UI\nlocalhost:3000"]
+    DIFY_UI --> A1
+    A1 --> DS
+    A1 -. "host.docker.internal:8081" .-> ACC
+    A1 -. "host.docker.internal:5000" .-> CAL
+    A1 -. "host.docker.internal:7860" .-> SD
+    A1 -. "host.docker.internal:5004" .-> FUND
+    A1 -. "host.docker.internal:5005" .-> PRO
+
+    classDef host fill:#0d1f3c,stroke:#58a6ff,stroke-width:2px,color:#e6edf3
+    classDef docker fill:#0d2818,stroke:#3fb950,stroke-width:2px,color:#e6edf3
+    classDef service fill:#2a1a3a,stroke:#d2a8ff,stroke-width:2px,color:#e6edf3
+    classDef llm fill:#3a2a1a,stroke:#ffa657,stroke-width:1px,color:#e6edf3
+    classDef user fill:#3a1a1a,stroke:#ff7b72,stroke-width:1px,color:#e6edf3
+    classDef dify fill:#1a2d3a,stroke:#79c0ff,stroke-width:2px,color:#e6edf3
+
+    class USER user
+    class DIFY_UI,A1,WK,PD,SB,BT dify
+    class DB,RD,WV dify
+    class Windows_Host host
+    class Docker docker
+    class WinServices service
+    class ACC,CAL,SD,FUND,PRO service
+    class DS llm
+    </div>
+  </div>
+</div>
+
+<!-- ====== 四、优化要点速览 ====== -->
+<div class="section">
+  <div class="section-title"><span class="num">4</span>优化要点速览</div>
+  <div class="mermaid-container">
+    <div class="mermaid">
+flowchart LR
+    O1["🔧 端口冲突\n5002→5004 基金\n5003→5005 招股书\n同步5处配置"]
+    O2["✏️ LLM提示词均衡\n5个路由各2-3示例\n基金/招股书各8+触发词"]
+    O3["🔀 条件分支优化\nequals → contains\n多个关键词 OR 匹配"]
+    O4["📦 Body参数统一\nmessage → query\n使用 sys.query 系统变量"]
+    O5["🧠 后处理LLM修正\nLLM5→基金助手\nLLM6→招股书助手"]
+    O6["🔑 API Hash校验\n先GET获取hash\nPOST必须携带hash"]
+    O7["📁 容器挂载修复\n删除旧容器\n从新路径重建"]
+    O8["🔐 密码修复\nPBKDF2-HMAC-SHA256\n从PostgreSQL重置"]
+
+    O1 --> O2 --> O3 --> O4
+    O4 --> O5 --> O6 --> O7 --> O8
+
+    classDef opt fill:#1a2332,stroke:#58a6ff,stroke-width:1px,color:#e6edf3
+    class O1,O2,O3,O4,O5,O6,O7,O8 opt
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  01-05 工单创建智能体 (SmartAgent Pro) · Dify v1.9.1 · DeepSeek V4 Flash · 2026-06-29<br>
+  数据来源: Dify Workflow 数据库导出 · PostgreSQL
+</div>
+
+</div>
+</body>
+</html>
