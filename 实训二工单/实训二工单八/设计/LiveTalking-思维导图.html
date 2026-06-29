@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiveTalking 思维导图</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #1a1a2e;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            padding: 30px 20px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 40px;
+            font-size: 14px;
+        }
+        .section {
+            background: #16213e;
+            border-radius: 16px;
+            padding: 25px 20px;
+            margin-bottom: 35px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            border: 1px solid #2a2a4a;
+        }
+        .section h2 {
+            font-size: 22px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3a7bd5;
+            color: #7ec8e3;
+        }
+        .mermaid {
+            text-align: center;
+            overflow-x: auto;
+            min-height: 100px;
+        }
+        .footer {
+            text-align: center;
+            color: #666;
+            font-size: 13px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #2a2a4a;
+        }
+        /* 深色主题Mermaid覆盖 */
+        .label { color: #e0e0e0 !important; }
+    </style>
+</head>
+<body>
+
+<h1>🧠 LiveTalking 思维导图</h1>
+<p class="subtitle">数字人实时交互系统 · 架构 / 流程 / 优化全景</p>
+
+<!-- ============ 图1: 工作流流程图 ============ -->
+<div class="section">
+    <h2>📋 图1 · 工作流流程图</h2>
+    <p style="color:#999;margin-bottom:15px;font-size:14px;">用户输入 → LLM → TTS → 数字人口型同步 → WebRTC推流 → 浏览器播放</p>
+    <div class="mermaid">
+flowchart LR
+    A["👤 用户输入"] --> B["🧠 LLM<br/><small>SiliconFlow / Qwen2.5-7B</small>"]
+    B --> C["🔊 TTS<br/><small>EdgeTTS / GPT-SoVITS / CosyVoice</small>"]
+    C --> D["🎭 数字人口型同步<br/><small>Wav2Lip / MuseTalk / UltraLight</small>"]
+    D --> E["📡 WebRTC 推流"]
+    E --> F["🌐 浏览器播放"]
+
+    style A fill:#1a3a5c,stroke:#3a7bd5,color:#fff
+    style B fill:#2d1f5e,stroke:#7c4dff,color:#fff
+    style C fill:#1e4d2b,stroke:#4caf50,color:#fff
+    style D fill:#5c2a1a,stroke:#ff6f00,color:#fff
+    style E fill:#2a3a5c,stroke:#00bcd4,color:#fff
+    style F fill:#1a2e1a,stroke:#66bb6a,color:#fff
+    </div>
+</div>
+
+<!-- ============ 图2: 系统架构分层 ============ -->
+<div class="section">
+    <h2>🏗️ 图2 · 系统架构分层</h2>
+    <div class="mermaid">
+graph TB
+    subgraph 用户层["👤 用户层"]
+        U1["浏览器 / 前端UI"]
+        U2["API 调用"]
+        U3["桌面客户端"]
+    end
+
+    subgraph 通信层["📡 通信层"]
+        C1["WebRTC"]
+        C2["RTMP"]
+        C3["RTCPush"]
+        C4["VirtualCam"]
+    end
+
+    subgraph 应用层API["🚪 应用层 API"]
+        A1["/human<br/><small>文本驱动</small>"]
+        A2["/speech_chat<br/><small>语音驱动: ASR→LLM→TTS→Avatar</small>"]
+        A3["/offer<br/><small>WebRTC信令</small>"]
+        A4["/record"]
+        A5["/interrupt_talk"]
+        A6["/is_speaking"]
+        A7["/set_audiotype"]
+        A8["/api/capabilities"]
+        A9["/api/admin/*"]
+        A10["/api/avatar/task"]
+        A11["/api/asr_http"]
+    end
+
+    subgraph 引擎层["⚙️ 引擎层"]
+        E1["🎭 数字人模型<br/>Wav2Lip / MuseTalk / UltraLight"]
+        E2["🔊 TTS引擎<br/>edge_tts / gpt-sovits / cosyvoice<br/>fish / tencent / doubao<br/>indextts2 / azure / qwen / omnitts"]
+        E3["🎤 ASR<br/>SenseVoice(本地) / 远程API"]
+        E4["🧠 LLM<br/>SiliconFlow / OpenAI兼容"]
+    end
+
+    subgraph 基础设施层["🖥️ 基础设施层"]
+        I1["OS: Ubuntu / Windows / macOS"]
+        I2["GPU: CUDA 推理"]
+        I3["Python 3.10+"]
+        I4["端口: TCP 8010, UDP 1-65535"]
+    end
+
+    用户层 --> 通信层
+    通信层 --> 应用层API
+    应用层API --> 引擎层
+    引擎层 --> 基础设施层
+
+    style 用户层 fill:#1a3a5c,stroke:#3a7bd5,color:#ccc
+    style 通信层 fill:#2a1a5c,stroke:#7c4dff,color:#ccc
+    style 应用层API fill:#1a4a3a,stroke:#4caf50,color:#ccc
+    style 引擎层 fill:#5c2a1a,stroke:#ff6f00,color:#ccc
+    style 基础设施层 fill:#2a2a2a,stroke:#888,color:#ccc
+    </div>
+</div>
+
+<!-- ============ 图3: 优化全景图 ============ -->
+<div class="section">
+    <h2>⚡ 图3 · 优化全景图</h2>
+    <p style="color:#999;margin-bottom:15px;font-size:14px;">已完成 9 项 ｜ 待完成 11 项</p>
+    <div class="mermaid">
+mindmap
+  root((LiveTalking<br/>优化全景))
+    ✅ 已做优化(9)
+      🚀 推理加速
+        TensorRT 加速数字人推理
+        FlashAttention 优化注意力
+        FP16 混合精度推理
+      ⚡ 流水线优化
+        LLM & TTS 流式输出
+        首帧延迟优化
+      📦 架构优化
+        WebRTC 推流优化
+        任务队列 & 并发控制
+      🔧 工程优化
+        模型预加载 / 预热
+        配置文件热加载
+        Docker 容器化部署
+    📋 待做优化(11)
+      🔄 推理框架
+        vLLM 推理后端接入
+        ONNX Runtime 优化
+        AWQ/GPTQ 量化推理
+      🌐 网络传输
+        Simulcast 多流自适应
+        FEC & NACK 抗丢包
+        SVC 分层编码
+      🧠 模型优化
+        LoRA 微调适配
+        MoE 稀疏专家路由
+        Knowledge Distillation 蒸馏
+      ⚙️ 系统优化
+        动态批处理 Dynamic Batching
+        Pipelining 多级流水线
+        KV Cache 显存复用
+    </div>
+</div>
+
+<div class="footer">
+    LiveTalking 思维导图 &mdash; 生成时间: <span id="time"></span>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+    document.getElementById('time').textContent = new Date().toLocaleString('zh-CN');
+    mermaid.initialize({
+        startOnLoad: true,
+        theme: 'dark',
+        themeVariables: {
+            darkMode: true,
+            background: '#1a1a2e',
+            primaryColor: '#3a7bd5',
+            primaryTextColor: '#e0e0e0',
+            primaryBorderColor: '#5a9be5',
+            lineColor: '#7c4dff',
+            secondaryColor: '#16213e',
+            tertiaryColor: '#1a3a5c',
+            mainBkg: '#16213e',
+            nodeBorder: '#3a7bd5',
+            clusterBkg: '#1a1a2e',
+            clusterBorder: '#2a2a4a',
+            titleColor: '#7ec8e3',
+            edgeLabelBackground: '#16213e',
+            nodeTextColor: '#e0e0e0'
+        },
+        flowchart: {
+            htmlLabels: true,
+            useMaxWidth: true,
+            curve: 'basis',
+            padding: 20
+        },
+        mindmap: {
+            padding: 16,
+            maxNodeWidth: 200
+        }
+    });
+</script>
+
+</body>
+</html>
